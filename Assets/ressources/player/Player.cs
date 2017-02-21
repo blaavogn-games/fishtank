@@ -26,6 +26,7 @@ public class Player : MonoBehaviour {
                 int hDir = 0;
                 int vDir = 0;
                 //Hit cap to make movement consistent
+                //Holger is working here and makign some changes
                 if(Input.GetKey(KeyCode.W) && _maxVelosity > _rigidbody.velocity.magnitude)
                     _rigidbody.AddForce(transform.forward * _acceleration * Time.deltaTime);
                 if(Input.GetKey(KeyCode.UpArrow))
