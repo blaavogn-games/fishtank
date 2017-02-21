@@ -6,20 +6,19 @@ public class Player : MonoBehaviour {
     private State state = State.SWIM;
     private Rigidbody _rigidbody;
     public float MaxSwimVelocity = 15;
-    public float DashVelocity = 25;
     public float Acceleration = 4000;
-    public float Decceleration = 1000;
     public float HRotation = 120;
     public float VRotation = 50;
     public Wiggle wiggle;
 
     private float dashTimer = 0;
     [Tooltip("In Seconds")]
-    public float DashThreshold = 0.5f;
+    public float DashThreshold = 0.2f;
 
     private float dashCooldownTimer = 0;
+    private float swimCooldownTimer = 0;
     [Tooltip("In Seconds")]
-    public float DashCooldown = 0.34f;
+    public float DashCooldown = 0.4f;
 
     void Start ()
     {
@@ -35,25 +34,28 @@ public class Player : MonoBehaviour {
             case State.SWIM:
                 int hDir = 0;
                 int vDir = 0;
-                //Hit cap to make movement consistent
+
+                //Swims if possible. Increments dash timer.
                 if (Input.GetKey(KeyCode.W))
                 {
-                        if (MaxSwimVelocity > _rigidbody.velocity.magnitude && dashCooldownTimer*2<=0)
-                            Swim();
+                    if (MaxSwimVelocity > _rigidbody.velocity.magnitude && swimCooldownTimer <= 0)
+                        Swim();
                     dashTimer += Time.deltaTime;
                 }
-                if (Input.GetKeyDown(KeyCode.W))
-                {
-                    dashTimer = 0;
-                }
+
+                //Dashes if timer within threshhold.
                 if (Input.GetKeyUp(KeyCode.W))
                 {
-                    if(dashTimer<DashThreshold && dashCooldownTimer <= 0)
+                    if (dashTimer < DashThreshold && dashCooldownTimer <= 0)
                     {
                         Dash();
                         dashCooldownTimer = DashCooldown;
+                        swimCooldownTimer = DashCooldown * 2;
                     }
+                    dashTimer = 0;
                 }
+
+                //Turning
                 if(Input.GetKey(KeyCode.UpArrow))
                     vDir += 1;
                 if(Input.GetKey(KeyCode.DownArrow))
@@ -63,6 +65,7 @@ public class Player : MonoBehaviour {
                 if (Input.GetKey(KeyCode.RightArrow))
                     hDir += 1;
 
+                //Angle flips 90 and 180
                 if (Input.GetKeyDown(KeyCode.D))
                 {
                     transform.Rotate(new Vector3(0, 90, 0), Space.World);
@@ -75,7 +78,8 @@ public class Player : MonoBehaviour {
                 {
                     transform.Rotate(new Vector3(0, 180, 0), Space.World);
                 }
-                //Debug.Log(transform.rotation.eulerAngles);
+
+                //Apply rotations from turning controls
                 transform.Rotate(new Vector3(0, HRotation * hDir, 0) * Time.deltaTime, Space.World);
                 transform.Rotate(new Vector3(VRotation * vDir, 0, 0) * Time.deltaTime, Space.Self);
                 Debug.Log(HRotation * hDir * 0.2f);
@@ -86,10 +90,8 @@ public class Player : MonoBehaviour {
                 break;
         }
         _rigidbody.velocity = transform.forward.normalized * _rigidbody.velocity.magnitude;
-        //Count down dash cooldown
-        dashCooldownTimer -= Time.deltaTime;
-        if (dashCooldownTimer < 0)
-            dashCooldownTimer = 0;
+
+        CoolDown();
     }
     private void Dash()
     {
@@ -98,5 +100,17 @@ public class Player : MonoBehaviour {
     private void Swim()
     {
         _rigidbody.AddForce(transform.forward * Acceleration * Time.deltaTime);
+    }
+    private void CoolDown()
+    {
+        //Count down dash cooldown
+        dashCooldownTimer -= Time.deltaTime;
+        if (dashCooldownTimer < 0)
+            dashCooldownTimer = 0;
+
+        //Count down sim cooldown
+        swimCooldownTimer -= Time.deltaTime;
+        if (swimCooldownTimer < 0)
+            swimCooldownTimer = 0;
     }
 }
