@@ -9,6 +9,7 @@ public class Player : MonoBehaviour {
     private float _acceleration = 600;
     private float _hRotation = 120;
     private float _vRotation = 50;
+    public Wiggle wiggle;
 
     void Start ()
     {
@@ -17,7 +18,9 @@ public class Player : MonoBehaviour {
 
     void Update ()
     {
-        switch(state)
+        wiggle.wiggleSpeed = Mathf.Min(Mathf.Max(5,_rigidbody.velocity.magnitude), 22);
+        Debug.Log(_rigidbody.velocity.magnitude);
+        switch (state)
         {
             case State.SWIM:
                 int hDir = 0;
@@ -33,10 +36,8 @@ public class Player : MonoBehaviour {
                     vDir += 1;
                 if(Input.GetKey(KeyCode.UpArrow))
                     vDir -= 1;
-                Debug.Log("1 " + transform.rotation.y);
-                transform.Rotate(new Vector3(_vRotation * vDir, _hRotation * hDir, 0) * Time.deltaTime);
-                Debug.Log("2 " + transform.rotation.y);
-                Debug.Log(transform.rotation.eulerAngles);
+                transform.Rotate(new Vector3(0, _hRotation * hDir, 0) * Time.deltaTime, Space.World);
+                transform.Rotate(new Vector3(_vRotation * vDir, 0, 0) * Time.deltaTime, Space.Self);
 
                 //transform.rotation = Quaternion.Euler(Vector3.MoveTowards(transform.rotation, new Vector3(0, transform.rotation.y, 0), 2));
                 break;
