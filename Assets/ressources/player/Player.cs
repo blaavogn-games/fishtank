@@ -28,7 +28,7 @@ public class Player : MonoBehaviour {
     void Update ()
     {
         wiggle.wiggleSpeed = Mathf.Max(5,_rigidbody.velocity.magnitude);
-        Debug.Log(_rigidbody.velocity.magnitude);
+        //Debug.Log(_rigidbody.velocity.magnitude);
         switch (state)
         {
             case State.SWIM:
@@ -82,7 +82,7 @@ public class Player : MonoBehaviour {
                 //Apply rotations from turning controls
                 transform.Rotate(new Vector3(0, HRotation * hDir, 0) * Time.deltaTime, Space.World);
                 transform.Rotate(new Vector3(VRotation * vDir, 0, 0) * Time.deltaTime, Space.Self);
-                Debug.Log(HRotation * hDir * 0.2f);
+                //Debug.Log(HRotation * hDir * 0.2f);
                 wiggle.baseRotation.x = VRotation * vDir * 0.16f;
                 wiggle.baseRotation.y = HRotation * hDir * 0.1f;
 
