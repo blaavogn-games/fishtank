@@ -5,11 +5,11 @@ public class Player : MonoBehaviour {
     enum State { SWIM };
     private State state = State.SWIM;
     private Rigidbody _rigidbody;
+    [Header("Swimming Controls")]
     public float MaxSwimVelocity = 15;
     public float Acceleration = 4000;
     public float HRotation = 120;
     public float VRotation = 50;
-    public Wiggle wiggle;
 
     private float dashTimer = 0;
     [Tooltip("In Seconds")]
@@ -20,8 +20,22 @@ public class Player : MonoBehaviour {
     [Tooltip("In Seconds")]
     public float DashCooldown = 0.4f;
 
+    [Header("Mouse Look Controls")]
+    public bool MouseLookEnabled = false;
+    public float sensitivityX = 4F;
+    public float sensitivityY = 4F;
+    public float minimumX = -360F;
+    public float maximumX = 360F;
+    public float minimumY = -60F;
+    public float maximumY = 60F;
+    float rotationX = 0F;
+    float rotationY = 0F;
+    Quaternion originalRotation;
+    public Wiggle wiggle;
+
     void Start ()
     {
+        originalRotation = transform.rotation;
         this._rigidbody = GetComponent<Rigidbody>();
     }
 
@@ -54,29 +68,34 @@ public class Player : MonoBehaviour {
                     }
                     dashTimer = 0;
                 }
+                if (!MouseLookEnabled)
+                {
+                    //Turning
+                    if (Input.GetKey(KeyCode.UpArrow))
+                        vDir += 1;
+                    if (Input.GetKey(KeyCode.DownArrow))
+                        vDir -= 1;
+                    if (Input.GetKey(KeyCode.LeftArrow))
+                        hDir -= 1;
+                    if (Input.GetKey(KeyCode.RightArrow))
+                        hDir += 1;
 
-                //Turning
-                if(Input.GetKey(KeyCode.UpArrow))
-                    vDir += 1;
-                if(Input.GetKey(KeyCode.DownArrow))
-                    vDir -= 1;
-                if (Input.GetKey(KeyCode.LeftArrow))
-                    hDir -= 1;
-                if (Input.GetKey(KeyCode.RightArrow))
-                    hDir += 1;
-
-                //Angle flips 90 and 180
-                if (Input.GetKeyDown(KeyCode.D))
-                {
-                    transform.Rotate(new Vector3(0, 90, 0), Space.World);
-                }
-                if (Input.GetKeyDown(KeyCode.A))
-                {
-                    transform.Rotate(new Vector3(0, -90, 0), Space.World);
-                }
-                if (Input.GetKeyDown(KeyCode.S))
-                {
-                    transform.Rotate(new Vector3(0, 180, 0), Space.World);
+                    //Angle flips 90 and 180
+                    if (Input.GetKeyDown(KeyCode.D))
+                    {
+                        transform.Rotate(new Vector3(0, 90, 0), Space.World);
+                        originalRotation = transform.localRotation;
+                    }
+                    if (Input.GetKeyDown(KeyCode.A))
+                    {
+                        transform.Rotate(new Vector3(0, -90, 0), Space.World);
+                        originalRotation = transform.localRotation;
+                    }
+                    if (Input.GetKeyDown(KeyCode.S))
+                    {
+                        transform.Rotate(new Vector3(0, 180, 0), Space.World);
+                        originalRotation = transform.localRotation;
+                    }
                 }
 
                 //Apply rotations from turning controls
@@ -85,6 +104,17 @@ public class Player : MonoBehaviour {
                 //Debug.Log(HRotation * hDir * 0.2f);
                 wiggle.baseRotation.x = VRotation * vDir * 0.16f;
                 wiggle.baseRotation.y = HRotation * hDir * 0.1f;
+
+                if (MouseLookEnabled)
+                {
+                    rotationX += Input.GetAxis("Mouse X") * sensitivityX;
+                    rotationY += Input.GetAxis("Mouse Y") * sensitivityY;
+                    rotationX = ClampAngle(rotationX, minimumX, maximumX);
+                    rotationY = ClampAngle(rotationY, minimumY, maximumY);
+                    Quaternion xQuaternion = Quaternion.AngleAxis(rotationX, Vector3.up);
+                    Quaternion yQuaternion = Quaternion.AngleAxis(rotationY, -Vector3.right);
+                    transform.rotation = originalRotation * xQuaternion * yQuaternion;
+                }
 
                 //transform.rotation = Quaternion.Euler(Vector3.MoveTowards(transform.rotation, new Vector3(0, transform.rotation.y, 0), 2));
                 break;
@@ -112,5 +142,13 @@ public class Player : MonoBehaviour {
         swimCooldownTimer -= Time.deltaTime;
         if (swimCooldownTimer < 0)
             swimCooldownTimer = 0;
+    }
+    public static float ClampAngle(float angle, float min, float max)
+    {
+        if (angle < -360F)
+            angle += 360F;
+        if (angle > 360F)
+            angle -= 360F;
+        return Mathf.Clamp(angle, min, max);
     }
 }

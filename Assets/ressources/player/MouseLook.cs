@@ -10,35 +10,19 @@ public class MouseLook : MonoBehaviour {
     public float maximumY = 60F;
     float rotationX = 0F;
     float rotationY = 0F;
-    private float rotX = 0;
-    private float rotY = 0;
     Quaternion originalRotation;
     void Update()
     {
-        // Read the mouse input axis
-        /*Debug.Log(Input.GetAxis("Mouse X"));
-        Debug.Log(Input.GetAxis("Mouse Y"));
-
-        if(Input.GetAxis("Mouse X") > 0)
-            rotX = 1;
-        if (Input.GetAxis("Mouse X") < 0)
-            rotX = -1;
-        if (Input.GetAxis("Mouse Y") > 0)
-            rotY = -1;
-        if (Input.GetAxis("Mouse Y") < 0)
-            rotY = 1;
-        
-        transform.Rotate(new Vector3(rotY*sensitivityY, rotX*sensitivityX, 0));*/
-
-        rotationX += Input.GetAxis("Mouse X") * sensitivityX;
-        rotationY += Input.GetAxis("Mouse Y") * sensitivityY;
-        rotationX = ClampAngle(rotationX, minimumX, maximumX);
-        rotationY = ClampAngle(rotationY, minimumY, maximumY);
-        Quaternion xQuaternion = Quaternion.AngleAxis(rotationX, Vector3.up);
-        Quaternion yQuaternion = Quaternion.AngleAxis(rotationY, -Vector3.right);
-        transform.rotation = originalRotation * xQuaternion * yQuaternion;
-        rotX = 0;
-        rotY = 0;
+        if (Input.GetMouseButton(0))
+        {
+            rotationX += Input.GetAxis("Mouse X") * sensitivityX;
+            rotationY += Input.GetAxis("Mouse Y") * sensitivityY;
+            rotationX = ClampAngle(rotationX, minimumX, maximumX);
+            rotationY = ClampAngle(rotationY, minimumY, maximumY);
+            Quaternion xQuaternion = Quaternion.AngleAxis(rotationX, Vector3.up);
+            Quaternion yQuaternion = Quaternion.AngleAxis(rotationY, -Vector3.right);
+            transform.rotation = originalRotation * xQuaternion * yQuaternion;
+        }
     }
     void Start()
     {
