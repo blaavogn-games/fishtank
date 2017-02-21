@@ -30,9 +30,9 @@ public class Player : MonoBehaviour {
                 if(Input.GetKey(KeyCode.W) && _maxVelosity > _rigidbody.velocity.magnitude)
                     _rigidbody.AddForce(transform.forward * _acceleration * Time.deltaTime);
                 if(Input.GetKey(KeyCode.UpArrow))
-                    vDir -= 1;
-                if(Input.GetKey(KeyCode.DownArrow))
                     vDir += 1;
+                if(Input.GetKey(KeyCode.DownArrow))
+                    vDir -= 1;
                 if(Input.GetAxis("Horizontal") > 0)
                     hDir += 1;
                 if(Input.GetAxis("Horizontal") < 0)
