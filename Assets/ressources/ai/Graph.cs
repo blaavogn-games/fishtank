@@ -26,6 +26,24 @@ public class Graph{
         ve2.AddNeighbor(ve1);
     }
 
+    //Runs O(N) probably not important could implement a KD-Tree
+    //or if Vertices are regularly spread make a snap function
+    public Vector3 FindClosest(Vector3 v)
+    {
+        float minDist = float.MaxValue;
+        Vector3 closest = v;
+        foreach(KeyValuePair<Vector3, Vertex> kvp in Vertices)
+        {
+            float dist = (kvp.Key - v).magnitude;
+            if(minDist > dist)
+            {
+                minDist = dist;
+                closest = kvp.Key;
+            }
+        }
+        return closest;
+    }
+
     public bool ColorPath(Vector3 start, Vector3 end, out Stack<Vector3> path) //Dijkstra
     {
         path = new Stack<Vector3>(); //Possibly should be null when return false;
