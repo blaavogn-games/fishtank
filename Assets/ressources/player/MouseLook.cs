@@ -2,10 +2,8 @@
 using System.Collections;
 
 public class MouseLook : MonoBehaviour {
-    public enum RotationAxes { MouseXAndY = 0, MouseX = 1, MouseY = 2 }
-    public RotationAxes axes = RotationAxes.MouseXAndY;
-    public float sensitivityX = 15F;
-    public float sensitivityY = 15F;
+    public float sensitivityX = 4F;
+    public float sensitivityY = 4F;
     public float minimumX = -360F;
     public float maximumX = 360F;
     public float minimumY = -60F;
@@ -15,30 +13,15 @@ public class MouseLook : MonoBehaviour {
     Quaternion originalRotation;
     void Update()
     {
-        if (axes == RotationAxes.MouseXAndY)
+        if (Input.GetMouseButton(0))
         {
-            // Read the mouse input axis
             rotationX += Input.GetAxis("Mouse X") * sensitivityX;
             rotationY += Input.GetAxis("Mouse Y") * sensitivityY;
             rotationX = ClampAngle(rotationX, minimumX, maximumX);
             rotationY = ClampAngle(rotationY, minimumY, maximumY);
             Quaternion xQuaternion = Quaternion.AngleAxis(rotationX, Vector3.up);
             Quaternion yQuaternion = Quaternion.AngleAxis(rotationY, -Vector3.right);
-            transform.localRotation = originalRotation * xQuaternion * yQuaternion;
-        }
-        else if (axes == RotationAxes.MouseX)
-        {
-            rotationX += Input.GetAxis("Mouse X") * sensitivityX;
-            rotationX = ClampAngle(rotationX, minimumX, maximumX);
-            Quaternion xQuaternion = Quaternion.AngleAxis(rotationX, Vector3.up);
-            transform.localRotation = originalRotation * xQuaternion;
-        }
-        else
-        {
-            rotationY += Input.GetAxis("Mouse Y") * sensitivityY;
-            rotationY = ClampAngle(rotationY, minimumY, maximumY);
-            Quaternion yQuaternion = Quaternion.AngleAxis(-rotationY, Vector3.right);
-            transform.localRotation = originalRotation * yQuaternion;
+            transform.rotation = originalRotation * xQuaternion * yQuaternion;
         }
     }
     void Start()
