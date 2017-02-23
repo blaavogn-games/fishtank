@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Fog : MonoBehaviour {
     public float FogIncreasePerSecond = 0.01F;
-    public float MaxFogLevel = 0.04f;
+    public float MaxFogLevel = 0.025f;
 	// Use this for initialization
 	void Start () {
         RenderSettings.fogDensity = 0.0F;
@@ -14,6 +14,9 @@ public class Fog : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        RenderSettings.fogDensity += FogIncreasePerSecond * Time.deltaTime;
+        if (RenderSettings.fogDensity <= MaxFogLevel)
+            RenderSettings.fogDensity += FogIncreasePerSecond * Time.deltaTime;
+        else
+            RenderSettings.fogDensity = MaxFogLevel;
     }
 }
