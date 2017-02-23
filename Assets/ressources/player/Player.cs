@@ -5,6 +5,7 @@ public class Player : MonoBehaviour {
     enum State { SWIM, LOOKTRANSITION };
     private State state = State.SWIM;
     private Rigidbody _rigidbody;
+
     [Header("Swimming Controls")]
     public float MaxSwimVelocity = 15;
     public float Acceleration = 4000;
@@ -21,7 +22,7 @@ public class Player : MonoBehaviour {
     public float DashCooldown = 0.4f;
 
     [Header("Mouse Look Controls")]
-    public bool MouseLookEnabled = true;
+    public bool MouseLookEnabled = false;
     public float sensitivityX = 4F;
     public float sensitivityY = 4F;
     public float minimumX = -360F;
@@ -31,13 +32,20 @@ public class Player : MonoBehaviour {
     float rotationX = 0F;
     float rotationY = 0F;
     Quaternion originalRotation;
-    public float TransitionSpeed = 1;
-    public Wiggle wiggle;
+
+    [Header("Snap Rotation Transition")]
+    [Tooltip("In Seconds")]
+    public float TransitionSpeed = 0.3f;
+    private Quaternion targetRotation;
+    private float transitionTimer = 0;
     Vector3 transitionRotation = Vector3.zero;
+
+    public Wiggle wiggle;
 
 
     void Start ()
     {
+        targetRotation = transform.rotation;
         originalRotation = transform.rotation;
         this._rigidbody = GetComponent<Rigidbody>();
     }
@@ -53,7 +61,7 @@ public class Player : MonoBehaviour {
                 int vDir = 0;
 
                 //Swims if possible. Increments dash timer.
-                if (Input.GetKey(KeyCode.W))
+                if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.Joystick1Button0))
                 {
                     if (MaxSwimVelocity > _rigidbody.velocity.magnitude && swimCooldownTimer <= 0)
                         Swim();
@@ -61,7 +69,7 @@ public class Player : MonoBehaviour {
                 }
 
                 //Dashes if timer within threshhold.
-                if (Input.GetKeyUp(KeyCode.W))
+                if (Input.GetKeyUp(KeyCode.W) || Input.GetKeyUp(KeyCode.Joystick1Button0))
                 {
                     if (dashTimer < DashThreshold && dashCooldownTimer <= 0)
                     {
@@ -72,37 +80,52 @@ public class Player : MonoBehaviour {
                     dashTimer = 0;
                 }
                     //Turning
-                    if (Input.GetKey(KeyCode.UpArrow))
+                    if (Input.GetAxis("Vertical") > 0)
                         vDir += 1;
-                    if (Input.GetKey(KeyCode.DownArrow))
+                    if (Input.GetAxis("Vertical") < 0)
                         vDir -= 1;
-                    if (Input.GetKey(KeyCode.LeftArrow))
+                    if (Input.GetAxis("Horizontal") < 0)
                         hDir -= 1;
-                    if (Input.GetKey(KeyCode.RightArrow))
-                        hDir += 1;
+                if (Input.GetAxis("Horizontal") > 0)
+                    hDir += 1;
 
-                    //Angle flips 90 and 180
-                    if (Input.GetKeyDown(KeyCode.D))
-                    {
+                //Angle flips 90 and 180
+                if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.Joystick1Button5))
+                {
+                    if (MouseLookEnabled)
                         transform.rotation = originalRotation;
-                        state = State.LOOKTRANSITION;
-                        LookTransition(new Vector3(0, 90, 0), Space.World);
-                        originalRotation = transform.localRotation;
-                    }
-                    if (Input.GetKeyDown(KeyCode.A))
-                    {
+                    //originalRotation = transform.rotation;
+                    state = State.LOOKTRANSITION;
+                    //transitionTimer = 0;
+                    //targetRotation = Quaternion.AngleAxis(90, Vector3.up);
+                    //rotationGoal = 90;
+                    LookTransition(new Vector3(0, 90, 0), Space.World);
+                    originalRotation = transform.localRotation;
+                }
+                if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.Joystick1Button4))
+                {
+                    if (MouseLookEnabled)
                         transform.rotation = originalRotation;
-                        state = State.LOOKTRANSITION;
-                        LookTransition(new Vector3(0, -90, 0), Space.World);
-                        originalRotation = transform.localRotation;
-                    }
-                    if (Input.GetKeyDown(KeyCode.S))
-                    {
+                    //originalRotation = transform.rotation;
+                    state = State.LOOKTRANSITION;
+                    //transitionTimer = 0;
+                    //targetRotation = Quaternion.AngleAxis(-90, Vector3.up);
+                    //rotationGoal = -90;
+                    LookTransition(new Vector3(0, -90, 0), Space.World);
+                    originalRotation = transform.localRotation;
+                }
+                if (Input.GetKeyDown(KeyCode.S))
+                {
+                    if(MouseLookEnabled)
                         transform.rotation = originalRotation;
-                        state = State.LOOKTRANSITION;
-                        LookTransition(new Vector3(0, 180, 0), Space.World);
-                        originalRotation = transform.localRotation;
-                    }
+                    //originalRotation = transform.rotation;
+                    //targetRotation = Quaternion.AngleAxis(180, Vector3.up);
+                    state = State.LOOKTRANSITION;
+                    //transitionTimer = 0;
+                    //rotationGoal = 180;
+                    LookTransition(new Vector3(0, 180, 0), Space.World);
+                    originalRotation = transform.localRotation;
+                }
 
                 //Apply rotations from turning controls
                 transform.Rotate(new Vector3(0, HRotation * hDir, 0) * Time.deltaTime, Space.World);
@@ -124,6 +147,17 @@ public class Player : MonoBehaviour {
 
                 //transform.rotation = Quaternion.Euler(Vector3.MoveTowards(transform.rotation, new Vector3(0, transform.rotation.y, 0), 2));
                 break;
+            /*case State.LOOKTRANSITION:
+                transitionTimer += Time.deltaTime/TransitionSpeed;
+                //Quaternion yQuaternion2 = Quaternion.AngleAxis(rotationGoal, Vector3.up);
+                transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, transitionTimer);
+                //transform.Rotate(new Vector3(0, rotationGoal / (TransitionSpeed / Time.deltaTime), 0), Space.World);
+                if (transitionTimer >= 1)
+                {
+                    //originalRotation = transform.rotation;
+                    state = State.SWIM;
+                }
+                break;*/
         }
         _rigidbody.velocity = transform.forward.normalized * _rigidbody.velocity.magnitude;
 
