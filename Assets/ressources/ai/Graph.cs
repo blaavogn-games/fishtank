@@ -6,7 +6,8 @@ using UnityEngine;
 public class Graph{
     public readonly Dictionary<Vector3, Vertex> Vertices;
     private int graphSearch = 0;
-    private Vertex[] openList = new Vertex[10000]; //Should theoretically be a PQ but this might be sufficient
+    //Possibly autoresize or List<Vertex>
+    private Vertex[] openList = new Vertex[3000]; //Should theoretically be a PQ but this might be sufficient
 
     public Graph()
     {
