@@ -1,10 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour {
     enum State { SWIM, LOOKTRANSITION };
     private State state = State.SWIM;
     private Rigidbody _rigidbody;
+    public int InvertedAxis = 1;
 
     [Header("Swimming Controls")]
     public float MaxSwimVelocity = 15;
@@ -81,13 +83,21 @@ public class Player : MonoBehaviour {
                 }
                     //Turning
                     if (Input.GetAxis("Vertical") > 0)
-                        vDir += 1;
+                        vDir += 1 * InvertedAxis;
                     if (Input.GetAxis("Vertical") < 0)
-                        vDir -= 1;
+                        vDir -= 1 * InvertedAxis;
                     if (Input.GetAxis("Horizontal") < 0)
                         hDir -= 1;
                 if (Input.GetAxis("Horizontal") > 0)
                     hDir += 1;
+                    
+		if (Input.GetKey(KeyCode.P))
+                        InvertedAxis *= -1;
+                    if (Input.GetKey(KeyCode.R))
+                    {
+                        Scene scene = SceneManager.GetActiveScene();
+                        SceneManager.LoadScene(scene.name);
+                    }
 
                 //Angle flips 90 and 180
                 if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.Joystick1Button5))

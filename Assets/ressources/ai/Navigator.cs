@@ -6,10 +6,10 @@ using System;
 public class Navigator : MonoBehaviour {
     public GameObject Vert; //preFab for debugmode
     public bool DebugMode = false;
-    private const float SPACING = 1;
+    private const float SPACING = 8;
     private Vector3
-        minLimit = new Vector3(0, 0, 0),
-        maxLimit = new Vector3(20, 20, 20);
+        minLimit = new Vector3(-88, 2, 2),
+        maxLimit = new Vector3(88, 72, 72);
     private int xSize, ySize, zSize;
     private Graph graph;
     private System.Diagnostics.Stopwatch stopWatch = new System.Diagnostics.Stopwatch();
@@ -56,15 +56,12 @@ public class Navigator : MonoBehaviour {
         stopWatch.Stop();
         TimeSpan ts = stopWatch.Elapsed;
         Debug.Log(String.Format("Navigation graph build in {0}ms, DebugMode: {1}", ts.Milliseconds, DebugMode));
-    //graph.ColorConnected(Vector3.zero);
-        //Stack<Vector3> p;
-        //var b = graph.ColorPath(Vector3.zero, new Vector3(4,4,4), out p);
     }
 
     public bool TryFindPath(Vector3 start, Vector3 end, out Stack<Vector3> path)
     {
         stopWatch.Reset();
-        bool ret = graph.ColorPath(Snap(start), Snap(end), out path);
+        bool ret = graph.ColorPath(graph.FindClosest(start), graph.FindClosest(end), out path);
         stopWatch.Stop();
         TimeSpan ts = stopWatch.Elapsed;
         Debug.Log(String.Format("Path found in {0}ms, DebugMode: {1}", ts.Milliseconds, DebugMode));
