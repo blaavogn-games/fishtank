@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class Camera : MonoBehaviour {
+public class CameraController : MonoBehaviour {
     public GameObject Target;
     public float DefuaultFishDist = 5;
     private float targetFishDist, heightRatio = .5f;
