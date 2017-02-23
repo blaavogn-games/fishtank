@@ -2,7 +2,7 @@
 using System.Collections;
 
 public class Player : MonoBehaviour {
-    enum State { SWIM };
+    enum State { SWIM, LOOKTRANSITION };
     private State state = State.SWIM;
     private Rigidbody _rigidbody;
     [Header("Swimming Controls")]
@@ -21,7 +21,7 @@ public class Player : MonoBehaviour {
     public float DashCooldown = 0.4f;
 
     [Header("Mouse Look Controls")]
-    public bool MouseLookEnabled = false;
+    public bool MouseLookEnabled = true;
     public float sensitivityX = 4F;
     public float sensitivityY = 4F;
     public float minimumX = -360F;
@@ -31,7 +31,10 @@ public class Player : MonoBehaviour {
     float rotationX = 0F;
     float rotationY = 0F;
     Quaternion originalRotation;
+    public float TransitionSpeed = 1;
     public Wiggle wiggle;
+    Vector3 transitionRotation = Vector3.zero;
+
 
     void Start ()
     {
@@ -68,8 +71,6 @@ public class Player : MonoBehaviour {
                     }
                     dashTimer = 0;
                 }
-                if (!MouseLookEnabled)
-                {
                     //Turning
                     if (Input.GetKey(KeyCode.UpArrow))
                         vDir += 1;
@@ -83,20 +84,25 @@ public class Player : MonoBehaviour {
                     //Angle flips 90 and 180
                     if (Input.GetKeyDown(KeyCode.D))
                     {
-                        transform.Rotate(new Vector3(0, 90, 0), Space.World);
+                        transform.rotation = originalRotation;
+                        state = State.LOOKTRANSITION;
+                        LookTransition(new Vector3(0, 90, 0), Space.World);
                         originalRotation = transform.localRotation;
                     }
                     if (Input.GetKeyDown(KeyCode.A))
                     {
-                        transform.Rotate(new Vector3(0, -90, 0), Space.World);
+                        transform.rotation = originalRotation;
+                        state = State.LOOKTRANSITION;
+                        LookTransition(new Vector3(0, -90, 0), Space.World);
                         originalRotation = transform.localRotation;
                     }
                     if (Input.GetKeyDown(KeyCode.S))
                     {
-                        transform.Rotate(new Vector3(0, 180, 0), Space.World);
+                        transform.rotation = originalRotation;
+                        state = State.LOOKTRANSITION;
+                        LookTransition(new Vector3(0, 180, 0), Space.World);
                         originalRotation = transform.localRotation;
                     }
-                }
 
                 //Apply rotations from turning controls
                 transform.Rotate(new Vector3(0, HRotation * hDir, 0) * Time.deltaTime, Space.World);
@@ -150,5 +156,11 @@ public class Player : MonoBehaviour {
         if (angle > 360F)
             angle -= 360F;
         return Mathf.Clamp(angle, min, max);
+    }
+
+    private void LookTransition(Vector3 rotation, Space space)
+    {
+        transform.Rotate(rotation, space);
+        state = State.SWIM;
     }
 }
