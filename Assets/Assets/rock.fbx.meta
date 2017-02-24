@@ -1,24 +1,15 @@
 fileFormatVersion: 2
-guid: 4c6cfd0cbe7869a4aaa2944dfc0d3923
-timeCreated: 1487680311
+guid: f5e37ad1b0f28e24d82bc5665c89f52d
+timeCreated: 1487862180
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
   fileIDToRecycleName:
     100000: //RootNode
-    100002: Circle
-    100004: Circle.001
     400000: //RootNode
-    400002: Circle
-    400004: Circle.001
-    2300000: Circle
-    2300002: Circle.001
-    2300004: //RootNode
-    3300000: Circle
-    3300002: Circle.001
-    3300004: //RootNode
-    4300000: Circle
-    4300002: Circle.001
+    2300000: //RootNode
+    3300000: //RootNode
+    4300000: Sphere
   materials:
     importMaterials: 1
     materialName: 0
