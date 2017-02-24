@@ -11,17 +11,37 @@ ModelImporter:
     100006: Bone.003
     100008: Bone.003_end
     100010: //RootNode
+    100012: Armature
+    100014: Body
+    100016: Circle
+    100018: Head
+    100020: Head_end
+    100022: Root
+    100024: Tail
+    100026: Tail_end
     400000: Bone
     400002: Bone.001
     400004: Bone.002
     400006: Bone.003
     400008: Bone.003_end
     400010: //RootNode
+    400012: Armature
+    400014: Body
+    400016: Circle
+    400018: Head
+    400020: Head_end
+    400022: Root
+    400024: Tail
+    400026: Tail_end
+    4300000: Circle
     7400000: Armature|ArmatureAction
     7400002: Armature|ArmatureAction.001
     7400004: Armature|ArmatureAction.002
     7400006: Armature|CircleAction
+    7400008: Armature|swim
     9500000: //RootNode
+    11100000: //RootNode
+    13700000: Circle
   materials:
     importMaterials: 1
     materialName: 0
@@ -42,7 +62,53 @@ ModelImporter:
     animationScaleError: 0.5
     animationWrapMode: 0
     extraExposedTransformPaths: []
-    clipAnimations: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: Armature|swim
+      takeName: Armature|swim
+      firstFrame: 5
+      lastFrame: 25
+      wrapMode: 2
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 1
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Armature
+        weight: 1
+      - path: Armature/Root
+        weight: 1
+      - path: Armature/Root/Body
+        weight: 1
+      - path: Armature/Root/Body/Tail
+        weight: 1
+      - path: Armature/Root/Body/Tail/Tail_end
+        weight: 1
+      - path: Armature/Root/Head
+        weight: 1
+      - path: Armature/Root/Head/Head_end
+        weight: 1
+      - path: Circle
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     isReadable: 1
   meshes:
     lODScreenPercentages: []
@@ -77,10 +143,10 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
-    rootMotionBoneName: 
+    rootMotionBoneName: Root
     hasTranslationDoF: 0
   lastHumanDescriptionAvatarSource: {instanceID: 0}
-  animationType: 2
+  animationType: 1
   humanoidOversampling: 1
   additionalBone: 0
   userData: 
