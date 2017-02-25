@@ -62,7 +62,10 @@ public class Enemy : MonoBehaviour {
         Debug.DrawRay(ray.origin, ray.direction * SightRange, Color.red, 0.1f);
         if(Physics.Raycast(ray.origin, ray.direction, out hit, SightRange, int.MaxValue)) //Figure out layers
             if(hit.transform.tag == "Player")
+			{
+				Debug.Log("Found player");
                 return true;
+			}
         return false;
     }
 }
