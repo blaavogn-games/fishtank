@@ -37,17 +37,17 @@ public class Player : MonoBehaviour {
 
     [Header("Snap Rotation Transition")]
     [Tooltip("In Seconds")]
-    public float TransitionSpeed = 0.3f;
-    private Quaternion targetRotation;
-    private float transitionTimer = 0;
-    Vector3 transitionRotation = Vector3.zero;
+    //public float TransitionSpeed = 0.3f;
+    //private Quaternion targetRotation;
+    //private float transitionTimer = 0;
+    //Vector3 transitionRotation = Vector3.zero;
 
     public Wiggle wiggle;
 
 
     void Start ()
     {
-        targetRotation = transform.rotation;
+        //targetRotation = transform.rotation;
         originalRotation = transform.rotation;
         this._rigidbody = GetComponent<Rigidbody>();
     }
