@@ -6,7 +6,7 @@ public class Player : MonoBehaviour {
     enum State { SWIM, LOOKTRANSITION };
     private State state = State.SWIM;
     private Rigidbody _rigidbody;
-    private AudioLowPassFilter _audioLowPassFilter;
+    //private AudioLowPassFilter _audioLowPassFilter;
     public int InvertedAxis = 1;
 
     [Header("Swimming Controls")]
@@ -55,7 +55,7 @@ public class Player : MonoBehaviour {
 
     void Update ()
     {
-        GetComponent<AudioLowPassFilter>().cutoffFrequency = 100 + _rigidbody.velocity.magnitude*25;
+        //GetComponent<AudioLowPassFilter>().cutoffFrequency = 100 + _rigidbody.velocity.magnitude*25;
 
 
         wiggle.wiggleSpeed = Mathf.Max(5,_rigidbody.velocity.magnitude);
