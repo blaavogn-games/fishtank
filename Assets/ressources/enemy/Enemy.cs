@@ -59,7 +59,7 @@ public class Enemy : MonoBehaviour
                 velosity = chaseVelosity;
                 if(!CheckSight()) {
                     state = State.PATROL;
-                    target = patrolPath[curPatTarget];
+                    target = patrolPath[curPatTarget % patrolPath.Length];
                 }
                 break;
             case State.OUTOFSIGHT:
