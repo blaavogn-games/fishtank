@@ -25,13 +25,14 @@ public class Enemy : MonoBehaviour
         Transform path = transform.parent.FindChild("Path");
         for(int i = 0; i < path.childCount; i++)
         {
-            Vector3 from = path.GetChild(i).transform.position;
-            Vector3 to = path.GetChild((i + i) % path.childCount).transform.position;
-            List<Vector3> localPath;
-            if(nav.TryFindPath(from, to, out localPath))
-                patrolPath.AddRange(localPath);
-            else
-                Debug.Log("Path not found");
+            patrolPath.Add(path.GetChild(i).transform.position);
+            //Vector3 from = path.GetChild(i).transform.position;
+            //Vector3 to = path.GetChild((i + i) % path.childCount).transform.position;
+            //List<Vector3> localPath;
+            //if(nav.TryFindPath(from, to, out localPath))
+            //    patrolPath.AddRange(localPath);
+            //else
+            //    Debug.Log("Path not found");
         }
         state = State.PATROL;
         SetPathPoint();
