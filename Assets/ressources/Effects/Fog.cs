@@ -4,10 +4,11 @@ using System.Collections;
 public class Fog : MonoBehaviour {
     public float FogIncreasePerSecond = 0.01F;
     public float MaxFogLevel = 0.025f;
+    public Color FogColor;
 	// Use this for initialization
 	void Start () {
         RenderSettings.fogDensity = 0.0F;
-        RenderSettings.fogColor = Color.black;
+        RenderSettings.fogColor = FogColor;
         RenderSettings.fogMode = FogMode.ExponentialSquared;
         RenderSettings.fog = true;
     }
