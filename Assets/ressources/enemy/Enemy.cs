@@ -41,15 +41,18 @@ public class Enemy : MonoBehaviour {
                     state = State.INSIGHT;
                 break;
             case State.INSIGHT:
-                if(!CheckSight())
-                    state = State.PATROL;
                 target = player.transform.position;
                 velosity = chaseVelosity;
+                if(!CheckSight()) {
+                    state = State.PATROL;
+                    target = patrolPath[curPatTarget];
+                }
                 break;
             case State.OUTOFSIGHT:
 
                 break;
         }
+        Debug.Log(target);
         transform.LookAt(target);
         transform.position = Vector3.MoveTowards(transform.position, target, velosity * Time.deltaTime);
     }
