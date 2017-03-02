@@ -8,6 +8,7 @@ public class PlayerSound : MonoBehaviour {
     public AudioClip Ambient;
     public AudioClip Music;
     public AudioClip Bubbles;
+    public AudioClip SwimSound;
     private AudioSource[] audioSources;
     private AudioLowPassFilter filter;
     
@@ -22,13 +23,15 @@ public class PlayerSound : MonoBehaviour {
         audioSources[2].Play();
         audioSources[3].clip = Bubbles;
         audioSources[3].Play();
-        filter = GetComponent<AudioLowPassFilter>();
+        audioSources[4].clip = SwimSound;
+        audioSources[4].Play();
+        //filter = GetComponent<AudioLowPassFilter>();
         
     }
 
     public void SetSpeed(float speed)
     {
-        //audioSources[0].volume = speed;
-        filter.cutoffFrequency = 100+speed*25;
+        audioSources[4].volume = speed;
+        //filter.cutoffFrequency = 100+speed*25;
     }
 }
