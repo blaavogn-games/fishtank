@@ -45,9 +45,9 @@ public class Graph{
         return closest;
     }
 
-    public bool ColorPath(Vector3 start, Vector3 end, out Stack<Vector3> path) //Dijkstra
+    public bool ColorPath(Vector3 start, Vector3 end, out List<Vector3> path) //Dijkstra
     {
-        path = new Stack<Vector3>(); //Possibly should be null when return false;
+        path = new List<Vector3>(); //Possibly should be null when return false;
         Vertex begin = Vertices[start];
         Vertex target = Vertices[end];
         begin.Predecessor = null;
@@ -97,10 +97,11 @@ public class Graph{
         Vertex cur = target;
         while(cur != null)
         {
-            path.Push(cur.Pos);
+            path.Add(cur.Pos);
             //cur.Rep.GetComponent<Renderer>().material.color = Color.green;
             cur = cur.Predecessor;
         }
+        path.Reverse();
         return true;
     }
 

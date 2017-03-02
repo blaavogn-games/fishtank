@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 public class Vertex{
     public Vector3 Pos;
-    public readonly List<Vertex> Neighbors;
+    public readonly HashSet<Vertex> Neighbors;
     public GameObject Rep; //Temp for debugging
     public int searchInit = 0, searchEnd = 0;
     public float SearchVal = 0;
@@ -13,7 +13,7 @@ public class Vertex{
     {
         this.Pos = pos;
         this.Rep = rep;
-        Neighbors = new List<Vertex>();
+        Neighbors = new HashSet<Vertex>();
     }
 
     public void AddNeighbor(Vertex v)

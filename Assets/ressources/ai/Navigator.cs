@@ -6,10 +6,10 @@ using System;
 public class Navigator : MonoBehaviour {
     public GameObject Vert; //preFab for debugmode
     public bool DebugMode = false;
-    private const float SPACING = 8;
+    private const float SPACING = 10;
     private Vector3
-        minLimit = new Vector3(-88, 2, 2),
-        maxLimit = new Vector3(88, 72, 72);
+        minLimit = new Vector3(-140, 2, 2),
+        maxLimit = new Vector3(140, 72, 72);
     private int xSize, ySize, zSize;
     private Graph graph;
     private System.Diagnostics.Stopwatch stopWatch = new System.Diagnostics.Stopwatch();
@@ -39,15 +39,21 @@ public class Navigator : MonoBehaviour {
 
         foreach (KeyValuePair<Vector3, Vertex> kvp in graph.Vertices)
         {
+            // 9 + 9 + 8
+            //6
             TryCreateEdge(kvp.Key, Vector3.up, SPACING, Color.red);
             TryCreateEdge(kvp.Key, Vector3.forward, SPACING, Color.green);
             TryCreateEdge(kvp.Key, Vector3.left, SPACING, Color.blue);
+
+            //12
             TryCreateEdge(kvp.Key, Vector3.up + Vector3.forward, DSPACING, Color.cyan);
             TryCreateEdge(kvp.Key, Vector3.up + Vector3.forward * -1, DSPACING, Color.cyan);
             TryCreateEdge(kvp.Key, Vector3.up + Vector3.left, DSPACING, Color.magenta);
             TryCreateEdge(kvp.Key, Vector3.up + Vector3.left * -1, DSPACING, Color.magenta);
             TryCreateEdge(kvp.Key, Vector3.forward + Vector3.left, DSPACING, Color.yellow);
             TryCreateEdge(kvp.Key, Vector3.forward + Vector3.left * -1, DSPACING, Color.yellow);
+
+            //8
             TryCreateEdge(kvp.Key, Vector3.up + Vector3.forward + Vector3.left, DDSPACING, Color.blue);
             TryCreateEdge(kvp.Key, Vector3.up + Vector3.forward + Vector3.left * -1, DDSPACING, Color.blue);
             TryCreateEdge(kvp.Key, Vector3.up + Vector3.forward * -1 + Vector3.left, DDSPACING, Color.blue);
@@ -58,13 +64,12 @@ public class Navigator : MonoBehaviour {
         Debug.Log(String.Format("Navigation graph build in {0}ms, DebugMode: {1}", ts.Milliseconds, DebugMode));
     }
 
-    public bool TryFindPath(Vector3 start, Vector3 end, out Stack<Vector3> path)
+    public bool TryFindPath(Vector3 start, Vector3 end, out List<Vector3> path)
     {
         stopWatch.Reset();
         bool ret = graph.ColorPath(graph.FindClosest(start), graph.FindClosest(end), out path);
         stopWatch.Stop();
         TimeSpan ts = stopWatch.Elapsed;
-        Debug.Log(String.Format("Path found in {0}ms, DebugMode: {1}", ts.Milliseconds, DebugMode));
         return ret;
     }
 

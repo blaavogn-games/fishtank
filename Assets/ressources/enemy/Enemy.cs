@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy : MonoBehaviour {
+public class Enemy : MonoBehaviour
+{
     enum State { PATROL, INSIGHT, OUTOFSIGHT };
-    private Vector3[] patrolPath; //Found from game hierachy
+    private List<Vector3> patrolPath; //Found from game hierachy
     private int curPatTarget = -1;
     private State state;
     private GameObject player;
@@ -13,28 +14,40 @@ public class Enemy : MonoBehaviour {
     public float SightRange = 20;
     public float chaseVelosity = 6, pathVelosity = 4;
 
-    void Start () {
+    void Start ()
+    {
         player = GameObject.FindGameObjectWithTag("Player");
         target = player.transform.position;
+
+        patrolPath = new List<Vector3>();
+        Navigator nav = GameObject.FindGameObjectWithTag("Navigator").GetComponent<Navigator>();
+
         Transform path = transform.parent.FindChild("Path");
-        patrolPath = new Vector3[path.childCount];
-        int i = 0;
-        foreach (Transform t in path)
-            patrolPath[i++] = t.position;
+        for(int i = 0; i < path.childCount; i++)
+        {
+            Vector3 from = path.GetChild(i).transform.position;
+            Vector3 to = path.GetChild((i + i) % path.childCount).transform.position;
+            List<Vector3> localPath;
+            if(nav.TryFindPath(from, to, out localPath))
+                patrolPath.AddRange(localPath);
+            else
+                Debug.Log("Path not found");
+        }
         state = State.PATROL;
         SetPathPoint();
     }
 
     void SetPathPoint()
     {
-        target = patrolPath[++curPatTarget % patrolPath.Length];
+        target = patrolPath[++curPatTarget % patrolPath.Count];
     }
 
-    void FixedUpdate () {
+    void FixedUpdate ()
+    {
         switch(state)
         {
             case State.PATROL:
-                if(transform.position == target)
+                if((transform.position - target).magnitude < 0.01f)
                     SetPathPoint();
                 velosity = pathVelosity;
                 if(CheckSight())
@@ -49,10 +62,8 @@ public class Enemy : MonoBehaviour {
                 }
                 break;
             case State.OUTOFSIGHT:
-
                 break;
         }
-        Debug.Log(target);
         transform.LookAt(target);
         transform.position = Vector3.MoveTowards(transform.position, target, velosity * Time.deltaTime);
     }
@@ -65,10 +76,7 @@ public class Enemy : MonoBehaviour {
         Debug.DrawRay(ray.origin, ray.direction * SightRange, Color.red, 0.1f);
         if(Physics.Raycast(ray.origin, ray.direction, out hit, SightRange, int.MaxValue)) //Figure out layers
             if(hit.transform.tag == "Player")
-			{
-				Debug.Log("Found player");
                 return true;
-			}
         return false;
     }
 }

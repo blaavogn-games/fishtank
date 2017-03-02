@@ -15,7 +15,7 @@ public class PathFollower : MonoBehaviour {
 
     void FindPath()
     {
-        HasPath = navigator.TryFindPath(new Vector3(0,0,0), new Vector3(14, 18, 20), out path);
+        //HasPath = navigator.TryFindPath(new Vector3(0,0,0), new Vector3(14, 18, 20), out path);
         target = path.Pop();
     }
 
