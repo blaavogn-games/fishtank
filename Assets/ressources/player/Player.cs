@@ -8,6 +8,7 @@ public class Player : MonoBehaviour {
     private Rigidbody _rigidbody;
     //private AudioLowPassFilter _audioLowPassFilter;
     public int InvertedAxis = 1;
+    private PlayerSound playerSound;
 
     [Header("Swimming Controls")]
     public float MaxSwimVelocity = 15;
@@ -36,8 +37,9 @@ public class Player : MonoBehaviour {
     float rotationY = 0F;
     Quaternion originalRotation;
 
-    [Header("Snap Rotation Transition")]
-    [Tooltip("In Seconds")]
+
+    //[Header("Snap Rotation Transition")]
+    //[Tooltip("In Seconds")]
     //public float TransitionSpeed = 0.3f;
     //private Quaternion targetRotation;
     //private float transitionTimer = 0;
@@ -51,6 +53,7 @@ public class Player : MonoBehaviour {
         //targetRotation = transform.rotation;
         originalRotation = transform.rotation;
         this._rigidbody = GetComponent<Rigidbody>();
+        playerSound = GetComponent<PlayerSound>();
     }
 
     void Update ()
@@ -95,7 +98,7 @@ public class Player : MonoBehaviour {
                 if (Input.GetAxis("Horizontal") > 0)
                     hDir += 1;
                     
-		if (Input.GetKey(KeyCode.P))
+		        if (Input.GetKey(KeyCode.P))
                         InvertedAxis *= -1;
                     if (Input.GetKey(KeyCode.R))
                     {
@@ -174,7 +177,7 @@ public class Player : MonoBehaviour {
                 break;*/
         }
         _rigidbody.velocity = transform.forward.normalized * _rigidbody.velocity.magnitude;
-
+        playerSound.SetSpeed(_rigidbody.velocity.magnitude);
         CoolDown();
     }
     private void Dash()
