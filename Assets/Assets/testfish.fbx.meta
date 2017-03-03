@@ -1,47 +1,33 @@
 fileFormatVersion: 2
 guid: 8219e04f458f7f24d98b5b6e1264511b
-timeCreated: 1487847705
+timeCreated: 1488539453
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
   fileIDToRecycleName:
-    100000: Bone
-    100002: Bone.001
-    100004: Bone.002
-    100006: Bone.003
-    100008: Bone.003_end
-    100010: //RootNode
-    100012: Armature
-    100014: Body
-    100016: Circle
-    100018: Head
-    100020: Head_end
-    100022: Root
-    100024: Tail
-    100026: Tail_end
-    400000: Bone
-    400002: Bone.001
-    400004: Bone.002
-    400006: Bone.003
-    400008: Bone.003_end
-    400010: //RootNode
-    400012: Armature
-    400014: Body
-    400016: Circle
-    400018: Head
-    400020: Head_end
-    400022: Root
-    400024: Tail
-    400026: Tail_end
-    4300000: Circle
-    7400000: Armature|ArmatureAction
-    7400002: Armature|ArmatureAction.001
-    7400004: Armature|ArmatureAction.002
-    7400006: Armature|CircleAction
-    7400008: Armature|swim
+    100000: Armature
+    100002: Body
+    100004: fishbody
+    100006: Head
+    100008: Head_end
+    100010: Root
+    100012: Tail
+    100014: Tail_end
+    100016: //RootNode
+    400000: Armature
+    400002: Body
+    400004: fishbody
+    400006: Head
+    400008: Head_end
+    400010: Root
+    400012: Tail
+    400014: Tail_end
+    400016: //RootNode
+    4300000: fishbody
+    7400000: Armature|swim
     9500000: //RootNode
     11100000: //RootNode
-    13700000: Circle
+    13700000: fishbody
   materials:
     importMaterials: 0
     materialName: 0
@@ -60,7 +46,7 @@ ModelImporter:
     animationRotationError: 0.5
     animationPositionError: 0.5
     animationScaleError: 0.5
-    animationWrapMode: 0
+    animationWrapMode: 2
     extraExposedTransformPaths: []
     clipAnimations:
     - serializedVersion: 16
@@ -74,8 +60,8 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 1
-      loopBlend: 1
+      loopTime: 0
+      loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
       loopBlendPositionXZ: 0
@@ -104,7 +90,7 @@ ModelImporter:
         weight: 1
       - path: Armature/Root/Head/Head_end
         weight: 1
-      - path: Circle
+      - path: fishbody
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
