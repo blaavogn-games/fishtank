@@ -22,18 +22,23 @@ public class Enemy : MonoBehaviour
         patrolPath = new List<Vector3>();
         Navigator nav = GameObject.FindGameObjectWithTag("Navigator").GetComponent<Navigator>();
 
-    Transform path = transform.parent.FindChild("Path");
-        for(int i = 0; i < path.childCount; i++)
+        Transform path = transform.parent.FindChild("Path");
+        Vector3[] milestones = new Vector3[path.childCount + 1];
+        milestones[0] = transform.position;
+        for (int i = 0; i < path.childCount; i++)
+            milestones[i + 1] = path.GetChild(i).transform.position;
+
+        for(int i = 0; i < milestones.Length; i++)
         {
-            patrolPath.Add(path.GetChild(i).transform.position);
-            Vector3 from = path.GetChild(i).transform.position;
-            Vector3 to = path.GetChild((i + i) % path.childCount).transform.position;
+            Vector3 from = milestones[i];
+            Vector3 to = milestones[(i + i) % path.childCount];
             List<Vector3> localPath;
             if (nav.TryFindPath(from, to, out localPath))
                 patrolPath.AddRange(localPath);
             else
                 Debug.Log("Path not found");
         }
+        Debug.Log(patrolPath.Count);
         state = State.PATROL;
         SetPathPoint();
     }
