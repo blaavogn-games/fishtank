@@ -15,17 +15,16 @@ public class SceneValidator {
     }
 
     [Test]
+    public void PlayerisRoot()
+    {
+        GameObject go = GameObject.FindGameObjectWithTag("Player");
+        Assert.IsNull(go.transform.parent);
+    }
+
+    [Test]
     public void NaviagtorExists()
     {
         GameObject go = GameObject.FindGameObjectWithTag("Navigator");
         Assert.IsNotNull(go);
-    }
-
-    [Test]
-    public void CameraKnowsPlayer()
-    {
-        CameraController c = Camera.main.GetComponent<CameraController>();
-        Assert.IsNotNull(c);
-        Assert.IsNotNull(c.Target);
     }
 }
