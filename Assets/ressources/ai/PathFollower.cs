@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 
 public class PathFollower : MonoBehaviour {
-    Navigator navigator;
+    //Navigator navigator;
     public float Velosity = 1;
     public bool HasPath { get; private set;}
-    private Stack<Vector3> path;
+    private Stack<Vector3> path = new Stack<Vector3>();
     private Vector3 target;
 
     void Start () {
-        navigator = GameObject.FindGameObjectWithTag("Navigator").GetComponent<Navigator>();
+        //navigator = GameObject.FindGameObjectWithTag("Navigator").GetComponent<Navigator>();
         FindPath();
     }
 

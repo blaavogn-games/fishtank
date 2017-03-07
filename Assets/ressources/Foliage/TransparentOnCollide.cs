@@ -2,16 +2,23 @@
 using System.Collections;
 
 public class TransparentOnCollide : MonoBehaviour {
-    public Color AlbedoNormal, AlbedoTrans;
-    private Material mat;
+    public Material MatNormal, MatTransparent;
+    private Renderer rend;
+
     void Start()
     {
-        mat = GetComponent<Renderer>().material;
+        rend = GetComponent<Renderer>();
     }
 
     void OnTriggerEnter(Collider col)
     {
-        if(col.tag == "Player")
-            mat.SetColor("_Albedo", AlbedoTrans);
+        if(col.transform.root.tag == "Player")
+            rend.material = MatTransparent;
+    }
+
+    void OnTriggerExit(Collider col)
+    {
+        if(col.transform.root.tag == "Player")
+            rend.material = MatNormal;
     }
 }
