@@ -69,7 +69,7 @@ public class Navigator : MonoBehaviour {
         stopWatch.Reset();
         bool ret = graph.ColorPath(graph.FindClosest(start), graph.FindClosest(end), out path);
         stopWatch.Stop();
-        TimeSpan ts = stopWatch.Elapsed;
+        //TimeSpan ts = stopWatch.Elapsed;
         return ret;
     }
 

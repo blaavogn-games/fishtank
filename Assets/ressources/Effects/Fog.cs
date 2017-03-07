@@ -2,22 +2,22 @@
 using System.Collections;
 
 public class Fog : MonoBehaviour {
-    public float FogIncreasePerSecond = 0.01F;
-    public float MaxFogLevel = 0.025f;
+    public float FogIncreasePerSecond = 0.008F;
+    public float MaxFogLevel = 0.008f;
     public Color FogColor;
-	// Use this for initialization
-	void Start () {
+    void Start () {
         RenderSettings.fogDensity = 0.0F;
         RenderSettings.fogColor = FogColor;
         RenderSettings.fogMode = FogMode.ExponentialSquared;
         RenderSettings.fog = true;
     }
-	
-	// Update is called once per frame
-	void Update () {
-        if (RenderSettings.fogDensity <= MaxFogLevel)
+
+    void Update () {
             RenderSettings.fogDensity += FogIncreasePerSecond * Time.deltaTime;
-        else
+        if(RenderSettings.fogDensity>MaxFogLevel)
             RenderSettings.fogDensity = MaxFogLevel;
+
+        if (RenderSettings.fogColor != FogColor)
+            RenderSettings.fogColor = FogColor;
     }
 }
