@@ -39,8 +39,6 @@ public class Player : MonoBehaviour {
     float rotationY = 0F;
     Quaternion originalRotation;
 
-
-
     //[Header("Snap Rotation Transition")]
     //[Tooltip("In Seconds")]
     //public float TransitionSpeed = 0.3f;
@@ -49,7 +47,6 @@ public class Player : MonoBehaviour {
     //Vector3 transitionRotation = Vector3.zero;
 
     public Wiggle wiggle;
-
 
     void Start ()
     {
@@ -138,6 +135,7 @@ public class Player : MonoBehaviour {
             SceneManager.LoadScene(scene.name);
         }
     }
+
     private void CoolDown()
     {
         dashCooldownTimer -= Time.deltaTime;
@@ -147,6 +145,7 @@ public class Player : MonoBehaviour {
         if (swimCooldownTimer < 0)
             swimCooldownTimer = 0;
     }
+
     public static float ClampAngle(float angle, float min, float max)
     {
         while(angle < -360)
@@ -154,5 +153,14 @@ public class Player : MonoBehaviour {
         while(angle > 360)
             angle -= 360;
         return angle;
+    }
+
+    public void OnTriggerEnter(Collider col)
+    {
+        if(col.tag == "Enemy")
+        {
+            Scene scene = SceneManager.GetActiveScene();
+            SceneManager.LoadScene(scene.name);
+        }
     }
 }
