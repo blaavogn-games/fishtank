@@ -3,14 +3,11 @@ using System.Collections;
 
 public class PickupCapsule : MonoBehaviour {
     public Transform Player;
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	}
+
+    void Update () {
+        transform.Rotate(30 * Time.deltaTime, 20 * Time.deltaTime, 0);
+    }
+
     private void OnCollisionEnter(Collision collision)
     {
         var script = collision.gameObject.GetComponent<Player>();
