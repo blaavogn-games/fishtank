@@ -7,7 +7,7 @@ public class Navigator : MonoBehaviour {
     public GameObject Vert; //preFab for debugmode
     public bool DebugMode = false;
     private const float SPACING = 10;
-    private Vector3
+    public Vector3
         minLimit = new Vector3(-140, 2, 2),
         maxLimit = new Vector3(140, 72, 72);
     private int xSize, ySize, zSize;
@@ -15,6 +15,12 @@ public class Navigator : MonoBehaviour {
     private System.Diagnostics.Stopwatch stopWatch = new System.Diagnostics.Stopwatch();
 
     void Awake () {
+        minLimit.x = (int) minLimit.x;
+        minLimit.y = (int) minLimit.y;
+        minLimit.z = (int) minLimit.z;
+        maxLimit.x = (int) maxLimit.x;
+        maxLimit.y = (int) maxLimit.y;
+        maxLimit.z = (int) maxLimit.z;
         stopWatch.Start();
         float DSPACING = Mathf.Sqrt(SPACING * SPACING + SPACING * SPACING);
         float DDSPACING = Mathf.Sqrt(DSPACING * DSPACING + SPACING * SPACING);
