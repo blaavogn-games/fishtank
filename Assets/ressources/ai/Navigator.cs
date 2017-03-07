@@ -7,7 +7,7 @@ public class Navigator : MonoBehaviour {
     public GameObject Vert; //preFab for debugmode
     public bool DebugMode = false;
     private const float SPACING = 10;
-    private Vector3
+    public Vector3
         minLimit = new Vector3(-140, 2, 2),
         maxLimit = new Vector3(140, 72, 72);
     private int xSize, ySize, zSize;
@@ -15,6 +15,12 @@ public class Navigator : MonoBehaviour {
     private System.Diagnostics.Stopwatch stopWatch = new System.Diagnostics.Stopwatch();
 
     void Awake () {
+        minLimit.x = (int) minLimit.x;
+        minLimit.y = (int) minLimit.y;
+        minLimit.z = (int) minLimit.z;
+        maxLimit.x = (int) maxLimit.x;
+        maxLimit.y = (int) maxLimit.y;
+        maxLimit.z = (int) maxLimit.z;
         stopWatch.Start();
         float DSPACING = Mathf.Sqrt(SPACING * SPACING + SPACING * SPACING);
         float DDSPACING = Mathf.Sqrt(DSPACING * DSPACING + SPACING * SPACING);
@@ -39,21 +45,15 @@ public class Navigator : MonoBehaviour {
 
         foreach (KeyValuePair<Vector3, Vertex> kvp in graph.Vertices)
         {
-            // 9 + 9 + 8
-            //6
             TryCreateEdge(kvp.Key, Vector3.up, SPACING, Color.red);
             TryCreateEdge(kvp.Key, Vector3.forward, SPACING, Color.green);
             TryCreateEdge(kvp.Key, Vector3.left, SPACING, Color.blue);
-
-            //12
             TryCreateEdge(kvp.Key, Vector3.up + Vector3.forward, DSPACING, Color.cyan);
             TryCreateEdge(kvp.Key, Vector3.up + Vector3.forward * -1, DSPACING, Color.cyan);
             TryCreateEdge(kvp.Key, Vector3.up + Vector3.left, DSPACING, Color.magenta);
             TryCreateEdge(kvp.Key, Vector3.up + Vector3.left * -1, DSPACING, Color.magenta);
             TryCreateEdge(kvp.Key, Vector3.forward + Vector3.left, DSPACING, Color.yellow);
             TryCreateEdge(kvp.Key, Vector3.forward + Vector3.left * -1, DSPACING, Color.yellow);
-
-            //8
             TryCreateEdge(kvp.Key, Vector3.up + Vector3.forward + Vector3.left, DDSPACING, Color.blue);
             TryCreateEdge(kvp.Key, Vector3.up + Vector3.forward + Vector3.left * -1, DDSPACING, Color.blue);
             TryCreateEdge(kvp.Key, Vector3.up + Vector3.forward * -1 + Vector3.left, DDSPACING, Color.blue);
