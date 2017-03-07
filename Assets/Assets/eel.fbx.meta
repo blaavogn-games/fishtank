@@ -20,6 +20,7 @@ ModelImporter:
     100024: upperback
     100026: upperfront
     100028: eelbody
+    100030: Eel
     400000: //RootNode
     400002: Armature
     400004: Circle
@@ -35,6 +36,7 @@ ModelImporter:
     400024: upperback
     400026: upperfront
     400028: eelbody
+    400030: Eel
     2300000: //RootNode
     2300002: Circle
     2300004: eelbody
@@ -45,6 +47,8 @@ ModelImporter:
     4300002: eelbody
     7400000: Armature|swimming
     7400002: Armature|swimming //// Armature
+    7400004: Eel|Idle
+    7400006: Eel|Swimming
     9500000: //RootNode
     11100000: //RootNode
     11100002: Armature
@@ -83,10 +87,10 @@ ModelImporter:
     extraExposedTransformPaths: []
     clipAnimations:
     - serializedVersion: 16
-      name: Armature|swimming
-      takeName: Armature|swimming
-      firstFrame: 5
-      lastFrame: 45
+      name: Eel|Idle
+      takeName: Eel|Idle
+      firstFrame: 0
+      lastFrame: 1
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -109,29 +113,85 @@ ModelImporter:
       transformMask:
       - path: 
         weight: 1
-      - path: Armature
+      - path: Eel
         weight: 1
-      - path: Armature/lowerfront
+      - path: Eel/lowerfront
         weight: 1
-      - path: Armature/lowerfront/upperfront
+      - path: Eel/lowerfront/upperfront
         weight: 1
-      - path: Armature/lowerfront/upperfront/head
+      - path: Eel/lowerfront/upperfront/head
         weight: 1
-      - path: Armature/lowerfront/upperfront/head/head_end
+      - path: Eel/lowerfront/upperfront/head/head_end
         weight: 1
-      - path: Armature/middle
+      - path: Eel/middle
         weight: 1
-      - path: Armature/middle/upperback
+      - path: Eel/middle/upperback
         weight: 1
-      - path: Armature/middle/upperback/lowerback
+      - path: Eel/middle/upperback/lowerback
         weight: 1
-      - path: Armature/middle/upperback/lowerback/tail
+      - path: Eel/middle/upperback/lowerback/tail
         weight: 1
-      - path: Armature/middle/upperback/lowerback/tail/tail_end
+      - path: Eel/middle/upperback/lowerback/tail/tail_end
         weight: 1
-      - path: Armature/Root
+      - path: Eel/Root
         weight: 1
-      - path: Armature/Root/Root_end
+      - path: Eel/Root/Root_end
+        weight: 1
+      - path: eelbody
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Eel|Swimming
+      takeName: Eel|Swimming
+      firstFrame: 0
+      lastFrame: 65
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 1
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Eel
+        weight: 1
+      - path: Eel/lowerfront
+        weight: 1
+      - path: Eel/lowerfront/upperfront
+        weight: 1
+      - path: Eel/lowerfront/upperfront/head
+        weight: 1
+      - path: Eel/lowerfront/upperfront/head/head_end
+        weight: 1
+      - path: Eel/middle
+        weight: 1
+      - path: Eel/middle/upperback
+        weight: 1
+      - path: Eel/middle/upperback/lowerback
+        weight: 1
+      - path: Eel/middle/upperback/lowerback/tail
+        weight: 1
+      - path: Eel/middle/upperback/lowerback/tail/tail_end
+        weight: 1
+      - path: Eel/Root
+        weight: 1
+      - path: Eel/Root/Root_end
         weight: 1
       - path: eelbody
         weight: 1
@@ -175,7 +235,7 @@ ModelImporter:
     rootMotionBoneName: Root
     hasTranslationDoF: 0
   lastHumanDescriptionAvatarSource: {instanceID: 0}
-  animationType: 0
+  animationType: 2
   humanoidOversampling: 1
   additionalBone: 0
   userData: 
