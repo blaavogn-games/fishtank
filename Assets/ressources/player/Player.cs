@@ -5,7 +5,9 @@ using UnityEngine.SceneManagement;
 public class Player : MonoBehaviour {
     enum State { SWIM, LOOKTRANSITION };
     private State state = State.SWIM;
-    private Rigidbody _rigidbody;
+    //private Rigidbody _rigidbody;
+    private CharacterController cont;
+    private float vel = 0;
     //private AudioLowPassFilter _audioLowPassFilter;
     public int InvertedAxis = 1;
     private bool dashDown = false;
@@ -52,8 +54,9 @@ public class Player : MonoBehaviour {
     {
         //targetRotation = transform.rotation;
         originalRotation = transform.rotation;
-        this._rigidbody = GetComponent<Rigidbody>();
+        //this._rigidbody = GetComponent<Rigidbody>();
         playerSound = GetComponent<PlayerSound>();
+        cont = GetComponent<CharacterController>();
     }
 
     void Update ()
@@ -68,9 +71,9 @@ public class Player : MonoBehaviour {
                 //Swims if possible. Increments dash timer.
                 if (Mathf.Max(Input.GetAxis("Forward"), Input.GetAxis("ForwardAlt"))> 0)
                 {
-                    if (MaxSwimVelocity > _rigidbody.velocity.magnitude)
+                    if (MaxSwimVelocity > vel)
                         constAcc = 1;
-                    if (_rigidbody.velocity.magnitude < 7)
+                    if (vel < 7)
                         boost = 900;
                     dashTimer += Time.deltaTime;
                 }
@@ -91,8 +94,8 @@ public class Player : MonoBehaviour {
                     dashDown = false;
                 }
                 float accAdded = boost + (constAcc * Acceleration * Time.deltaTime);
-                _rigidbody.AddForce(accAdded * transform.forward);
-                wiggle.wiggleSpeed = Mathf.Max(5,_rigidbody.velocity.magnitude + accAdded * 0.01f);
+                vel += accAdded;
+                wiggle.wiggleSpeed = Mathf.Max(5,vel * 0.02f + accAdded * 0.0001f);
 
                 //Turning
                 vDir += InvertedAxis * Input.GetAxis("Vertical") * VRotation;
@@ -115,8 +118,9 @@ public class Player : MonoBehaviour {
                 }
                 break;
         }
-        _rigidbody.velocity = transform.forward.normalized * _rigidbody.velocity.magnitude;
-        playerSound.SetSpeed(_rigidbody.velocity.magnitude);
+        cont.Move(transform.forward * vel * Time.deltaTime* 0.014f);
+        //vel *= 0.99f;
+        //playerSound.SetSpeed(_rigidbody.velocity.magnitude);
         CoolDown();
 
         if (Input.GetKey(KeyCode.Alpha1))
@@ -162,5 +166,16 @@ public class Player : MonoBehaviour {
             Scene scene = SceneManager.GetActiveScene();
             SceneManager.LoadScene(scene.name);
         }
+    }
+     void OnControllerColliderHit(ControllerColliderHit hit) {
+        Debug.Log("asd");
+        Rigidbody body = hit.collider.attachedRigidbody;
+        if (body == null || body.isKinematic)
+            return;
+        if (hit.moveDirection.y < -0.3F)
+            return;
+
+        Vector3 pushDir = new Vector3(hit.moveDirection.x, 0, hit.moveDirection.z);
+        body.velocity = pushDir * 4;
     }
 }
