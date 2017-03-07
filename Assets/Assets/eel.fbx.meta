@@ -145,8 +145,8 @@ ModelImporter:
     - serializedVersion: 16
       name: Eel|Swimming
       takeName: Eel|Swimming
-      firstFrame: 0
-      lastFrame: 65
+      firstFrame: 5
+      lastFrame: 45
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
