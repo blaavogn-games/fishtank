@@ -6,16 +6,71 @@ ModelImporter:
   serializedVersion: 19
   fileIDToRecycleName:
     100000: //RootNode
+    100002: Armature
+    100004: Circle
+    100006: head
+    100008: head_end
+    100010: lowerback
+    100012: lowerfront
+    100014: middle
+    100016: Root
+    100018: Root_end
+    100020: tail
+    100022: tail_end
+    100024: upperback
+    100026: upperfront
+    100028: eelbody
+    100030: Eel
     400000: //RootNode
+    400002: Armature
+    400004: Circle
+    400006: head
+    400008: head_end
+    400010: lowerback
+    400012: lowerfront
+    400014: middle
+    400016: Root
+    400018: Root_end
+    400020: tail
+    400022: tail_end
+    400024: upperback
+    400026: upperfront
+    400028: eelbody
+    400030: Eel
     2300000: //RootNode
+    2300002: Circle
+    2300004: eelbody
     3300000: //RootNode
+    3300002: Circle
+    3300004: eelbody
     4300000: Circle
+    4300002: eelbody
+    7400000: Armature|swimming
+    7400002: Armature|swimming //// Armature
+    7400004: Eel|Idle
+    7400006: Eel|Swimming
+    9500000: //RootNode
+    11100000: //RootNode
+    11100002: Armature
+    11100004: eelbody
+    11100006: head
+    11100008: head_end
+    11100010: lowerback
+    11100012: lowerfront
+    11100014: middle
+    11100016: Root
+    11100018: Root_end
+    11100020: tail
+    11100022: tail_end
+    11100024: upperback
+    11100026: upperfront
+    13700000: eelbody
   materials:
-    importMaterials: 1
+    importMaterials: 0
     materialName: 0
     materialSearch: 1
   animations:
-    legacyGenerateAnimations: 4
+    legacyGenerateAnimations: 3
     bakeSimulation: 0
     resampleCurves: 1
     optimizeGameObjects: 0
@@ -24,13 +79,125 @@ ModelImporter:
     animationImportWarnings: 
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
-    animationCompression: 1
+    animationCompression: 3
     animationRotationError: 0.5
     animationPositionError: 0.5
     animationScaleError: 0.5
-    animationWrapMode: 0
+    animationWrapMode: 2
     extraExposedTransformPaths: []
-    clipAnimations: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: Eel|Idle
+      takeName: Eel|Idle
+      firstFrame: 0
+      lastFrame: 1
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Eel
+        weight: 1
+      - path: Eel/lowerfront
+        weight: 1
+      - path: Eel/lowerfront/upperfront
+        weight: 1
+      - path: Eel/lowerfront/upperfront/head
+        weight: 1
+      - path: Eel/lowerfront/upperfront/head/head_end
+        weight: 1
+      - path: Eel/middle
+        weight: 1
+      - path: Eel/middle/upperback
+        weight: 1
+      - path: Eel/middle/upperback/lowerback
+        weight: 1
+      - path: Eel/middle/upperback/lowerback/tail
+        weight: 1
+      - path: Eel/middle/upperback/lowerback/tail/tail_end
+        weight: 1
+      - path: Eel/Root
+        weight: 1
+      - path: Eel/Root/Root_end
+        weight: 1
+      - path: eelbody
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Eel|Swimming
+      takeName: Eel|Swimming
+      firstFrame: 5
+      lastFrame: 45
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 1
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Eel
+        weight: 1
+      - path: Eel/lowerfront
+        weight: 1
+      - path: Eel/lowerfront/upperfront
+        weight: 1
+      - path: Eel/lowerfront/upperfront/head
+        weight: 1
+      - path: Eel/lowerfront/upperfront/head/head_end
+        weight: 1
+      - path: Eel/middle
+        weight: 1
+      - path: Eel/middle/upperback
+        weight: 1
+      - path: Eel/middle/upperback/lowerback
+        weight: 1
+      - path: Eel/middle/upperback/lowerback/tail
+        weight: 1
+      - path: Eel/middle/upperback/lowerback/tail/tail_end
+        weight: 1
+      - path: Eel/Root
+        weight: 1
+      - path: Eel/Root/Root_end
+        weight: 1
+      - path: eelbody
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     isReadable: 1
   meshes:
     lODScreenPercentages: []
@@ -65,10 +232,10 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
-    rootMotionBoneName: 
+    rootMotionBoneName: Root
     hasTranslationDoF: 0
   lastHumanDescriptionAvatarSource: {instanceID: 0}
-  animationType: 0
+  animationType: 2
   humanoidOversampling: 1
   additionalBone: 0
   userData: 
