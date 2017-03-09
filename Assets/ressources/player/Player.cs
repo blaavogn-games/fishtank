@@ -11,6 +11,11 @@ public class Player : MonoBehaviour {
     private bool dashDown = false;
     private PlayerSound playerSound;
 
+    [HideInInspector]
+    public float hunger;
+    [Tooltip("in seconds")]
+    public float MaxHunger = 120;
+
     [Header("Swimming Controls")]
     public float MaxSwimVelocity = 15;
     public float Acceleration = 4000;
@@ -39,17 +44,11 @@ public class Player : MonoBehaviour {
     float rotationY = 0F;
     Quaternion originalRotation;
 
-    //[Header("Snap Rotation Transition")]
-    //[Tooltip("In Seconds")]
-    //public float TransitionSpeed = 0.3f;
-    //private Quaternion targetRotation;
-    //private float transitionTimer = 0;
-    //Vector3 transitionRotation = Vector3.zero;
-
     public Wiggle wiggle;
 
     void Start ()
     {
+        hunger = MaxHunger;
         //targetRotation = transform.rotation;
         originalRotation = transform.rotation;
         this._rigidbody = GetComponent<Rigidbody>();
@@ -58,7 +57,12 @@ public class Player : MonoBehaviour {
 
     void Update ()
     {
-        //Debug.Log(_rigidbody.velocity.magnitude);
+        //Decreases hunger and kills player if it gets to 0
+        hunger -= Time.deltaTime;
+        if (hunger <= 0)
+            Debug.Log("You're Dead from Starvation");
+
+        
         switch (state)
         {
             case State.SWIM:
@@ -159,8 +163,12 @@ public class Player : MonoBehaviour {
     {
         if(col.tag == "Enemy")
         {
-            Scene scene = SceneManager.GetActiveScene();
-            SceneManager.LoadScene(scene.name);
+            Die();
         }
+    }
+    public void Die()
+    {
+        Scene scene = SceneManager.GetActiveScene();
+        SceneManager.LoadScene(scene.name);
     }
 }

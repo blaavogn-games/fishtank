@@ -25,8 +25,10 @@ public class CameraTint : MonoBehaviour
         currentDistance = closestEnemyDistance();
         if (currentDistance < WarningDistance)
         {
-            alpha = MaxAlpha-(currentDistance / WarningDistance);
+            alpha = MaxAlpha - (currentDistance / WarningDistance);
         }
+        else
+            alpha = 0;
     }
 
     private void OnGUI()

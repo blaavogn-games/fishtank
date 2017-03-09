@@ -9,10 +9,30 @@ ModelImporter:
     100002: //RootNode
     100004: Sphere
     100006: LanternFish
+    100008: Armature
+    100010: head
+    100012: head_end
+    100014: middle
+    100016: root
+    100018: root_end
+    100020: tail1
+    100022: tail2
+    100024: tail3
+    100026: tail3_end
     400000: Empty
     400002: //RootNode
     400004: Sphere
     400006: LanternFish
+    400008: Armature
+    400010: head
+    400012: head_end
+    400014: middle
+    400016: root
+    400018: root_end
+    400020: tail1
+    400022: tail2
+    400024: tail3
+    400026: tail3_end
     2300000: Sphere
     2300002: LanternFish
     2300004: //RootNode

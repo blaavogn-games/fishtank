@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityStandardAssets.ImageEffects;
 
 public class Fog : MonoBehaviour {
     public float FogIncreasePerSecond = 0.008F;
