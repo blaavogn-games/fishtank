@@ -12,6 +12,9 @@ public class PickupCapsule : MonoBehaviour {
     {
         var script = collision.gameObject.GetComponent<Player>();
         if (script != null)
+        {
             DestroyObject(this.gameObject);
+            script.hunger = script.MaxHunger;
+        }
     }
 }
