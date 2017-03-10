@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 using System.IO;
+using UnityEngine.SceneManagement;
 
 public class Navigator : MonoBehaviour {
     public GameObject Vert; //preFab for debugmode
@@ -15,8 +16,11 @@ public class Navigator : MonoBehaviour {
     private System.Diagnostics.Stopwatch stopWatch = new System.Diagnostics.Stopwatch();
 
     void Awake () {
-        Deserialize();
-        return;
+        Scene scene = SceneManager.GetActiveScene();
+        if(File.Exists("data/"+scene.name)) {
+            Deserialize("data/"+scene.name);
+            return;
+        }
 
         Vector3 b1 = Bound1.transform.position;
         Vector3 b2 = Bound2.transform.position;
@@ -70,11 +74,11 @@ public class Navigator : MonoBehaviour {
         Serialize();
     }
 
-    private void Deserialize()
+    private void Deserialize(string path)
     {
         int intSize = 4;
         int floatSize = 4;
-        using (var stream = File.Open("data/hello.txt", FileMode.Open))
+        using (var stream = File.Open(path, FileMode.Open))
         {
             Dictionary<Vector3,Vertex> dic = new Dictionary<Vector3, Vertex>();
             byte[] buf = new byte[16];
@@ -126,7 +130,8 @@ public class Navigator : MonoBehaviour {
 
     private void Serialize()
     {
-        using (var stream = File.Open("data/hello.txt", FileMode.OpenOrCreate))
+        Scene scene = SceneManager.GetActiveScene();
+        using (var stream = File.Open("data/"+scene.name, FileMode.OpenOrCreate))
         {
             //Layout
             //1. Dic size
@@ -135,7 +140,6 @@ public class Navigator : MonoBehaviour {
             //2b. Vert
             //2ba. Neghbors
             Write(stream, BitConverter.GetBytes(graph.Vertices.Count));
-            Debug.Log("Se" + graph.Vertices.Count);
             foreach(var kvp in graph.Vertices)
             {
                 Vector3 vec = kvp.Key;
