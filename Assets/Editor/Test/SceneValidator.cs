@@ -27,4 +27,12 @@ public class SceneValidator {
         GameObject go = GameObject.FindGameObjectWithTag("Navigator");
         Assert.IsNotNull(go);
     }
+
+    [Test]
+    public void NaviagtorhasBounds()
+    {
+        GameObject go = GameObject.FindGameObjectWithTag("Navigator");
+        Assert.IsNotNull(go.GetComponent<Navigator>().Bound1);
+        Assert.IsNotNull(go.GetComponent<Navigator>().Bound2);
+    }
 }

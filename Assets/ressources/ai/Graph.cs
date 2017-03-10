@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using System.Collections.Generic;using UnityEngine;
 
 public class Graph{
     public readonly Dictionary<Vector3, Vertex> Vertices;
@@ -12,6 +9,11 @@ public class Graph{
     public Graph()
     {
         Vertices = new Dictionary<Vector3, Vertex>();
+    }
+
+    public Graph(Dictionary<Vector3, Vertex> vertices)
+    {
+        this.Vertices = vertices;
     }
 
     public void AddVertex(Vertex v)

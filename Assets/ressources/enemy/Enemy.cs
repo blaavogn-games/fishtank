@@ -22,6 +22,7 @@ public class Enemy : MonoBehaviour
         patrolPath = new List<Vector3>();
         Navigator nav = GameObject.FindGameObjectWithTag("Navigator").GetComponent<Navigator>();
 
+
         Transform path = transform.parent.FindChild("Path");
         Vector3[] milestones = new Vector3[path.childCount + 1];
         milestones[0] = transform.position;
@@ -38,7 +39,6 @@ public class Enemy : MonoBehaviour
             else
                 Debug.Log("Path not found");
         }
-        Debug.Log(patrolPath.Count);
         state = State.PATROL;
         SetPathPoint();
     }
