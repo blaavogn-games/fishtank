@@ -2,25 +2,34 @@
 using System.Collections;
 using System.Collections.Generic;
 using System;
+using System.IO;
+using UnityEngine.SceneManagement;
 
 public class Navigator : MonoBehaviour {
     public GameObject Vert; //preFab for debugmode
     public bool DebugMode = false;
     private const float SPACING = 10;
-    public Vector3
-        minLimit = new Vector3(-140, 2, 2),
-        maxLimit = new Vector3(140, 72, 72);
+    public GameObject Bound1, Bound2;
+    private Vector3 minLimit = Vector3.zero, maxLimit = Vector3.zero;
     private int xSize, ySize, zSize;
     private Graph graph;
     private System.Diagnostics.Stopwatch stopWatch = new System.Diagnostics.Stopwatch();
 
     void Awake () {
-        minLimit.x = (int) minLimit.x;
-        minLimit.y = (int) minLimit.y;
-        minLimit.z = (int) minLimit.z;
-        maxLimit.x = (int) maxLimit.x;
-        maxLimit.y = (int) maxLimit.y;
-        maxLimit.z = (int) maxLimit.z;
+        Scene scene = SceneManager.GetActiveScene();
+        if(File.Exists("data/"+scene.name)) {
+            Deserialize("data/"+scene.name);
+            return;
+        }
+
+        Vector3 b1 = Bound1.transform.position;
+        Vector3 b2 = Bound2.transform.position;
+        minLimit.x = (int) Mathf.Min(b1.x, b2.x);
+        minLimit.y = (int) Mathf.Min(b1.y, b2.y);
+        minLimit.z = (int) Mathf.Min(b1.z, b2.z);
+        maxLimit.x = (int) Mathf.Max(b1.x, b2.x);
+        maxLimit.y = (int) Mathf.Max(b1.y, b2.y);
+        maxLimit.z = (int) Mathf.Max(b1.z, b2.z);
         stopWatch.Start();
         float DSPACING = Mathf.Sqrt(SPACING * SPACING + SPACING * SPACING);
         float DDSPACING = Mathf.Sqrt(DSPACING * DSPACING + SPACING * SPACING);
@@ -62,6 +71,95 @@ public class Navigator : MonoBehaviour {
         stopWatch.Stop();
         TimeSpan ts = stopWatch.Elapsed;
         Debug.Log(String.Format("Navigation graph build in {0}ms, DebugMode: {1}", ts.Milliseconds, DebugMode));
+        Serialize();
+    }
+
+    private void Deserialize(string path)
+    {
+        int intSize = 4;
+        int floatSize = 4;
+        using (var stream = File.Open(path, FileMode.Open))
+        {
+            Dictionary<Vector3,Vertex> dic = new Dictionary<Vector3, Vertex>();
+            byte[] buf = new byte[16];
+            stream.Read(buf, 0, intSize);
+            int dicSize = BitConverter.ToInt32(buf, 0);
+            Vector3[] v3 = new Vector3[dicSize];
+            Vertex[] ve = new Vertex[dicSize];
+            Vector3[][] neigh = new Vector3[dicSize][];
+            for (int i = 0; i < dicSize; i++)
+            {
+                stream.Read(buf, 0, floatSize);
+                int x = BitConverter.ToInt32(buf, 0);
+                stream.Read(buf, 0, floatSize);
+                int y = BitConverter.ToInt32(buf, 0);
+                stream.Read(buf, 0, floatSize);
+                int z = BitConverter.ToInt32(buf, 0);
+                v3[i] = new Vector3(x,y,z);
+                ve[i] = new Vertex(v3[i], null);
+                dic.Add(v3[i], ve[i]);
+                stream.Read(buf, 0, intSize);
+                int neighSize = BitConverter.ToInt32(buf, 0);
+                neigh[i] = new Vector3[neighSize];
+                for (int j = 0; j < neighSize; j++)
+                {
+                    stream.Read(buf, 0, floatSize);
+                    int vx = BitConverter.ToInt32(buf, 0);
+                    stream.Read(buf, 0, floatSize);
+                    int vy = BitConverter.ToInt32(buf, 0);
+                    stream.Read(buf, 0, floatSize);
+                    int vz = BitConverter.ToInt32(buf, 0);
+                    neigh[i][j] = new Vector3(vx,vy,vz);
+                }
+            }
+
+            for(int i = 0; i < dicSize; i++)
+            {
+                Vertex v = ve[i];
+                for(int j = 0; j < neigh[i].Length; j++)
+                {
+                    v.AddNeighbor(dic[neigh[i][j]]);
+                }
+            }
+            graph = new Graph(dic);
+            stopWatch.Stop();
+            TimeSpan ts = stopWatch.Elapsed;
+            Debug.Log(String.Format("Deserialize graph {0}ms", ts.Milliseconds, DebugMode));
+        }
+    }
+
+    private void Serialize()
+    {
+        Scene scene = SceneManager.GetActiveScene();
+        using (var stream = File.Open("data/"+scene.name, FileMode.OpenOrCreate))
+        {
+            //Layout
+            //1. Dic size
+            //2. kvp
+            //2a. Pos
+            //2b. Vert
+            //2ba. Neghbors
+            Write(stream, BitConverter.GetBytes(graph.Vertices.Count));
+            foreach(var kvp in graph.Vertices)
+            {
+                Vector3 vec = kvp.Key;
+                Vertex verts = kvp.Value;
+                Write(stream, BitConverter.GetBytes(vec.x));
+                Write(stream, BitConverter.GetBytes(vec.y));
+                Write(stream, BitConverter.GetBytes(vec.z));
+                Write(stream, BitConverter.GetBytes(verts.Neighbors.Count));
+                foreach(Vertex v3 in verts.Neighbors) {
+                    Write(stream, BitConverter.GetBytes(v3.Pos.x));
+                    Write(stream, BitConverter.GetBytes(v3.Pos.y));
+                    Write(stream, BitConverter.GetBytes(v3.Pos.z));
+                }
+            }
+        }
+    }
+
+    private void Write(FileStream stream, byte[] buffer)
+    {
+        stream.Write(buffer, 0, buffer.Length);
     }
 
     public bool TryFindPath(Vector3 start, Vector3 end, out List<Vector3> path)
@@ -88,8 +186,8 @@ public class Navigator : MonoBehaviour {
         Ray ray = new Ray(pos, dir);
         Ray ray2 = new Ray(target, dir * -1);
         RaycastHit hit;
-        if (!Physics.Raycast(ray.origin, ray.direction, out hit, length, 1) &&
-            !Physics.Raycast(ray2.origin, ray2.direction, out hit, length, 1)) //Possible figure out collision layers
+        if (!Physics.SphereCast(ray.origin, 2, ray.direction, out hit, length, 1) &&
+            !Physics.SphereCast(ray2.origin, 2, ray2.direction, out hit, length, 1)) //Possible figure out collision layers
             graph.AddEdge(pos, target);
     }
 }
