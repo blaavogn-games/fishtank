@@ -1,46 +1,38 @@
 fileFormatVersion: 2
-guid: 8d31fa1865a739b4e9f6fb5661d39975
-timeCreated: 1488286304
+guid: b68070b58a332a74ab7cb525d9bd5763
+timeCreated: 1489233300
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
   fileIDToRecycleName:
-    100000: Empty
-    100002: //RootNode
-    100004: Sphere
-    100006: LanternFish
-    100008: Armature
-    100010: head
-    100012: head_end
-    100014: middle
-    100016: root
-    100018: root_end
-    100020: tail1
-    100022: tail2
-    100024: tail3
-    100026: tail3_end
-    400000: Empty
-    400002: //RootNode
-    400004: Sphere
-    400006: LanternFish
-    400008: Armature
-    400010: head
-    400012: head_end
-    400014: middle
-    400016: root
-    400018: root_end
-    400020: tail1
-    400022: tail2
-    400024: tail3
-    400026: tail3_end
-    2300000: Sphere
-    2300002: LanternFish
-    2300004: //RootNode
-    3300000: Sphere
-    3300002: LanternFish
-    3300004: //RootNode
-    4300000: Sphere
-    4300002: LanternFish
+    100000: Body
+    100002: head
+    100004: head_end
+    100006: //RootNode
+    100008: LanternFish
+    100010: middle
+    100012: root
+    100014: root_end
+    100016: tail1
+    100018: tail2
+    100020: tail3
+    100022: tail3_end
+    400000: Body
+    400002: head
+    400004: head_end
+    400006: //RootNode
+    400008: LanternFish
+    400010: middle
+    400012: root
+    400014: root_end
+    400016: tail1
+    400018: tail2
+    400020: tail3
+    400022: tail3_end
+    4300000: Body
+    7400000: LanternFish|Swimming
+    9500000: //RootNode
+    13700000: Body
   materials:
     importMaterials: 0
     materialName: 0
@@ -61,11 +53,63 @@ ModelImporter:
     animationScaleError: 0.5
     animationWrapMode: 0
     extraExposedTransformPaths: []
-    clipAnimations: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: LanternFish|Swimming
+      takeName: LanternFish|Swimming
+      firstFrame: 3
+      lastFrame: 31
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Body
+        weight: 1
+      - path: LanternFish
+        weight: 1
+      - path: LanternFish/head
+        weight: 1
+      - path: LanternFish/head/head_end
+        weight: 1
+      - path: LanternFish/middle
+        weight: 1
+      - path: LanternFish/middle/tail1
+        weight: 1
+      - path: LanternFish/middle/tail1/tail2
+        weight: 1
+      - path: LanternFish/middle/tail1/tail2/tail3
+        weight: 1
+      - path: LanternFish/middle/tail1/tail2/tail3/tail3_end
+        weight: 1
+      - path: LanternFish/root
+        weight: 1
+      - path: LanternFish/root/root_end
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     isReadable: 1
   meshes:
     lODScreenPercentages: []
-    globalScale: 100
+    globalScale: 1
     meshCompression: 0
     addColliders: 0
     importBlendShapes: 1
@@ -96,10 +140,10 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
-    rootMotionBoneName: 
+    rootMotionBoneName: root
     hasTranslationDoF: 0
   lastHumanDescriptionAvatarSource: {instanceID: 0}
-  animationType: 0
+  animationType: 2
   humanoidOversampling: 1
   additionalBone: 0
   userData: 
