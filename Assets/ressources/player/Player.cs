@@ -46,8 +46,13 @@ public class Player : MonoBehaviour {
 
     public Wiggle wiggle;
 
+    [HideInInspector]
+    public Vector3 spawnPoint = Vector3.zero;
+    private bool spawnLoaded = false;
+
     void Start ()
     {
+        spawnPoint = transform.position;
         hunger = MaxHunger;
         //targetRotation = transform.rotation;
         originalRotation = transform.rotation;
@@ -57,6 +62,11 @@ public class Player : MonoBehaviour {
 
     void Update ()
     {
+        if (!spawnLoaded && spawnPoint != Vector3.zero)
+        {
+            transform.position = spawnPoint;
+            spawnLoaded = true;
+        }
         //Decreases hunger and kills player if it gets to 0
         hunger -= Time.deltaTime;
         if (hunger <= 0)
@@ -169,6 +179,7 @@ public class Player : MonoBehaviour {
     public void Die()
     {
         Scene scene = SceneManager.GetActiveScene();
-        SceneManager.LoadScene(scene.name);
+        //SceneManager.LoadScene(scene.name);
+        transform.position = spawnPoint;
     }
 }
