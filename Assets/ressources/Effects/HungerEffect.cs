@@ -98,7 +98,6 @@ public class HungerEffect : MonoBehaviour {
         player.hunger -= Time.deltaTime;
         if (hunger <= 0)
             Debug.Log("You're Dead from Starvation");
-        Debug.Log(player.hunger);
         //increase timer
         timer += Time.deltaTime;
     }

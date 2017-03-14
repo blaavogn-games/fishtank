@@ -29,7 +29,7 @@ public class Trigger : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.transform.root.gameObject == player && !entered)
+        if (other.transform.root.gameObject == player && !entered && playerScript!=null)
         {
             switch (Type)
             {
@@ -46,13 +46,10 @@ public class Trigger : MonoBehaviour
     }
     private void CheckPointEnter()
     {
-        if (playerScript != null)
+        if (playerScript.spawnPoint != transform.position)
         {
-            if (playerScript.spawnPoint != transform.position)
-            {
-                playerScript.spawnPoint = transform.position;
-                Debug.Log("Spawn set to: " + playerScript.spawnPoint.ToString());
-            }
+            playerScript.spawnPoint = transform.position;
+            Debug.Log("Spawn set to: " + playerScript.spawnPoint.ToString());
         }
     }
     private void SetHungerEnter()
