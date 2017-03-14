@@ -27,6 +27,7 @@ public class Enemy : MonoBehaviour
 
         Navigator nav = GameObject.FindGameObjectWithTag("Navigator").GetComponent<Navigator>();
 
+
         Transform path = transform.parent.FindChild("Path");
         Vector3[] milestones = new Vector3[path.childCount + 1];
         milestones[0] = transform.position;
