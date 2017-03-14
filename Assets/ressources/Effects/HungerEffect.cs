@@ -9,6 +9,9 @@ public class HungerEffect : MonoBehaviour {
     float hunger;
     private float timer = 0;
 
+    [Tooltip("in seconds")]
+    public float MaxHunger = 120;
+
     [Header("Blur controls")]
     [Tooltip("At what hunger level to start the effect (in seconds)")]
     public float BlurEffectStart = 80;
@@ -52,6 +55,8 @@ public class HungerEffect : MonoBehaviour {
         eye = Camera.main.GetComponent<Fisheye>();
         blur = Camera.main.GetComponent<BlurOptimized>();
 
+        player.hunger = MaxHunger;
+        player.MaxHunger = MaxHunger;
         //initialising values
         ResetValues();
     }
@@ -69,7 +74,7 @@ public class HungerEffect : MonoBehaviour {
         if (hunger <= BlurEffectStart && hunger >= BlurEffectEnd)
         {
             blur.enabled = true;
-            blur.blurSize = Mathf.Lerp(0, MaxBlurSize, (timer - (player.MaxHunger - BlurEffectStart)) / (BlurEffectStart-BlurEffectEnd));
+            blur.blurSize = Mathf.Lerp(0, MaxBlurSize, (timer - (MaxHunger - BlurEffectStart)) / (BlurEffectStart-BlurEffectEnd));
         }
         else if (hunger < BlurEffectEnd)
         {
@@ -80,14 +85,19 @@ public class HungerEffect : MonoBehaviour {
         if (hunger <= EyeEffectStart && hunger >= EyeEffectEnd)
         {
             eye.enabled = true;
-            eye.strengthX = Mathf.Lerp(0, MaxStrengthX, (timer-(player.MaxHunger-EyeEffectStart)) / (EyeEffectStart - EyeEffectEnd));
-            eye.strengthY = Mathf.Lerp(0, MaxStrengthY, (timer - (player.MaxHunger - EyeEffectStart)) / (EyeEffectStart - EyeEffectEnd));
+            eye.strengthX = Mathf.Lerp(0, MaxStrengthX, (timer-(MaxHunger-EyeEffectStart)) / (EyeEffectStart - EyeEffectEnd));
+            eye.strengthY = Mathf.Lerp(0, MaxStrengthY, (timer - (MaxHunger - EyeEffectStart)) / (EyeEffectStart - EyeEffectEnd));
         }
         else if (hunger < EyeEffectEnd)
         {
             eye.strengthX = MaxStrengthX;
             eye.strengthY = MaxStrengthY;
         }
+
+        //Decreases hunger and kills player if it gets to 0
+        player.hunger -= Time.deltaTime;
+        if (hunger <= 0)
+            Debug.Log("You're Dead from Starvation");
 
         //increase timer
         timer += Time.deltaTime;
