@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: f5e37ad1b0f28e24d82bc5665c89f52d
-timeCreated: 1487862180
+guid: 41b600e396e163f42b572fafddfefa17
+timeCreated: 1489522995
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
@@ -9,9 +9,9 @@ ModelImporter:
     400000: //RootNode
     2300000: //RootNode
     3300000: //RootNode
-    4300000: Sphere
+    4300000: BezierCircle.001
   materials:
-    importMaterials: 0
+    importMaterials: 1
     materialName: 0
     materialSearch: 1
   animations:
