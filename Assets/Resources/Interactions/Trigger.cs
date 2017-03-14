@@ -3,56 +3,60 @@ using System.Collections;
 
 public class Trigger : MonoBehaviour
 {
-    public enum TriggerType { Checkpoint };
+    public enum TriggerType { Checkpoint, SetHunger };
     public TriggerType Type = TriggerType.Checkpoint;
-    [Tooltip("If this is not set, it will be set to PlayerMesh")]
-    public GameObject TriggerObject=null;
     //Whether checkpoint can be reused
     [Tooltip("Whether this checkpoint can be used multiple times")]
     public bool Once = false;
-    
+
+    //This is the player
+    private GameObject player;
+    private Player playerScript;
+    //private Collider other;
     private bool entered = false;
     private bool exited = false;
-    Trigger trigger;
+
+    [HideInInspector]
+    public float hunger = 0;
+    [HideInInspector]
+    public bool relative = false;
 
     // Use this for initialization
     void Start () {
-        if (TriggerObject == null)
-        {
-            TriggerObject = GameObject.FindGameObjectWithTag("Player");
-        }
-	    switch (Type)
-        {
-            case TriggerType.Checkpoint:
-                trigger = gameObject.AddComponent<Checkpoint>();
-                break;
-            default:
-                trigger = gameObject.AddComponent<Checkpoint>();
-                break;
-        }
-        trigger.TriggerObject = TriggerObject;
-        trigger.Type = Type;
-        trigger.Once = Once;
+        player = GameObject.FindGameObjectWithTag("Player");
+        playerScript = player.GetComponent<Player>();
 	}
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject == TriggerObject && !entered)
+        if (other.transform.root.gameObject == player && !entered && playerScript!=null)
         {
-            OnEnter(other);
+            switch (Type)
+            {
+                case TriggerType.Checkpoint:
+                    CheckPointEnter();
+                    break;
+                case TriggerType.SetHunger:
+                    SetHungerEnter();
+                    break;
+            }
             if(Once)
                 entered = true;
         }
     }
-    private void OnTriggerExit(Collider other)
+    private void CheckPointEnter()
     {
-        if (other.gameObject == TriggerObject && !exited)
+        if (playerScript.spawnPoint != transform.position)
         {
-            OnExit(other);
-            if (Once)
-                exited = true;
+            playerScript.spawnPoint = transform.position;
+            Debug.Log("Spawn set to: " + playerScript.spawnPoint.ToString());
         }
     }
-    public virtual void OnEnter(Collider other){}
-    public virtual void OnExit(Collider other){}
+    private void SetHungerEnter()
+    {
+        if (relative)
+            playerScript.hunger += hunger;
+        else
+            playerScript.hunger = hunger;
+    }
 }

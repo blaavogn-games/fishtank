@@ -11,7 +11,7 @@ public class Player : MonoBehaviour {
     private bool dashDown = false;
     private PlayerSound playerSound;
 
-    [HideInInspector]
+    //[HideInInspector]
     public float hunger;
     [HideInInspector]
     public float MaxHunger=0;
@@ -61,14 +61,12 @@ public class Player : MonoBehaviour {
 
     void Update ()
     {
-        Debug.Log(hunger);
         if (!spawnLoaded && spawnPoint != Vector3.zero)
         {
             transform.position = spawnPoint;
             spawnLoaded = true;
         }
 
-        
         switch (state)
         {
             case State.SWIM:
