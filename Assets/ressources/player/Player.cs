@@ -11,10 +11,10 @@ public class Player : MonoBehaviour {
     private bool dashDown = false;
     private PlayerSound playerSound;
 
-    [HideInInspector]
+    //[HideInInspector]
     public float hunger;
-    [Tooltip("in seconds")]
-    public float MaxHunger = 120;
+    [HideInInspector]
+    public float MaxHunger=0;
 
     [Header("Swimming Controls")]
     public float MaxSwimVelocity = 15;
@@ -53,7 +53,6 @@ public class Player : MonoBehaviour {
     void Start ()
     {
         spawnPoint = transform.position;
-        hunger = MaxHunger;
         //targetRotation = transform.rotation;
         originalRotation = transform.rotation;
         this._rigidbody = GetComponent<Rigidbody>();
@@ -67,10 +66,6 @@ public class Player : MonoBehaviour {
             transform.position = spawnPoint;
             spawnLoaded = true;
         }
-        //Decreases hunger and kills player if it gets to 0
-        hunger -= Time.deltaTime;
-        if (hunger <= 0)
-            Debug.Log("You're Dead from Starvation");
 
         
         switch (state)
