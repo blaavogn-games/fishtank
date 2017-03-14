@@ -11,7 +11,7 @@ public class Player : MonoBehaviour {
     private bool dashDown = false;
     private PlayerSound playerSound;
 
-    [HideInInspector]
+    //[HideInInspector]
     public float hunger;
     [HideInInspector]
     public float MaxHunger=0;
