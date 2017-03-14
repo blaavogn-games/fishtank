@@ -15,6 +15,7 @@ public class WaterEffect : MonoBehaviour {
     // Use this for initialization
     void Start () { 
         vortex=Camera.main.GetComponent<Vortex>();
+        vortex.enabled = true;
         vortex.radius = radius;
         vortex.angle = angle;
         vortex.center = center;

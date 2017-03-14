@@ -1,10 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Checkpoint : MonoBehaviour {
-    //Whether checkpoint can be reused
-    [Tooltip("Whether this checkpoint can be used multiple times")]
-    public bool Once = false;
+public class Checkpoint : Trigger {
 	// Use this for initialization
 	void Start () {
 	}
@@ -13,7 +10,7 @@ public class Checkpoint : MonoBehaviour {
 	void Update () {
 
     }
-    private void OnTriggerEnter(Collider other)
+    public override void OnEnter(Collider other)
     {
         var playerCol = other.GetComponentInParent<Player>();
         if (playerCol != null)
@@ -21,8 +18,7 @@ public class Checkpoint : MonoBehaviour {
             if (playerCol.spawnPoint != transform.position)
             {
                 playerCol.spawnPoint = transform.position;
-                if (Once) Destroy(this.gameObject);
-                Debug.Log(playerCol.spawnPoint);
+                Debug.Log("Spawn set to: "+ playerCol.spawnPoint.ToString());
             }
         }
     }
