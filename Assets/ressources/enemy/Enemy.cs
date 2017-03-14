@@ -3,21 +3,20 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    public enum State { PATROL, INSIGHT, OUTOFSIGHT, IDLE };
+    public enum State { PATROL, INSIGHT, OUTOFSIGHT };
     private int curPatTarget = -1;
     private Vector3 target;
     private float velocity = 1;
 
-    protected State state;
-    protected GameObject player;
-    protected List<Vector3> patrolPath = new List<Vector3>(); //Found from game hierachy
-    protected Quaternion initialRotation;
-    protected Animator animator;
+    private State state;
+    private GameObject player;
+    private List<Vector3> patrolPath = new List<Vector3>(); //Found from game hierachy
+    private Quaternion initialRotation;
+    private Animator animator;
 
-    public float idlePositionThreshold = 3f;
     public float SightRange = 20;
     public float chaseVelocity = 6, pathVelocity = 4;
-
+    public float Radius = 2;
     void Start ()
     {
         player = GameObject.FindGameObjectWithTag("Player");
@@ -37,7 +36,7 @@ public class Enemy : MonoBehaviour
         for(int i = 0; i < milestones.Length; i++)
         {
             Vector3 from = milestones[i];
-            Vector3 to = milestones[(i + i) % path.childCount];
+            Vector3 to = milestones[(i + 1) % milestones.Length];
             List<Vector3> localPath;
             if (nav.TryFindPath(from, to, out localPath))
                 patrolPath.AddRange(localPath);
@@ -53,37 +52,10 @@ public class Enemy : MonoBehaviour
         target = patrolPath[++curPatTarget % patrolPath.Count];
     }
 
-    void SetSwimming(bool isSwimming)
+    protected void FixedUpdate()
     {
-        if(animator != null)
-        {
-            animator.SetBool("IsSwimming", isSwimming);
-        }
-    }
-
-    protected void UpdateMotion()
-    {
-        SetSwimming(true);
-
         switch(state)
         {
-            case State.IDLE:
-                target = patrolPath[0];
-                velocity = pathVelocity;
-                transform.position = Vector3.MoveTowards(transform.position, target, velocity * Time.deltaTime);
-                
-                if(Vector3.Distance(transform.position, target) <= idlePositionThreshold)
-                {
-                    transform.rotation = Quaternion.Slerp(transform.rotation, initialRotation, Time.deltaTime);
-
-                    SetSwimming(false);
-                }
-                else
-                {
-                    transform.LookAt(target);
-                }
-                return;
-
             case State.PATROL:
                 if((transform.position - target).magnitude < 0.01f)
                     SetPathPoint();
@@ -103,13 +75,10 @@ public class Enemy : MonoBehaviour
                 break;
         }
 
+        if(animator != null)
+            animator.SetBool("IsSwimming", velocity > 0.02f);
         transform.LookAt(target);
         transform.position = Vector3.MoveTowards(transform.position, target, velocity * Time.deltaTime);
-    }
-
-    void FixedUpdate ()
-    {
-        UpdateMotion();
     }
 
     protected bool CheckSight()
@@ -118,7 +87,7 @@ public class Enemy : MonoBehaviour
         Ray ray = new Ray(transform.position, direction);
         RaycastHit hit;
         Debug.DrawRay(ray.origin, ray.direction * SightRange, Color.red, 0.1f);
-        if(Physics.Raycast(ray.origin, ray.direction, out hit, SightRange, int.MaxValue)) //Figure out layers
+        if(Physics.SphereCast(ray.origin, Radius,ray.direction, out hit, SightRange, int.MaxValue)) //Figure out layers
             if(hit.transform.tag == "Player")
                 return true;
         return false;

@@ -90,25 +90,31 @@ public class Navigator : MonoBehaviour {
             for (int i = 0; i < dicSize; i++)
             {
                 stream.Read(buf, 0, floatSize);
-                int x = BitConverter.ToInt32(buf, 0);
+                float x = BitConverter.ToSingle(buf, 0);
                 stream.Read(buf, 0, floatSize);
-                int y = BitConverter.ToInt32(buf, 0);
+                float y = BitConverter.ToSingle(buf, 0);
                 stream.Read(buf, 0, floatSize);
-                int z = BitConverter.ToInt32(buf, 0);
+                float z = BitConverter.ToSingle(buf, 0);
                 v3[i] = new Vector3(x,y,z);
                 ve[i] = new Vertex(v3[i], null);
-                dic.Add(v3[i], ve[i]);
+                minLimit.x = Mathf.Min(minLimit.x, x);
+                maxLimit.x = Mathf.Max(maxLimit.x, x);
+                minLimit.y = Mathf.Min(minLimit.y, y);
+                maxLimit.y = Mathf.Max(maxLimit.y, y);
+                minLimit.z = Mathf.Min(minLimit.z, z);
+                maxLimit.z = Mathf.Max(maxLimit.z, z);
                 stream.Read(buf, 0, intSize);
                 int neighSize = BitConverter.ToInt32(buf, 0);
                 neigh[i] = new Vector3[neighSize];
+                dic.Add(v3[i], ve[i]);
                 for (int j = 0; j < neighSize; j++)
                 {
                     stream.Read(buf, 0, floatSize);
-                    int vx = BitConverter.ToInt32(buf, 0);
+                    float vx = BitConverter.ToSingle(buf, 0);
                     stream.Read(buf, 0, floatSize);
-                    int vy = BitConverter.ToInt32(buf, 0);
+                    float vy = BitConverter.ToSingle(buf, 0);
                     stream.Read(buf, 0, floatSize);
-                    int vz = BitConverter.ToInt32(buf, 0);
+                    float vz = BitConverter.ToSingle(buf, 0);
                     neigh[i][j] = new Vector3(vx,vy,vz);
                 }
             }
@@ -125,6 +131,7 @@ public class Navigator : MonoBehaviour {
             stopWatch.Stop();
             TimeSpan ts = stopWatch.Elapsed;
             Debug.Log(String.Format("Deserialize graph {0}ms", ts.Milliseconds, DebugMode));
+            stream.Close();
         }
     }
 
@@ -154,6 +161,7 @@ public class Navigator : MonoBehaviour {
                     Write(stream, BitConverter.GetBytes(v3.Pos.z));
                 }
             }
+            stream.Close();
         }
     }
 
@@ -164,10 +172,13 @@ public class Navigator : MonoBehaviour {
 
     public bool TryFindPath(Vector3 start, Vector3 end, out List<Vector3> path)
     {
-        stopWatch.Reset();
+        if(InSight(start, end-start, (end-start).magnitude, Color.blue))
+        {
+            path = new List<Vector3>();
+            path.Add(end);
+            return true;
+        }
         bool ret = graph.ColorPath(graph.FindClosest(start), graph.FindClosest(end), out path);
-        stopWatch.Stop();
-        //TimeSpan ts = stopWatch.Elapsed;
         return ret;
     }
 
@@ -180,14 +191,21 @@ public class Navigator : MonoBehaviour {
     private void TryCreateEdge(Vector3 pos, Vector3 dir, float length, Color col)
     {
         Vector3 target = Snap(pos + dir.normalized * length);
+        if(InSight(pos, target - pos, length, col))
+            graph.AddEdge(pos, target);
+    }
+
+    private bool InSight(Vector3 pos, Vector3 dir, float length, Color col)
+    {
+        Vector3 target = pos + dir;
         if(target.x > maxLimit.x || target.y > maxLimit.y || target.z > maxLimit.z ||
            target.x < minLimit.x || target.y < minLimit.y || target.z < minLimit.z)
-            return;
+            return false;
         Ray ray = new Ray(pos, dir);
         Ray ray2 = new Ray(target, dir * -1);
         RaycastHit hit;
-        if (!Physics.SphereCast(ray.origin, 2, ray.direction, out hit, length, 1) &&
-            !Physics.SphereCast(ray2.origin, 2, ray2.direction, out hit, length, 1)) //Possible figure out collision layers
-            graph.AddEdge(pos, target);
+        //Debug.DrawRay(ray.origin, ray.direction * length, col, 10.5f);
+        return (!Physics.SphereCast(ray.origin, 2, ray.direction, out hit, length, 1) &&
+            !Physics.SphereCast(ray2.origin, 2, ray2.direction, out hit, length, 1)); //Possible figure out collision layers
     }
 }
