@@ -2,15 +2,7 @@
 using System.Collections;
 
 public class Checkpoint : Trigger {
-	// Use this for initialization
-	void Start () {
-	}
-	
-	// Update is called once per frame
-	void Update () {
-
-    }
-    public override void OnEnter(Collider other)
+    public void OnEnter(Collider other)
     {
         var playerCol = other.GetComponentInParent<Player>();
         if (playerCol != null)

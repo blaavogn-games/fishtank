@@ -93,6 +93,7 @@ namespace UnityStandardAssets.Cameras
         public virtual void SetTarget(Transform newTransform)
         {
             m_Target = newTransform;
+            targetRigidbody = m_Target.GetComponent<Rigidbody>();
         }
 
 
