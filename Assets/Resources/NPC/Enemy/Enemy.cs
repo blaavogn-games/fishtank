@@ -11,7 +11,6 @@ public class Enemy : MonoBehaviour
     private State state;
     private GameObject player;
     private List<Vector3> patrolPath = new List<Vector3>(); //Found from game hierachy
-    private Quaternion initialRotation;
     private Animator animator;
 
     public float SightRange = 20;
@@ -21,11 +20,8 @@ public class Enemy : MonoBehaviour
     {
         player = GameObject.FindGameObjectWithTag("Player");
         target = player.transform.position;
-        initialRotation = transform.rotation;
         animator = GetComponent<Animator>();
-
         Navigator nav = GameObject.FindGameObjectWithTag("Navigator").GetComponent<Navigator>();
-
 
         Transform path = transform.parent.FindChild("Path");
         Vector3[] milestones = new Vector3[path.childCount + 1];
