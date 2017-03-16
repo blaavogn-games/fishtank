@@ -83,8 +83,8 @@ public class FollowFish : MonoBehaviour {
         Vector3 newPosition = Vector3.MoveTowards(transform.position, target, speed * Time.deltaTime);
         Vector3 movement = newPosition - transform.position;
         wiggle.wiggleSpeed = movement.magnitude * 50 + 10;
-        transform.LookAt(newPosition);
-        transform.position = newPosition;
+        transform.rotation = Quaternion.LookRotation(Vector3.RotateTowards(transform.forward, movement, 0.1f, 0));
+        transform.position += transform.forward * movement.magnitude;
         return (Vector3.Distance(transform.position, target) < 0.01f);
     }
 }
