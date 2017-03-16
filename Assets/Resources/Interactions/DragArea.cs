@@ -19,10 +19,9 @@ public class DragArea : MonoBehaviour {
             Transform t = g.transform;
             float mult = (g.tag == "Enemy") ? EnemyMultiplier : 1;
 
-            float invDist = Mathf.Max(0, (BaseDrag + MaxDrag/Vector3.Distance(t.position, dragPoint)));
+            float invDist = Mathf.Max(0, (MaxDrag - Vector3.Distance(t.position, dragPoint))) + BaseDrag;
             invDist = Mathf.Min(invDist, MaxDrag) * EnemyMultiplier * DragMultiplier;
 
-            //dragforce = Basedrag + distance
 
             t.position = Vector3.MoveTowards(t.position, dragPoint, invDist * Time.deltaTime);
         }
