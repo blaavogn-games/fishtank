@@ -1,6 +1,11 @@
 fileFormatVersion: 2
+<<<<<<< Updated upstream
 guid: b9e5cd1a3bd114c47b7de2f67515abba
 timeCreated: 1489593783
+=======
+guid: fe265a49fdfb76d4790c1b685d27dcdb
+timeCreated: 1489663485
+>>>>>>> Stashed changes
 licenseType: Free
 NativeFormatImporter:
   userData: 
