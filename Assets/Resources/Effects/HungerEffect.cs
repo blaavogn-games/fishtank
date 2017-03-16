@@ -13,6 +13,7 @@ public class HungerEffect : MonoBehaviour {
 
     [Tooltip("in seconds")]
     public float MaxHunger = 120;
+    public float CurrentHunger;
 
     [Header("Blur controls")]
     [Tooltip("At what hunger level to start the effect (in seconds)")]
@@ -56,9 +57,15 @@ public class HungerEffect : MonoBehaviour {
     private float blinkTimer = 0;
     private float fadeDirection = 1;
 
+    [Header("Current blink stats")]
+    public float currentAlpha;
+    public float currentBlinkSpeed;
+
     // Use this for initialization
     void Start ()
     {
+        fadeTexture = new Texture2D(1, 1);
+        rect = new Rect(0, 0, Screen.width, Screen.height);
         //Swapping start and end values if they are plotted in incorectly
         if (BlurEffectStart < BlurEffectEnd || EyeEffectStart < EyeEffectEnd)
         {
@@ -93,7 +100,7 @@ public class HungerEffect : MonoBehaviour {
         if (hunger < player.hunger)
             ResetValues();
         hunger = player.hunger;
-
+        CurrentHunger = hunger;
         //Blur effect
         BlurEffect();
         //Fisheye effect
@@ -166,12 +173,21 @@ public class HungerEffect : MonoBehaviour {
         else
             return;
 
-        if (timer > blinkSpeed)
+        if (blinkTimer >= blinkSpeed)
         {
             fadeDirection *= -1;
-            timer = 0;
+            blinkTimer = blinkSpeed;
         }
-            timer += Time.deltaTime;
+        if (blinkTimer <= 0)
+        {
+            fadeDirection *= -1;
+            blinkTimer = 0;
+        }
+        blinkTimer += (fadeDirection*Time.deltaTime);
+
+        alpha = Mathf.Lerp(0, blinkAlpha, blinkTimer/blinkSpeed);
+        currentAlpha = alpha;
+        currentBlinkSpeed = blinkSpeed;
     }
 
     private void OnGUI()

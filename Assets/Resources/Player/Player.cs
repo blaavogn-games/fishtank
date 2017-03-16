@@ -165,6 +165,7 @@ public class Player : MonoBehaviour {
 
     public void OnTriggerEnter(Collider col)
     {
+        Debug.Log(col);
         if(col.tag == "Enemy")
         {
             Die();

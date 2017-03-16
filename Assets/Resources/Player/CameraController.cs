@@ -3,11 +3,12 @@
 public class CameraController : MonoBehaviour {
     public int Invert = 1;
     public float LookSpeed = 10;
-    private GameObject player;
+    [HideInInspector]
+    public GameObject Player { get; set;}
 
     void Start()
     {
-        player = GameObject.FindGameObjectWithTag("Player");
+        Player = GameObject.FindGameObjectWithTag("Player");
     }
 
     void Update ()
@@ -18,7 +19,7 @@ public class CameraController : MonoBehaviour {
         if (xMove == 0.0f && yMove == 0.0f)
             target = transform.parent.position - transform.parent.forward * 2.5f + transform.parent.up * 1.4f;
         else {
-            float magic = (player.transform.position - transform.position).magnitude;
+            float magic = (Player.transform.position - transform.position).magnitude;
             magic = Mathf.Min(2, magic);
             target = transform.parent.position -
                      transform.parent.forward * 2f +
@@ -26,6 +27,6 @@ public class CameraController : MonoBehaviour {
                      transform.parent.up * (yMove + 0.3f) * 1.4f * magic;
         }
         transform.position = Vector3.MoveTowards(transform.position, target, LookSpeed * Time.deltaTime);
-        transform.LookAt(player.transform.position + Vector3.up);
+        transform.LookAt(Player.transform.position + Vector3.up);
     }
 }
