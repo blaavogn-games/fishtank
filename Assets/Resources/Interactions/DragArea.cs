@@ -14,7 +14,6 @@ public class DragArea : MonoBehaviour {
     }
 
     void FixedUpdate () {
-        Debug.Log("Here");
         foreach(GameObject g in dragables) {
             Transform t = g.transform;
             float mult = (g.tag == "Enemy") ? EnemyMultiplier : 1;
