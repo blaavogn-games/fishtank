@@ -12,7 +12,7 @@ public class SeeSawPuzzle : MonoBehaviour {
 
     void OnTriggerEnter(Collider col)
     {
-        if(state != State.IDLE || !(col.tag == "Player" || (col.transform.parent != null && col.transform.parent.tag == "Player")))
+        if(state != State.IDLE || col.tag != "Player")
             return;
         cam.SetTarget(newTarget);
         camCon.Player = newTarget.gameObject;
