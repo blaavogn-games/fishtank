@@ -6,7 +6,6 @@ public class DragArea : MonoBehaviour {
     private List<GameObject> dragables;
     public Transform dragPoint;
     public GameObject particles;
-
     private Vector3 halfScale;
 
     void Start()
@@ -27,8 +26,10 @@ public class DragArea : MonoBehaviour {
             float invDist = Mathf.Max(0, (MaxDrag - Vector3.Distance(t.position, dragPoint.position))) + BaseDrag;
             invDist = Mathf.Min(invDist, MaxDrag) * EnemyMultiplier * DragMultiplier;
             t.position = Vector3.MoveTowards(t.position, dragPoint.position, invDist * Time.deltaTime);
-            if (t.position == dragPoint.position && t.tag == "dragable")
+            if (t.position == dragPoint.position && t.tag == "dragable") { 
                 t.transform.position = RandomPos();
+                t.GetComponent<Billboard>().Spawn();
+            }
         }
     }
 
