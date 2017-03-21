@@ -4,31 +4,47 @@ using System.Collections.Generic;
 public class DragArea : MonoBehaviour {
     public float MaxDrag = 10, BaseDrag = 3, DragMultiplier = 0.5f, EnemyMultiplier = 2;
     private List<GameObject> dragables;
-    private Vector3 dragPoint; //From hierachy
+    public Transform dragPoint;
+    public GameObject particles;
+
+    private Vector3 halfScale;
 
     void Start()
     {
+        halfScale = transform.localScale * 0.5f;
         dragables = new List<GameObject>();
-        foreach(Transform t in transform)
-            dragPoint = t.position;
+        foreach (Transform t in particles.transform)
+        {
+            dragables.Add(t.gameObject);
+            t.position = RandomPos();
+        }
     }
 
     void FixedUpdate () {
         foreach(GameObject g in dragables) {
             Transform t = g.transform;
             float mult = (g.tag == "Enemy") ? EnemyMultiplier : 1;
-
-            float invDist = Mathf.Max(0, (MaxDrag - Vector3.Distance(t.position, dragPoint))) + BaseDrag;
+            float invDist = Mathf.Max(0, (MaxDrag - Vector3.Distance(t.position, dragPoint.position))) + BaseDrag;
             invDist = Mathf.Min(invDist, MaxDrag) * EnemyMultiplier * DragMultiplier;
-
-
-            t.position = Vector3.MoveTowards(t.position, dragPoint, invDist * Time.deltaTime);
+            t.position = Vector3.MoveTowards(t.position, dragPoint.position, invDist * Time.deltaTime);
+            if (t.position == dragPoint.position && t.tag == "dragable")
+                t.transform.position = RandomPos();
         }
+    }
+
+    private Vector3 RandomPos()
+    {
+        Vector3 pos = dragPoint.position;
+        while(Vector3.Distance(pos, dragPoint.position) < 10) {
+            pos = transform.position + new Vector3(Random.Range(-halfScale.x, halfScale.x),
+                                                                        Random.Range(-halfScale.y, halfScale.y),
+                                                                        Random.Range(-halfScale.z, halfScale.z));
+        }
+        return pos;
     }
 
     void OnTriggerEnter(Collider col)
     {
-        Debug.Log(col);
         if(col.tag == "Enemy" || col.tag == "Player")
             dragables.Add(col.gameObject);
     }
