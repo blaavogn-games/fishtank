@@ -4,18 +4,19 @@ using System.Collections;
 public class FollowFish : MonoBehaviour {
     private enum State { FOLLOWING, FOLLOWIDLE, IDLE }
     private State state = State.IDLE;
-    private Player player;
+    private PlayerFollowers player;
     private int followId;
     public float MinSpeed = 10, MaxSpeed = 30, IdleSpeed = 3;
     private float[] speedBuffer = new float[15];
     private int curSpeed = 0, playerSpeed;
     public Wiggle wiggle;
-    private Vector3 idleTarget;
+    private Vector3 idleTarget, initialPosition;
 
     void Start () {
         playerSpeed = speedBuffer.Length - 2;
-        player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerFollowers>();
         idleTarget = RandomTarget(transform.position);
+        initialPosition = transform.position;
     }
 
     void FixedUpdate () {
@@ -41,7 +42,7 @@ public class FollowFish : MonoBehaviour {
                     idleTarget = RandomTarget(transform.position);
                 if(Vector3.Distance(transform.position, player.transform.position) < 5)
                 {
-                    followId = player.GetComponent<PlayerFollowers>().AddFollower(gameObject);
+                    followId = player.AddFollower(gameObject);
                     state = State.FOLLOWING;
                 }
                 break;
@@ -73,9 +74,16 @@ public class FollowFish : MonoBehaviour {
         return t.position + t.forward * forward + t.right * right + t.up * up;
     }
 
+    public void Respawn()
+    {
+        state = State.IDLE;
+        player.RemoveFollower(gameObject); //Perhaps followers should just be infered from whether they are IDLE or not
+        transform.position = initialPosition;
+    }
+
     private Vector3 RandomTarget(Vector3 center)
     {
-        return center + new Vector3(Random.Range(-2.0f, 2.0f), Random.Range(-2.0f, 2.0f),Random.Range(-2.0f, 2.0f));
+        return center + new Vector3(Random.Range(-2.0f, 2.0f), Random.Range(-2.0f, 2.0f), Random.Range(-2.0f, 2.0f));
     }
 
     private bool Move(Vector3 target, float speed)
