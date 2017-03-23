@@ -1,7 +1,10 @@
 ﻿using UnityEngine;
 
 public class PlayerFollowers : MonoBehaviour {
-    private GameObject[] followers = new GameObject[10];
+    private GameObject[] followers = new GameObject[5];
+    private int targetIndex = -1;
+    //Invariant:
+    // followers[targetIndex] != null or (targetIndex == -1) -> followers[i] == null
 
     public int AddFollower(GameObject g)
     {
@@ -9,16 +12,26 @@ public class PlayerFollowers : MonoBehaviour {
             if(followers[i] == null)
             {
                 followers[i] = g;
+                targetIndex = i;
                 return i;
             }
         }
         return -1;
     }
 
-    public void RemoveFollow(GameObject g)
+    public void RemoveFollower(GameObject g)
     {
-        for(int i = 0; i < followers.Length; i++)
-            if(followers[i] == g)
+        targetIndex = -1;
+        for(int i = 0; i < followers.Length; i++) {
+            if (followers[i] == g)
                 followers[i] = null;
+            if(followers[i] != null)
+                targetIndex = i;
+        }
+    }
+
+    public Vector3 GetTarget()
+    {
+        return (targetIndex == -1) ? transform.position : followers[targetIndex].transform.position;
     }
 }

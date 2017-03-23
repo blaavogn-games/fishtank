@@ -1,9 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.SceneManagement;
+using XInputDotNetPure;
 
 public class Player : MonoBehaviour {
-    enum State { SWIM, LOOKTRANSITION };
+    enum State { SWIM, DYING };
+    public enum DeathCause { ALIVE, EATEN };
     private State state = State.SWIM;
     private Rigidbody _rigidbody;
     //private AudioLowPassFilter _audioLowPassFilter;
@@ -49,6 +51,8 @@ public class Player : MonoBehaviour {
     [HideInInspector]
     public Vector3 spawnPoint = Vector3.zero;
     private bool spawnLoaded = false;
+    private float dieTime = float.PositiveInfinity;
+    private DeathCause deathCause = DeathCause.ALIVE;
 
     void Start ()
     {
@@ -69,9 +73,19 @@ public class Player : MonoBehaviour {
 
         switch (state)
         {
+            case State.DYING:
+                //deathCause can be used for death transition.
+                if(deathCause == DeathCause.ALIVE) Debug.Log(""); //Just to supress warning
+                if(dieTime < Time.time) {
+                    //To do: Make scene reload
+                    //Scene scene = SceneManager.GetActiveScene();
+                    //SceneManager.LoadScene(scene.name);
+                    transform.position = spawnPoint;
+                }
+                break;
             case State.SWIM:
                 float hDir = 0.0f, vDir = 0.0f, constAcc = 0.0f, boost = 0;
-
+                GamePad.SetVibration(0, 0, 0);
                 //Forward movement
                 //Swims if possible. Increments dash timer.
                 if (Mathf.Max(Input.GetAxis("Forward"), Input.GetAxis("ForwardAlt"))> 0)
@@ -79,7 +93,10 @@ public class Player : MonoBehaviour {
                     if (MaxSwimVelocity > _rigidbody.velocity.magnitude)
                         constAcc = 1;
                     if (_rigidbody.velocity.magnitude < 7)
+                    {
                         boost = 900;
+                        GamePad.SetVibration(0, 1, 1);
+                    }
                     dashTimer += Time.deltaTime;
                 }
                 //Dashes if timer within threshhold.
@@ -163,18 +180,10 @@ public class Player : MonoBehaviour {
         return angle;
     }
 
-    public void OnTriggerEnter(Collider col)
+    public void Kill(DeathCause deathCause)
     {
-        Debug.Log(col);
-        if(col.tag == "Enemy")
-        {
-            Die();
-        }
-    }
-    public void Die()
-    {
-        Scene scene = SceneManager.GetActiveScene();
-        //SceneManager.LoadScene(scene.name);
-        transform.position = spawnPoint;
+        this.deathCause = deathCause;
+        state = State.DYING;
+        dieTime = Time.time + 2f;
     }
 }

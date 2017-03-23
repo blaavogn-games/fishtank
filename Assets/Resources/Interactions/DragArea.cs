@@ -29,7 +29,6 @@ public class DragArea : MonoBehaviour {
 
     void OnTriggerEnter(Collider col)
     {
-        Debug.Log(col);
         if(col.tag == "Enemy" || col.tag == "Player")
             dragables.Add(col.gameObject);
     }
