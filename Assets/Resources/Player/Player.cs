@@ -81,6 +81,7 @@ public class Player : MonoBehaviour {
                     //Scene scene = SceneManager.GetActiveScene();
                     //SceneManager.LoadScene(scene.name);
                     transform.position = spawnPoint;
+                    state = State.SWIM;
                 }
                 break;
             case State.SWIM:
@@ -117,8 +118,8 @@ public class Player : MonoBehaviour {
                 }
                 float accAdded = boost + (constAcc * Acceleration * Time.deltaTime);
                 _rigidbody.AddForce(accAdded * transform.forward);
-                wiggle.wiggleSpeed = 0;
-                    //Mathf.Max(5,_rigidbody.velocity.magnitude + accAdded * 0.01f);
+                //wiggle.wiggleSpeed = 0;
+                Mathf.Max(5,_rigidbody.velocity.magnitude + accAdded * 0.01f);
 
                 //Turning
                 vDir += InvertedAxis * Input.GetAxis("Vertical") * VRotation;

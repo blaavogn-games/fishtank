@@ -205,7 +205,7 @@ public class Navigator : MonoBehaviour {
         Ray ray2 = new Ray(target, dir * -1);
         RaycastHit hit;
         //Debug.DrawRay(ray.origin, ray.direction * length, col, 10.5f);
-        return (!Physics.SphereCast(ray.origin, 2, ray.direction, out hit, length, 1) &&
-            !Physics.SphereCast(ray2.origin, 2, ray2.direction, out hit, length, 1)); //Possible figure out collision layers
+        return (!Physics.SphereCast(ray.origin, 0.01f, ray.direction, out hit, length, 1) &&
+            !Physics.SphereCast(ray2.origin, 0.01f, ray2.direction, out hit, length, 1)); //Possible figure out collision layers
     }
 }
