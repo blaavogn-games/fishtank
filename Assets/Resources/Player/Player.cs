@@ -9,7 +9,6 @@ public class Player : MonoBehaviour {
     private State state = State.SWIM;
     private Rigidbody _rigidbody;
     //private AudioLowPassFilter _audioLowPassFilter;
-    public int InvertedAxis = 1;
     private bool dashDown = false;
     private PlayerSound playerSound;
 
@@ -18,45 +17,55 @@ public class Player : MonoBehaviour {
     [HideInInspector]
     public float MaxHunger=0;
 
-    [Header("Swimming Controls")]
+    [Header("Movement Controls")]
     public float MaxSwimVelocity = 15;
     public float Acceleration = 4000;
-    public float HRotation = 120;
-    public float VRotation = 50;
     public float DashSpeed = 30;
-
     private float dashTimer = 0;
     [Tooltip("In Seconds")]
     public float DashThreshold = 0.2f;
-
     private float dashCooldownTimer = 0;
     private float swimCooldownTimer = 0;
     [Tooltip("In Seconds")]
     public float DashCooldown = 0.4f;
 
-    [Header("Mouse Look Controls")]
+    [Header("Look Controls")]
+    
+    [Tooltip("whether to use flight control style for up and down rotations")]
+    public bool FlightControls = true;
+    [HideInInspector]
+    public float MinimumY = -60F;
+    [HideInInspector]
+    public float MaximumY = 60F;
+    [Range(0.1f, 10.0f)]
+    public float SensitivityX = 2.2f;
+    [Range(0.1f, 10.0f)]
+    public float SensitivityY = 2.2f;
+    [Header("Mouse Controls")]
     public bool MouseLookEnabled = false;
-    public float sensitivityX = 4F;
-    public float sensitivityY = 4F;
-    public float minimumX = -360F;
-    public float maximumX = 360F;
-    public float minimumY = -60F;
-    public float maximumY = 60F;
+    [Range(0.1f, 10.0f)]
+    public float MouseSensitivity = 4;
     float rotationX = 0F;
     float rotationY = 0F;
     Quaternion originalRotation;
 
-    public Wiggle wiggle;
-
-    [HideInInspector]
-    public Vector3 spawnPoint = Vector3.zero;
-    private bool spawnLoaded = false;
+    public GameObject WorldObject;
     private float dieTime = float.PositiveInfinity;
     private DeathCause deathCause = DeathCause.ALIVE;
 
+    private void Awake()
+    {
+        if (!FindObjectOfType<World>())
+        {
+            Instantiate(WorldObject);
+        }
+    }
     void Start ()
     {
-        spawnPoint = transform.position;
+        if (World.i.SpawnPoint != Vector3.zero)
+        {
+            transform.position = World.i.SpawnPoint;
+        }
         //targetRotation = transform.rotation;
         originalRotation = transform.rotation;
         this._rigidbody = GetComponent<Rigidbody>();
@@ -65,11 +74,11 @@ public class Player : MonoBehaviour {
 
     void Update ()
     {
-        if (!spawnLoaded && spawnPoint != Vector3.zero)
+        /*if (!spawnLoaded && spawnPoint != Vector3.zero)
         {
             transform.position = spawnPoint;
             spawnLoaded = true;
-        }
+        }*/
 
         switch (state)
         {
@@ -78,14 +87,15 @@ public class Player : MonoBehaviour {
                 if(deathCause == DeathCause.ALIVE) Debug.Log(""); //Just to supress warning
                 if(dieTime < Time.time) {
                     //To do: Make scene reload
-                    //Scene scene = SceneManager.GetActiveScene();
-                    //SceneManager.LoadScene(scene.name);
-                    transform.position = spawnPoint;
-                    state = State.SWIM;
+                    Scene scene = SceneManager.GetActiveScene();
+                    SceneManager.LoadScene(scene.name);
+                    //transform.position = spawnPoint;
+                    //state = State.SWIM;
                 }
                 break;
             case State.SWIM:
-                float hDir = 0.0f, vDir = 0.0f, constAcc = 0.0f, boost = 0;
+
+                float constAcc = 0.0f, boost = 0;
                 GamePad.SetVibration(0, 0, 0);
                 //Forward movement
                 //Swims if possible. Increments dash timer.
@@ -118,28 +128,33 @@ public class Player : MonoBehaviour {
                 }
                 float accAdded = boost + (constAcc * Acceleration * Time.deltaTime);
                 _rigidbody.AddForce(accAdded * transform.forward);
-                //wiggle.wiggleSpeed = 0;
-                Mathf.Max(5,_rigidbody.velocity.magnitude + accAdded * 0.01f);
+                //Mathf.Max(5,_rigidbody.velocity.magnitude + accAdded * 0.01f);
 
                 //Turning
-                vDir += InvertedAxis * Input.GetAxis("Vertical") * VRotation;
-                hDir += HRotation * Input.GetAxis("Horizontal");
-
-                transform.Rotate(new Vector3(0, hDir, 0) * Time.deltaTime, Space.World);
-                transform.Rotate(new Vector3(vDir, 0, 0) * Time.deltaTime, Space.Self);
-                wiggle.baseRotation.x = vDir * 0.16f;
-                wiggle.baseRotation.y = hDir * 0.1f;
-
-                if (MouseLookEnabled)
+                if (!MouseLookEnabled)
                 {
-                    rotationX += Input.GetAxis("Mouse X") * sensitivityX;
-                    rotationY += Input.GetAxis("Mouse Y") * sensitivityY;
-                    rotationX = ClampAngle(rotationX, minimumX, maximumX);
-                    rotationY = ClampAngle(rotationY, minimumY, maximumY);
-                    Quaternion xQuaternion = Quaternion.AngleAxis(rotationX, Vector3.up);
-                    Quaternion yQuaternion = Quaternion.AngleAxis(rotationY, -Vector3.right);
-                    transform.rotation = originalRotation * xQuaternion * yQuaternion;
+                    rotationX += Input.GetAxis("Horizontal") * SensitivityX;
+                    if (FlightControls)
+                        rotationY += -1 * Input.GetAxis("Vertical") * SensitivityY;
+                    else
+                        rotationY += Input.GetAxis("Vertical") * SensitivityY;
                 }
+                else
+                {
+                    rotationX += Input.GetAxis("Mouse X") * MouseSensitivity;
+                    rotationY += Input.GetAxis("Mouse Y") * MouseSensitivity;
+                }
+
+                rotationX = ClampAngle(rotationX, -360, 360);
+                rotationY = ClampAngle(rotationY, MinimumY, MaximumY);
+                if (rotationY > MaximumY)
+                    rotationY = MaximumY;
+                if (rotationY < MinimumY)
+                    rotationY = MinimumY;
+                Quaternion xQuaternion = Quaternion.AngleAxis(rotationX, Vector3.up);
+                Quaternion yQuaternion = Quaternion.AngleAxis(rotationY, -Vector3.right);
+                transform.rotation = originalRotation * xQuaternion * yQuaternion;
+
                 break;
         }
         _rigidbody.velocity = transform.forward.normalized * _rigidbody.velocity.magnitude;
@@ -154,8 +169,12 @@ public class Player : MonoBehaviour {
             SceneManager.LoadScene(2);
         if (Input.GetKey(KeyCode.Alpha4))
             SceneManager.LoadScene(3);
-        if (Input.GetKey(KeyCode.P))
-            InvertedAxis *= -1;
+        if (Input.GetKeyDown(KeyCode.P))
+            FlightControls = !FlightControls;
+        if (Input.GetKeyDown(KeyCode.M))
+            MouseLookEnabled = !MouseLookEnabled;
+        if (Input.GetKeyDown(KeyCode.K))
+            Kill(DeathCause.EATEN);
         if (Input.GetKey(KeyCode.R))
         {
             Scene scene = SceneManager.GetActiveScene();
