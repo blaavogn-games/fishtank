@@ -4,7 +4,6 @@ public class Graph{
     public readonly Dictionary<Vector3, Vertex> Vertices;
     private int graphSearch = 0;
     //Possibly autoresize or List<Vertex>
-    private Vertex[] openList = new Vertex[3000]; //Should theoretically be a PQ but this might be sufficient
 
     public Graph()
     {
@@ -18,6 +17,8 @@ public class Graph{
 
     public void AddVertex(Vertex v)
     {
+        if(v.Pos.x == 10.0f && v.Pos.y == 0.0f)
+            Debug.Log(v.Pos);
         Vertices.Add(v.Pos, v);
     }
 
@@ -33,33 +34,28 @@ public class Graph{
     //or if Vertices are regularly spread make a snap function
     public Vector3 FindClosest(Vector3 v)
     {
-        float minDist = float.MaxValue;
-        Vector3 closest = v;
-        foreach(KeyValuePair<Vector3, Vertex> kvp in Vertices)
-        {
-            float dist = (kvp.Key - v).magnitude;
-            if(minDist > dist)
-            {
-                minDist = dist;
-                closest = kvp.Key;
-            }
-        }
-        return closest;
+        v.x =  ((int)( (v.x + 5) / 10.0f)) * 10;
+        v.y =  ((int)( (v.y + 5) / 10.0f)) * 10;
+        v.z =  ((int)( (v.z + 5) / 10.0f)) * 10;
+        return Vertices[v].Pos;
     }
 
     public bool ColorPath(Vector3 start, Vector3 end, out List<Vector3> path) //Dijkstra
     {
+        C5.IntervalHeap<Vertex> openList = new C5.IntervalHeap<Vertex>();
         path = new List<Vector3>(); //Possibly should be null when return false;
         Vertex begin = Vertices[start];
         Vertex target = Vertices[end];
         begin.Predecessor = null;
         int head = 0;
         graphSearch++;
-        openList[head++] = begin;
+        openList.Add(begin);
         bool pathFound = false;
-        while(head > 0)
+        int count = 0;
+        while(!openList.IsEmpty)
         {
-            Vertex v = openList[--head];
+            Vertex v = openList.DeleteMin();
+            count++;
             if(v == target){
                 pathFound = true;
                 break;
@@ -72,26 +68,19 @@ public class Graph{
                 if(n.searchInit < graphSearch)
                 {
                     n.SearchVal = float.PositiveInfinity;
+                    n.Heur = Vector3.Distance(n.Pos, end);
                     n.searchInit = graphSearch;
                 }
-
-                float pathVal = v.SearchVal + (v.Pos - n.Pos).magnitude;
+                float pathVal = v.SearchVal + Vector3.Distance(v.Pos, n.Pos);
                 if (pathVal < n.SearchVal)
                 {
                     n.SearchVal = pathVal;
                     n.Predecessor = v;
-                    openList[head++] = n;
-                    int swap = head - 1;
-                    while(swap > 0 && openList[swap].SearchVal > openList[swap - 1].SearchVal)
-                    {
-                        Vertex tmp = openList[swap];
-                        openList[swap] = openList[swap - 1];
-                        openList[swap - 1] = tmp;
-                        swap--;
-                    }
+                    openList.Add(n);
                 }
             }
         }
+        Debug.Log("Count: " + count);
         if(!pathFound) {
             return false;
         }
@@ -111,7 +100,7 @@ public class Graph{
     {
         graphSearch++;
         Stack<Vertex> openList = new Stack<Vertex>();
-        openList.Push(Vertices[v1]);
+        openList.Push(Vertices[FindClosest(v1)]);
         while (openList.Count > 0)
         {
             Vertex v = openList.Pop();

@@ -24,12 +24,12 @@ public class Navigator : MonoBehaviour {
 
         Vector3 b1 = Bound1.transform.position;
         Vector3 b2 = Bound2.transform.position;
-        minLimit.x = (int) Mathf.Min(b1.x, b2.x);
-        minLimit.y = (int) Mathf.Min(b1.y, b2.y);
-        minLimit.z = (int) Mathf.Min(b1.z, b2.z);
-        maxLimit.x = (int) Mathf.Max(b1.x, b2.x);
-        maxLimit.y = (int) Mathf.Max(b1.y, b2.y);
-        maxLimit.z = (int) Mathf.Max(b1.z, b2.z);
+        minLimit.x = ((int) ((Mathf.Min(b1.x, b2.x) + 5) / 10.0f)) * 10;
+        minLimit.y = ((int) ((Mathf.Min(b1.y, b2.y) + 5) / 10.0f)) * 10;
+        minLimit.z = ((int) ((Mathf.Min(b1.z, b2.z) + 5) / 10.0f)) * 10;
+        maxLimit.x = ((int) ((Mathf.Max(b1.x, b2.x) + 5) / 10.0f)) * 10;
+        maxLimit.y = ((int) ((Mathf.Max(b1.y, b2.y) + 5) / 10.0f)) * 10;
+        maxLimit.z = ((int) ((Mathf.Max(b1.z, b2.z) + 5) / 10.0f)) * 10;
         stopWatch.Start();
         float DSPACING = Mathf.Sqrt(SPACING * SPACING + SPACING * SPACING);
         float DDSPACING = Mathf.Sqrt(DSPACING * DSPACING + SPACING * SPACING);

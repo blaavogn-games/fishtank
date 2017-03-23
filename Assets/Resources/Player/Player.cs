@@ -186,6 +186,6 @@ public class Player : MonoBehaviour {
     {
         this.deathCause = deathCause;
         state = State.DYING;
-        dieTime = Time.time + 2f;
+        dieTime = Time.time + .2f;
     }
 }
