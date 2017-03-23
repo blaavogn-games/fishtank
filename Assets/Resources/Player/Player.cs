@@ -48,17 +48,24 @@ public class Player : MonoBehaviour {
     float rotationX = 0F;
     float rotationY = 0F;
     Quaternion originalRotation;
-    
 
-    [HideInInspector]
-    public Vector3 spawnPoint = Vector3.zero;
-    private bool spawnLoaded = false;
+    public GameObject WorldObject;
     private float dieTime = float.PositiveInfinity;
     private DeathCause deathCause = DeathCause.ALIVE;
 
+    private void Awake()
+    {
+        if (!FindObjectOfType<World>())
+        {
+            Instantiate(WorldObject);
+        }
+    }
     void Start ()
     {
-        spawnPoint = transform.position;
+        if (World.i.SpawnPoint != Vector3.zero)
+        {
+            transform.position = World.i.SpawnPoint;
+        }
         //targetRotation = transform.rotation;
         originalRotation = transform.rotation;
         this._rigidbody = GetComponent<Rigidbody>();
@@ -67,11 +74,11 @@ public class Player : MonoBehaviour {
 
     void Update ()
     {
-        if (!spawnLoaded && spawnPoint != Vector3.zero)
+        /*if (!spawnLoaded && spawnPoint != Vector3.zero)
         {
             transform.position = spawnPoint;
             spawnLoaded = true;
-        }
+        }*/
 
         switch (state)
         {
@@ -80,10 +87,10 @@ public class Player : MonoBehaviour {
                 if(deathCause == DeathCause.ALIVE) Debug.Log(""); //Just to supress warning
                 if(dieTime < Time.time) {
                     //To do: Make scene reload
-                    //Scene scene = SceneManager.GetActiveScene();
-                    //SceneManager.LoadScene(scene.name);
-                    transform.position = spawnPoint;
-                    state = State.SWIM;
+                    Scene scene = SceneManager.GetActiveScene();
+                    SceneManager.LoadScene(scene.name);
+                    //transform.position = spawnPoint;
+                    //state = State.SWIM;
                 }
                 break;
             case State.SWIM:
@@ -166,6 +173,8 @@ public class Player : MonoBehaviour {
             FlightControls = !FlightControls;
         if (Input.GetKeyDown(KeyCode.M))
             MouseLookEnabled = !MouseLookEnabled;
+        if (Input.GetKeyDown(KeyCode.K))
+            Kill(DeathCause.EATEN);
         if (Input.GetKey(KeyCode.R))
         {
             Scene scene = SceneManager.GetActiveScene();
