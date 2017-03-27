@@ -1,76 +1,17 @@
 fileFormatVersion: 2
-guid: 78b6858198fd5444caae9b8c52b96484
-timeCreated: 1490262048
+guid: dea26fe7781c5404cba8d1147a7cf370
+timeCreated: 1490552029
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
   fileIDToRecycleName:
     100000: //RootNode
-    100002: Cylinder
-    100004: Plane
-    100006: Plane.001
-    100008: Plane.002
-    100010: Plane.003
-    100012: Plane.004
-    100014: Plane.005
-    100016: Plane.006
-    100018: Plane.007
-    100020: Plane.008
-    100022: Plane.009
-    100024: Torus
     400000: //RootNode
-    400002: Cylinder
-    400004: Plane
-    400006: Plane.001
-    400008: Plane.002
-    400010: Plane.003
-    400012: Plane.004
-    400014: Plane.005
-    400016: Plane.006
-    400018: Plane.007
-    400020: Plane.008
-    400022: Plane.009
-    400024: Torus
     2300000: //RootNode
-    2300002: Cylinder
-    2300004: Plane
-    2300006: Plane.001
-    2300008: Plane.002
-    2300010: Plane.003
-    2300012: Plane.004
-    2300014: Plane.005
-    2300016: Plane.006
-    2300018: Plane.007
-    2300020: Plane.008
-    2300022: Plane.009
-    2300024: Torus
     3300000: //RootNode
-    3300002: Cylinder
-    3300004: Plane
-    3300006: Plane.001
-    3300008: Plane.002
-    3300010: Plane.003
-    3300012: Plane.004
-    3300014: Plane.005
-    3300016: Plane.006
-    3300018: Plane.007
-    3300020: Plane.008
-    3300022: Plane.009
-    3300024: Torus
-    4300000: Plane.002
-    4300002: Plane.009
-    4300004: Plane.008
-    4300006: Plane.007
-    4300008: Plane.006
-    4300010: Plane.005
-    4300012: Plane.004
-    4300014: Torus
-    4300016: Plane.001
-    4300018: Plane
-    4300020: Cylinder
-    4300022: Plane.003
+    4300000: kelp
   materials:
-    importMaterials: 0
+    importMaterials: 1
     materialName: 0
     materialSearch: 1
   animations:

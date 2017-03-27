@@ -14,7 +14,7 @@ public class Trigger : MonoBehaviour
     private Player playerScript;
     //private Collider other;
     private bool entered = false;
-    private bool exited = false;
+//    private bool exited = false;
 
     [HideInInspector]
     public float hunger = 0;
@@ -45,10 +45,10 @@ public class Trigger : MonoBehaviour
     }
     private void CheckPointEnter()
     {
-        if (playerScript.spawnPoint != transform.position)
+        if (World.i.SpawnPoint != transform.position)
         {
-            playerScript.spawnPoint = transform.position;
-            Debug.Log("Spawn set to: " + playerScript.spawnPoint.ToString());
+            World.i.SpawnPoint = transform.position;
+            Debug.Log("Spawn set to: " + transform.position.ToString());
         }
     }
     private void SetHungerEnter()
