@@ -7,6 +7,7 @@ public class Enemy : MonoBehaviour
     public enum State { PATROL, INSIGHT, OUTOFSIGHT, CHARGE, EAT };
     private int curPatTarget = -1;
     private Vector3 target;
+    private Transform targetTransform;
     private float velocity = 1;
     private float timer = 0;
 
@@ -69,11 +70,12 @@ public class Enemy : MonoBehaviour
                 if((transform.position - target).magnitude < 0.01f)
                     SetPathPoint();
                 velocity = pathVelocity;
-                if(CheckSight(playerFollowers.GetTarget()))
+                if(CheckSight(playerFollowers.GetTarget().position))
                     state = State.INSIGHT;
                 break;
             case State.INSIGHT:
-                target = playerFollowers.GetTarget();
+                targetTransform = playerFollowers.GetTarget();
+                target = targetTransform.position;
                 velocity = Mathf.Lerp(velocity, chaseVelocity, 0.1f);
                 if(!CheckSight(target)) {
                     state = State.PATROL;
@@ -85,7 +87,8 @@ public class Enemy : MonoBehaviour
             case State.OUTOFSIGHT:
                 break;
             case State.CHARGE:
-                target = playerFollowers.GetTarget();
+                targetTransform = playerFollowers.GetTarget();
+                target = targetTransform.position;
                 velocity = Mathf.Lerp(velocity, chargeVelocity, 0.1f);
                 //Transition to eat through collision
                 break;
@@ -124,7 +127,7 @@ public class Enemy : MonoBehaviour
 
     public void OnTriggerEnter(Collider col)
     {
-        if(state != State.CHARGE)
+        if(state == State.EAT)
             return;
 
         if(col.transform.tag == "Follower")
@@ -134,8 +137,11 @@ public class Enemy : MonoBehaviour
             timer = EatTime;
             target = patrolPath[curPatTarget % patrolPath.Count];
         }
-        else if(col.transform.tag == "Player" && target == col.transform.position)
+        else if(col.transform.tag == "Player" && (targetTransform == col.transform))
         {
+            state = State.EAT;
+            Debug.Log("Kill");
+            target = patrolPath[curPatTarget % patrolPath.Count];
             col.transform.GetComponent<Player>().Kill(Player.DeathCause.EATEN);
         }
     }

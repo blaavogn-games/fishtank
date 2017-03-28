@@ -80,7 +80,6 @@ public class Graph{
                 }
             }
         }
-        Debug.Log("Count: " + count);
         if(!pathFound) {
             return false;
         }
