@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    public enum State { PATROL, INSIGHT, OUTOFSIGHT, CHARGE, EAT };
+    public enum State { PATROL, INSIGHT, OUTOFSIGHT, CHARGE, EAT, FROZEN };
     private int curPatTarget = -1;
     private Vector3 target;
     private Transform targetTransform;
@@ -51,10 +51,9 @@ public class Enemy : MonoBehaviour
             try {
                 if (nav.TryFindPath(from, to, out localPath))
                     patrolPath.AddRange(localPath);
-                else {
+                else
                     Debug.Log("Path not found NOTHING SHOULD WORK", path.GetChild(i % milestones.Length));
-                }
-            } catch(Exception e)
+            } catch(Exception)
             {
                 Debug.Log("Path not found NOTHING SHOULD WORK", path.GetChild(i));
             }
@@ -107,6 +106,8 @@ public class Enemy : MonoBehaviour
                 if(timer < 0)
                     state = State.INSIGHT;
                 break;
+            case State.FROZEN:
+                return;
         }
 
         timer -= Time.deltaTime;
@@ -126,21 +127,20 @@ public class Enemy : MonoBehaviour
         Ray ray = new Ray(transform.position, direction);
         RaycastHit hit;
         Debug.DrawRay(ray.origin, ray.direction * SightRange, Color.red, 0.1f);
-        if(Physics.SphereCast(ray.origin, PhysicalSizeRadius, ray.direction, out hit, SightRange, layerMask)) {
-            Debug.Log(hit.transform.name);
-            if(hit.transform.tag == "Player" || hit.transform.tag == "Follower") {
+        if(Physics.SphereCast(ray.origin, PhysicalSizeRadius, ray.direction, out hit, SightRange, layerMask))
+            if(hit.transform.tag == "Player" || hit.transform.tag == "Follower")
                 return true;
-             }
-             return false;
-        }
         return false;
+    }
+
+    public void SetFrozen(){
+        state = State.FROZEN;        
     }
 
     public void OnTriggerEnter(Collider col)
     {
-        if(state == State.EAT)
+        if(state == State.EAT || state == State.FROZEN)
             return;
-
         if(col.transform.tag == "Follower")
         {
             col.transform.parent.GetComponent<FollowFish>().Respawn();
@@ -151,7 +151,6 @@ public class Enemy : MonoBehaviour
         else if(col.transform.tag == "Player" && (targetTransform == col.transform))
         {
             state = State.EAT;
-            Debug.Log("Kill");
             target = patrolPath[curPatTarget % patrolPath.Count];
             col.transform.GetComponent<Player>().Kill(Player.DeathCause.EATEN);
         }

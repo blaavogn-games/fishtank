@@ -2,14 +2,18 @@
 using System.Collections.Generic;
 
 public class DragArea : MonoBehaviour {
+    private enum State { DRAG, NODRAG};
+    private State state;
     public float MaxDrag = 10, BaseDrag = 3, DragMultiplier = 0.5f, EnemyMultiplier = 2;
     private List<GameObject> dragables;
     public Transform dragPoint;
     public GameObject particles;
     private Vector3 halfScale;
 
+
     void Start()
     {
+        state = State.DRAG;
         halfScale = transform.localScale * 0.5f;
         dragables = new List<GameObject>();
         foreach (Transform t in particles.transform)
@@ -20,6 +24,8 @@ public class DragArea : MonoBehaviour {
     }
 
     void FixedUpdate () {
+        if(state == State.NODRAG)
+            return;
         foreach(GameObject g in dragables) {
             Transform t = g.transform;
             float mult = (g.tag == "Enemy") ? EnemyMultiplier : 1;
@@ -42,6 +48,12 @@ public class DragArea : MonoBehaviour {
                                                                         Random.Range(-halfScale.z, halfScale.z));
         }
         return pos;
+    }
+
+    public void StopDrag(){
+        state = State.NODRAG;
+        foreach(Transform t in transform)
+            Destroy(t.gameObject);
     }
 
     void OnTriggerEnter(Collider col)

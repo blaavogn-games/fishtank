@@ -47,7 +47,6 @@ public class Graph{
         Vertex begin = Vertices[start];
         Vertex target = Vertices[end];
         begin.Predecessor = null;
-        int head = 0;
         graphSearch++;
         openList.Add(begin);
         bool pathFound = false;
