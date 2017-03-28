@@ -116,7 +116,7 @@ public class Enemy : MonoBehaviour
         Ray ray = new Ray(transform.position, direction);
         RaycastHit hit;
         Debug.DrawRay(ray.origin, ray.direction * SightRange, Color.red, 0.1f);
-        if(Physics.SphereCast(ray.origin, PhysicalSizeRadius, ray.direction, out hit, SightRange, int.MaxValue)) {
+        if(Physics.SphereCast(ray.origin, PhysicalSizeRadius, ray.direction, out hit, SightRange, 1)) {
             if(hit.transform.tag == "Player" || hit.transform.tag == "Follower") {
                 return true;
              }
