@@ -10,6 +10,7 @@ public class Enemy : MonoBehaviour
     private Transform targetTransform;
     private float velocity = 1;
     private float timer = 0;
+    private Vector3 initialPosition;
 
     private State state;
     private PlayerFollowers playerFollowers;
@@ -18,9 +19,15 @@ public class Enemy : MonoBehaviour
 
     public float SightRange = 20;
     public float chaseVelocity = 6, pathVelocity = 4, chargeVelocity = 30;
+    public float maxChaseDistance = float.PositiveInfinity;
     public float PhysicalSizeRadius = 2, ChargeDistance = 6, EatTime = 2;
+
     void Start ()
     {
+        initialPosition = transform.position;
+        if(maxChaseDistance < 10)
+            throw new Exception("maxChaseDistance has to be larger than 10");
+
         playerFollowers = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerFollowers>();
         animator = GetComponent<Animator>();
         Navigator nav = GameObject.FindGameObjectWithTag("Navigator").GetComponent<Navigator>();
@@ -70,18 +77,20 @@ public class Enemy : MonoBehaviour
                 if((transform.position - target).magnitude < 0.01f)
                     SetPathPoint();
                 velocity = pathVelocity;
-                if(CheckSight(playerFollowers.GetTarget().position))
+                if(CheckSight(playerFollowers.GetTarget().position) &&
+                   Vector3.Distance(playerFollowers.transform.position, initialPosition) < maxChaseDistance - 5)
                     state = State.INSIGHT;
                 break;
             case State.INSIGHT:
                 targetTransform = playerFollowers.GetTarget();
                 target = targetTransform.position;
                 velocity = Mathf.Lerp(velocity, chaseVelocity, 0.1f);
-                if(!CheckSight(target)) {
+                Debug.Log(Vector3.Distance(transform.position, initialPosition));
+                if(!CheckSight(target) || Vector3.Distance(transform.position, initialPosition) > maxChaseDistance) {
                     state = State.PATROL;
                     target = patrolPath[curPatTarget % patrolPath.Count];
                 }
-                if(Vector3.Distance(transform.position,  target) < ChargeDistance)
+                else if(Vector3.Distance(transform.position,  target) < ChargeDistance)
                     state = State.CHARGE;
                 break;
             case State.OUTOFSIGHT:
@@ -116,7 +125,7 @@ public class Enemy : MonoBehaviour
         Ray ray = new Ray(transform.position, direction);
         RaycastHit hit;
         Debug.DrawRay(ray.origin, ray.direction * SightRange, Color.red, 0.1f);
-        if(Physics.SphereCast(ray.origin, PhysicalSizeRadius, ray.direction, out hit, SightRange, int.MaxValue)) {
+        if(Physics.SphereCast(ray.origin, PhysicalSizeRadius, ray.direction, out hit, SightRange, 1)) {
             if(hit.transform.tag == "Player" || hit.transform.tag == "Follower") {
                 return true;
              }

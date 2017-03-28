@@ -11,14 +11,13 @@ public class Fog : MonoBehaviour {
         RenderSettings.fogColor = FogColor;
         RenderSettings.fogMode = FogMode.ExponentialSquared;
         RenderSettings.fog = true;
+        RenderSettings.fogDensity = MaxFogLevel;
     }
 
     void Update () {
-            RenderSettings.fogDensity += FogIncreasePerSecond * Time.deltaTime;
-        if(RenderSettings.fogDensity>MaxFogLevel)
-            RenderSettings.fogDensity = MaxFogLevel;
-
-        if (RenderSettings.fogColor != FogColor)
-            RenderSettings.fogColor = FogColor;
+        if(Input.GetKey(KeyCode.Z) && RenderSettings.fogDensity > 0.006)
+            RenderSettings.fogDensity = RenderSettings.fogDensity - Time.deltaTime * 0.08f;
+        else if(RenderSettings.fogDensity < MaxFogLevel)
+            RenderSettings.fogDensity = RenderSettings.fogDensity + Time.deltaTime * 0.08f;
     }
 }
