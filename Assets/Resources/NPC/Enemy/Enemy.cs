@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour
@@ -6,6 +7,7 @@ public class Enemy : MonoBehaviour
     public enum State { PATROL, INSIGHT, OUTOFSIGHT, CHARGE, EAT };
     private int curPatTarget = -1;
     private Vector3 target;
+    private Transform targetTransform;
     private float velocity = 1;
     private float timer = 0;
 
@@ -16,13 +18,16 @@ public class Enemy : MonoBehaviour
 
     public float SightRange = 20;
     public float chaseVelocity = 6, pathVelocity = 4, chargeVelocity = 30;
-    public float Radius = 2, ChargeDistance = 6, EatTime = 2;
+    public float PhysicalSizeRadius = 2, ChargeDistance = 6, EatTime = 2;
     void Start ()
     {
         playerFollowers = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerFollowers>();
         animator = GetComponent<Animator>();
         Navigator nav = GameObject.FindGameObjectWithTag("Navigator").GetComponent<Navigator>();
 
+        System.Diagnostics.Stopwatch stopWatch = new System.Diagnostics.Stopwatch();
+        stopWatch.Reset();
+        stopWatch.Start();
         Transform path = transform.parent.FindChild("Path");
         Vector3[] milestones = new Vector3[path.childCount + 1];
         milestones[0] = transform.position;
@@ -34,13 +39,21 @@ public class Enemy : MonoBehaviour
             Vector3 from = milestones[i];
             Vector3 to = milestones[(i + 1) % milestones.Length];
             List<Vector3> localPath;
-            if (nav.TryFindPath(from, to, out localPath))
-                patrolPath.AddRange(localPath);
-            else {
-                Debug.Log("Path not found", path.GetChild(i));
+            try {
+                if (nav.TryFindPath(from, to, out localPath))
+                    patrolPath.AddRange(localPath);
+                else {
+                    Debug.Log("Path not found NOTHING SHOULD WORK", path.GetChild(i % milestones.Length));
+                }
+            } catch(Exception e)
+            {
+                Debug.Log("Path not found NOTHING SHOULD WORK", path.GetChild(i));
             }
         }
         state = State.PATROL;
+        stopWatch.Stop();
+        TimeSpan ts = stopWatch.Elapsed;
+        Debug.Log(String.Format("Path found in {0}ms", ts.Milliseconds), gameObject);
         SetPathPoint();
     }
 
@@ -57,11 +70,12 @@ public class Enemy : MonoBehaviour
                 if((transform.position - target).magnitude < 0.01f)
                     SetPathPoint();
                 velocity = pathVelocity;
-                if(CheckSight(playerFollowers.GetTarget()))
+                if(CheckSight(playerFollowers.GetTarget().position))
                     state = State.INSIGHT;
                 break;
             case State.INSIGHT:
-                target = playerFollowers.GetTarget();
+                targetTransform = playerFollowers.GetTarget();
+                target = targetTransform.position;
                 velocity = Mathf.Lerp(velocity, chaseVelocity, 0.1f);
                 if(!CheckSight(target)) {
                     state = State.PATROL;
@@ -73,7 +87,8 @@ public class Enemy : MonoBehaviour
             case State.OUTOFSIGHT:
                 break;
             case State.CHARGE:
-                target = playerFollowers.GetTarget();
+                targetTransform = playerFollowers.GetTarget();
+                target = targetTransform.position;
                 velocity = Mathf.Lerp(velocity, chargeVelocity, 0.1f);
                 //Transition to eat through collision
                 break;
@@ -91,7 +106,7 @@ public class Enemy : MonoBehaviour
         Vector3 newPosition = Vector3.MoveTowards(transform.position, target, velocity * Time.deltaTime);
         Vector3 movement = newPosition - transform.position;
         //wiggle.wiggleSpeed = movement.magnitude * 50 + 10;
-        transform.rotation = Quaternion.LookRotation(Vector3.RotateTowards(transform.forward, movement, 0.05f, 0));
+        transform.rotation = Quaternion.LookRotation(Vector3.RotateTowards(transform.forward, movement, 0.1f, 0));
         transform.position += transform.forward * movement.magnitude;
     }
 
@@ -101,17 +116,18 @@ public class Enemy : MonoBehaviour
         Ray ray = new Ray(transform.position, direction);
         RaycastHit hit;
         Debug.DrawRay(ray.origin, ray.direction * SightRange, Color.red, 0.1f);
-        if(Physics.SphereCast(ray.origin, Radius,ray.direction, out hit, SightRange, int.MaxValue)) {
+        if(Physics.SphereCast(ray.origin, PhysicalSizeRadius, ray.direction, out hit, SightRange, int.MaxValue)) {
             if(hit.transform.tag == "Player" || hit.transform.tag == "Follower") {
                 return true;
              }
+             return false;
         }
         return false;
     }
 
     public void OnTriggerEnter(Collider col)
     {
-        if(state != State.CHARGE)
+        if(state == State.EAT)
             return;
 
         if(col.transform.tag == "Follower")
@@ -121,8 +137,11 @@ public class Enemy : MonoBehaviour
             timer = EatTime;
             target = patrolPath[curPatTarget % patrolPath.Count];
         }
-        else if(col.transform.tag == "Player" && target == col.transform.position)
+        else if(col.transform.tag == "Player" && (targetTransform == col.transform))
         {
+            state = State.EAT;
+            Debug.Log("Kill");
+            target = patrolPath[curPatTarget % patrolPath.Count];
             col.transform.GetComponent<Player>().Kill(Player.DeathCause.EATEN);
         }
     }

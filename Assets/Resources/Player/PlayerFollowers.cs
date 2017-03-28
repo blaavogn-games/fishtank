@@ -30,8 +30,8 @@ public class PlayerFollowers : MonoBehaviour {
         }
     }
 
-    public Vector3 GetTarget()
+    public Transform GetTarget()
     {
-        return (targetIndex == -1) ? transform.position : followers[targetIndex].transform.position;
+        return (targetIndex == -1) ? transform : followers[targetIndex].transform;
     }
 }
