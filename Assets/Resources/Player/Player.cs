@@ -5,7 +5,7 @@ using XInputDotNetPure;
 
 public class Player : MonoBehaviour {
     enum State { SWIM, DYING };
-    public enum DeathCause { ALIVE, EATEN };
+    public enum DeathCause { ALIVE, EATEN, SUCKED };
     private State state = State.SWIM;
     private Rigidbody _rigidbody;
     //private AudioLowPassFilter _audioLowPassFilter;
