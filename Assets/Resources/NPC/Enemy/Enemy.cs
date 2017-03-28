@@ -25,7 +25,7 @@ public class Enemy : MonoBehaviour
 
     void Start ()
     {
-        layerMask = LayerMask.NameToLayer("default") | LayerMask.NameToLayer("ui");
+        layerMask = 1 | 1 << LayerMask.NameToLayer("UI");
         initialPosition = transform.position;
         if(maxChaseDistance < 10)
             throw new Exception("maxChaseDistance has to be larger than 10");
@@ -87,7 +87,6 @@ public class Enemy : MonoBehaviour
                 targetTransform = playerFollowers.GetTarget();
                 target = targetTransform.position;
                 velocity = Mathf.Lerp(velocity, chaseVelocity, 0.1f);
-                Debug.Log(Vector3.Distance(transform.position, initialPosition));
                 if(!CheckSight(target) || Vector3.Distance(transform.position, initialPosition) > maxChaseDistance) {
                     state = State.PATROL;
                     target = patrolPath[curPatTarget % patrolPath.Count];
@@ -128,6 +127,7 @@ public class Enemy : MonoBehaviour
         RaycastHit hit;
         Debug.DrawRay(ray.origin, ray.direction * SightRange, Color.red, 0.1f);
         if(Physics.SphereCast(ray.origin, PhysicalSizeRadius, ray.direction, out hit, SightRange, layerMask)) {
+            Debug.Log(hit.transform.name);
             if(hit.transform.tag == "Player" || hit.transform.tag == "Follower") {
                 return true;
              }
