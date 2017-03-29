@@ -16,6 +16,7 @@ public class Player : MonoBehaviour {
     public float hunger;
     [HideInInspector]
     public float MaxHunger=0;
+    public float DashHungerDrain = 10;
 
     [Header("Movement Controls")]
     public float MaxSwimVelocity = 15;
@@ -116,6 +117,8 @@ public class Player : MonoBehaviour {
                     dashDown = true;
                     if (dashTimer < DashThreshold && dashCooldownTimer <= 0)
                     {
+                        if (hunger > 0)
+                            hunger -= DashHungerDrain;
                         boost = DashSpeed;
                         dashCooldownTimer = DashCooldown;
                         swimCooldownTimer = DashCooldown * 2;
