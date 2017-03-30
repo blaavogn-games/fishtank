@@ -29,7 +29,6 @@ public class Enemy : MonoBehaviour
         initialPosition = transform.position;
         if(maxChaseDistance < 10)
             throw new Exception("maxChaseDistance has to be larger than 10");
-
         playerFollowers = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerFollowers>();
         animator = GetComponent<Animator>();
         Navigator nav = GameObject.FindGameObjectWithTag("Navigator").GetComponent<Navigator>();

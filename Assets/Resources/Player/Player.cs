@@ -11,6 +11,7 @@ public class Player : MonoBehaviour {
     //private AudioLowPassFilter _audioLowPassFilter;
     private bool dashDown = false;
     private PlayerSound playerSound;
+    public Wiggle Wiggle;
 
     //[HideInInspector]
     public float hunger;
@@ -128,7 +129,7 @@ public class Player : MonoBehaviour {
                 }
                 float accAdded = boost + (constAcc * Acceleration * Time.deltaTime);
                 _rigidbody.AddForce(accAdded * transform.forward);
-                //Mathf.Max(5,_rigidbody.velocity.magnitude + accAdded * 0.01f);
+                Wiggle.Speed = Mathf.Max(5,_rigidbody.velocity.magnitude + accAdded * 0.01f);
 
                 //Turning
                 if (!MouseLookEnabled)
