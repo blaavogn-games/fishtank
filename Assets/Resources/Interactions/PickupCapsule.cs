@@ -8,6 +8,8 @@ public class PickupCapsule : MonoBehaviour {
     public int rotateX = 30;
     public int rotateY = 20;
 
+    public ParticleSystem PickupParticleSystem;
+
     void Update () {
         transform.Rotate(rotateX * Time.deltaTime, rotateY * Time.deltaTime, 0);
     }
@@ -19,6 +21,8 @@ public class PickupCapsule : MonoBehaviour {
         {
             DestroyObject(this.gameObject);
             script.hunger = script.MaxHunger;
+            var p = Instantiate(PickupParticleSystem.gameObject);
+            p.transform.position = transform.position;
         }
     }
 }
