@@ -12,6 +12,8 @@ public class FollowFish : MonoBehaviour {
     public Wiggle wiggle;
     private Vector3 idleTarget, initialPosition;
 
+    public bool WillFollowPlayer = true;
+
     void Start () {
         playerSpeed = speedBuffer.Length - 2;
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerFollowers>();
@@ -40,7 +42,7 @@ public class FollowFish : MonoBehaviour {
             case State.IDLE:
                 if(Move(idleTarget, IdleSpeed))
                     idleTarget = RandomTarget(transform.position);
-                if(Vector3.Distance(transform.position, player.transform.position) < 5)
+                if(WillFollowPlayer && Vector3.Distance(transform.position, player.transform.position) < 5)
                 {
                     followId = player.AddFollower(gameObject);
                     state = State.FOLLOWING;
@@ -90,7 +92,7 @@ public class FollowFish : MonoBehaviour {
     {
         Vector3 newPosition = Vector3.MoveTowards(transform.position, target, speed * Time.deltaTime);
         Vector3 movement = newPosition - transform.position;
-        wiggle.wiggleSpeed = movement.magnitude * 50 + 10;
+        wiggle.Speed = movement.magnitude * 50 + 10;
         transform.rotation = Quaternion.LookRotation(Vector3.RotateTowards(transform.forward, movement, 0.1f, 0));
         transform.position += transform.forward * movement.magnitude;
         return (Vector3.Distance(transform.position, target) < 0.01f);

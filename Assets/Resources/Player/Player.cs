@@ -11,11 +11,16 @@ public class Player : MonoBehaviour {
     //private AudioLowPassFilter _audioLowPassFilter;
     private bool dashDown = false;
     private PlayerSound playerSound;
+    public Wiggle Wiggle;
 
     //[HideInInspector]
     public float hunger;
-    [HideInInspector]
+   // [HideInInspector]
     public float MaxHunger=0;
+    public float DashHungerDrain = 10;
+    public float MaxHungryXScale = 0.5f;
+    public float MaxHungryYScale = 1;
+    public float MaxHungryZScale = 2;
 
     [Header("Movement Controls")]
     public float MaxSwimVelocity = 15;
@@ -116,6 +121,8 @@ public class Player : MonoBehaviour {
                     dashDown = true;
                     if (dashTimer < DashThreshold && dashCooldownTimer <= 0)
                     {
+                        if (hunger > 0)
+                            hunger -= DashHungerDrain;
                         boost = DashSpeed;
                         dashCooldownTimer = DashCooldown;
                         swimCooldownTimer = DashCooldown * 2;
@@ -128,7 +135,7 @@ public class Player : MonoBehaviour {
                 }
                 float accAdded = boost + (constAcc * Acceleration * Time.deltaTime);
                 _rigidbody.AddForce(accAdded * transform.forward);
-                //Mathf.Max(5,_rigidbody.velocity.magnitude + accAdded * 0.01f);
+                Wiggle.Speed = Mathf.Max(5,_rigidbody.velocity.magnitude + accAdded * 0.01f);
 
                 //Turning
                 if (!MouseLookEnabled)
@@ -179,6 +186,10 @@ public class Player : MonoBehaviour {
         {
             Scene scene = SceneManager.GetActiveScene();
             SceneManager.LoadScene(scene.name);
+        }
+        if (MaxHunger > 0)
+        {
+            transform.localScale = new Vector3(Mathf.Lerp(MaxHungryXScale, 1, hunger / MaxHunger), Mathf.Lerp(MaxHungryYScale, 1, hunger / MaxHunger), Mathf.Lerp(MaxHungryZScale, 1, hunger / MaxHunger));
         }
     }
 
