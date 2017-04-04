@@ -34,8 +34,11 @@ ModelImporter:
     400024: Tail
     400026: Tail_end
     4300000: Mesh
-    7400000: BigJaw|open_mouth
+    7400000: BigJaw|OpenMouth
     7400002: BigJaw|Swimming
+    7400004: BigJaw|CloseMouth
+    7400006: BigJaw|OpenMouthTrans
+    7400008: BigJaw|CloseMouthTrans
     9500000: //RootNode
     13700000: Mesh
   materials:
@@ -60,10 +63,10 @@ ModelImporter:
     extraExposedTransformPaths: []
     clipAnimations:
     - serializedVersion: 16
-      name: BigJaw|open_mouth
+      name: BigJaw|OpenMouth
       takeName: BigJaw|open_mouth
-      firstFrame: 0
-      lastFrame: 80
+      firstFrame: 40
+      lastFrame: 41
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -120,6 +123,174 @@ ModelImporter:
       takeName: BigJaw|Swimming
       firstFrame: 22
       lastFrame: 82
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: BigJaw
+        weight: 1
+      - path: BigJaw/Root
+        weight: 1
+      - path: BigJaw/Root/Body
+        weight: 1
+      - path: BigJaw/Root/Body/Fin.L
+        weight: 1
+      - path: BigJaw/Root/Body/Fin.L/Fin.L_end
+        weight: 1
+      - path: BigJaw/Root/Body/Fin.R
+        weight: 1
+      - path: BigJaw/Root/Body/Fin.R/Fin.R_end
+        weight: 1
+      - path: BigJaw/Root/Body/Head
+        weight: 1
+      - path: BigJaw/Root/Body/Head/Jaw
+        weight: 1
+      - path: BigJaw/Root/Body/Head/Jaw/Jaw_end
+        weight: 1
+      - path: BigJaw/Root/Body/Tail
+        weight: 1
+      - path: BigJaw/Root/Body/Tail/Tail_end
+        weight: 1
+      - path: Mesh
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: BigJaw|CloseMouth
+      takeName: BigJaw|open_mouth
+      firstFrame: 0
+      lastFrame: 1
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: BigJaw
+        weight: 1
+      - path: BigJaw/Root
+        weight: 1
+      - path: BigJaw/Root/Body
+        weight: 1
+      - path: BigJaw/Root/Body/Fin.L
+        weight: 1
+      - path: BigJaw/Root/Body/Fin.L/Fin.L_end
+        weight: 1
+      - path: BigJaw/Root/Body/Fin.R
+        weight: 1
+      - path: BigJaw/Root/Body/Fin.R/Fin.R_end
+        weight: 1
+      - path: BigJaw/Root/Body/Head
+        weight: 1
+      - path: BigJaw/Root/Body/Head/Jaw
+        weight: 1
+      - path: BigJaw/Root/Body/Head/Jaw/Jaw_end
+        weight: 1
+      - path: BigJaw/Root/Body/Tail
+        weight: 1
+      - path: BigJaw/Root/Body/Tail/Tail_end
+        weight: 1
+      - path: Mesh
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: BigJaw|OpenMouthTrans
+      takeName: BigJaw|open_mouth
+      firstFrame: 0
+      lastFrame: 39
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: BigJaw
+        weight: 1
+      - path: BigJaw/Root
+        weight: 1
+      - path: BigJaw/Root/Body
+        weight: 1
+      - path: BigJaw/Root/Body/Fin.L
+        weight: 1
+      - path: BigJaw/Root/Body/Fin.L/Fin.L_end
+        weight: 1
+      - path: BigJaw/Root/Body/Fin.R
+        weight: 1
+      - path: BigJaw/Root/Body/Fin.R/Fin.R_end
+        weight: 1
+      - path: BigJaw/Root/Body/Head
+        weight: 1
+      - path: BigJaw/Root/Body/Head/Jaw
+        weight: 1
+      - path: BigJaw/Root/Body/Head/Jaw/Jaw_end
+        weight: 1
+      - path: BigJaw/Root/Body/Tail
+        weight: 1
+      - path: BigJaw/Root/Body/Tail/Tail_end
+        weight: 1
+      - path: Mesh
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: BigJaw|CloseMouthTrans
+      takeName: BigJaw|open_mouth
+      firstFrame: 41
+      lastFrame: 80
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
