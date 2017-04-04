@@ -20,7 +20,8 @@ public class PickupCapsule : MonoBehaviour {
         if (script != null)
         {
             DestroyObject(this.gameObject);
-            script.hunger = script.MaxHunger;
+            if(script.MaxHunger>0)
+                script.hunger = script.MaxHunger;
             var p = Instantiate(PickupParticleSystem.gameObject);
             p.transform.position = transform.position;
         }
