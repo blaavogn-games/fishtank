@@ -17,8 +17,6 @@ public class Graph{
 
     public void AddVertex(Vertex v)
     {
-        if(v.Pos.x == 10.0f && v.Pos.y == 0.0f)
-            Debug.Log(v.Pos);
         Vertices.Add(v.Pos, v);
     }
 
