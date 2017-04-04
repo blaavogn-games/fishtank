@@ -52,8 +52,9 @@ public class Enemy : MonoBehaviour
                     patrolPath.AddRange(localPath);
                 else
                     Debug.Log("Path not found NOTHING SHOULD WORK", path.GetChild(i % milestones.Length));
-            } catch(Exception)
+            } catch(Exception e)
             {
+                Debug.Log(e);
                 Debug.Log("Path not found NOTHING SHOULD WORK", path.GetChild(i));
             }
         }
@@ -110,8 +111,8 @@ public class Enemy : MonoBehaviour
         }
 
         timer -= Time.deltaTime;
-        if(animator != null)
-            animator.SetBool("IsSwimming", velocity > 0.02f);
+        //if(animator != null)
+        //    animator.SetBool("IsSwimming", velocity > 0.02f);
 
         Vector3 newPosition = Vector3.MoveTowards(transform.position, target, velocity * Time.deltaTime);
         Vector3 movement = newPosition - transform.position;
