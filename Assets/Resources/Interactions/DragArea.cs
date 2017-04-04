@@ -30,7 +30,7 @@ public class DragArea : MonoBehaviour {
             Transform t = g.transform;
             float mult = (g.tag == "Enemy") ? EnemyMultiplier : 1;
             float invDist = Mathf.Max(0, (MaxDrag - Vector3.Distance(t.position, dragPoint.position))) + BaseDrag;
-            invDist = Mathf.Min(invDist, MaxDrag) * EnemyMultiplier * DragMultiplier;
+            invDist = Mathf.Min(invDist, MaxDrag) * mult * DragMultiplier;
             t.position = Vector3.MoveTowards(t.position, dragPoint.position, invDist * Time.deltaTime);
             if (t.position == dragPoint.position && t.tag == "dragable") { 
                 t.transform.position = RandomPos();
