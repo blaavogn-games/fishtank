@@ -15,6 +15,21 @@ public class HungerEffect : MonoBehaviour {
     public float MaxHunger = 120;
     public float CurrentHunger;
 
+    [Header("Hunger bar controls")]
+    public bool DisplayBar = true;
+    public Texture2D FullBarTexture;
+    public Color FullColour = Color.green;
+    public Texture2D EmptyBarTexture;
+    public Color EmptyColour = Color.gray;
+    [Tooltip("0 to 1 relative to the screen size where 1 is the entire screen")]
+    public Vector2 BarPosition = new Vector2(0.02f, 0.06f);
+    [Tooltip("0 to 1 relative to the screen size where 1 is the entire screen")]
+    public Vector2 BarSize = new Vector2(0.25f, 0.05f);
+    [Tooltip("in pixels")]
+    public Vector2 BackgroundSizeOffset = new Vector2(5, 5);
+    //public Color EmptyColour = Color.red;
+    float barFill = 0;
+
     [Header("Blur controls")]
     [Tooltip("At what hunger level to start the effect (in seconds)")]
     public float BlurEffectStart = 80;
@@ -64,6 +79,12 @@ public class HungerEffect : MonoBehaviour {
     // Use this for initialization
     void Start ()
     {
+        if(EmptyBarTexture == null)
+            EmptyBarTexture = new Texture2D(1, 1);
+        if(FullBarTexture == null)
+            FullBarTexture = new Texture2D(1, 1);
+
+
         fadeTexture = new Texture2D(1, 1);
         rect = new Rect(0, 0, Screen.width, Screen.height);
         //Swapping start and end values if they are plotted in incorectly
@@ -95,6 +116,8 @@ public class HungerEffect : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
     {
+        //Set hunger bar size
+        barFill = hunger / MaxHunger;
 
         //Set hunger to the players hunger level
         if (hunger < player.hunger)
@@ -192,6 +215,20 @@ public class HungerEffect : MonoBehaviour {
 
     private void OnGUI()
     {
+        if (DisplayBar)
+        {
+            GUI.color = EmptyColour;
+            GUI.DrawTexture(new Rect(
+                (BarPosition.x * Screen.width)-BackgroundSizeOffset.x, 
+                (BarPosition.y * Screen.height)-BackgroundSizeOffset.y, 
+                (BarSize.x * Screen.width)+(BackgroundSizeOffset.x * 2), 
+                (BarSize.y * Screen.height)+ (BackgroundSizeOffset.y * 2)), 
+                EmptyBarTexture);
+            
+            GUI.color = FullColour;
+            if (hunger > 0)
+                GUI.DrawTexture(new Rect(BarPosition.x*Screen.width,BarPosition.y*Screen.height, (BarSize.x*Screen.width)*barFill,BarSize.y*Screen.height), FullBarTexture);
+        }
         if (alpha > 0)
         {
             color.a = alpha;
