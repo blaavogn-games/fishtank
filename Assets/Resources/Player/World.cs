@@ -40,7 +40,7 @@ public class World : MonoBehaviour {
         }
         if (Input.GetKeyDown(KeyCode.F))
             SetFlightControls();
-        if (Input.GetKeyDown(KeyCode.M))
+        if (Input.GetMouseButtonDown(1))
             SetMouseLook();
     }
 
