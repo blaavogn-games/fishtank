@@ -18,9 +18,11 @@ public class Player : MonoBehaviour {
    // [HideInInspector]
     public float MaxHunger=0;
     public float DashHungerDrain = 10;
+    [Header("Hunger slimming")]
     public float MaxHungryXScale = 0.5f;
     public float MaxHungryYScale = 1;
     public float MaxHungryZScale = 2;
+    public float HungerStartSlim = 30;
 
     [Header("Movement Controls")]
     public float MaxSwimVelocity = 15;
@@ -36,8 +38,8 @@ public class Player : MonoBehaviour {
 
     [Header("Look Controls")]
     
-    [Tooltip("whether to use flight control style for up and down rotations")]
-    public bool FlightControls = true;
+    //[Tooltip("whether to use flight control style for up and down rotations")]
+    //public bool FlightControls = true;
     [HideInInspector]
     public float MinimumY = -60F;
     [HideInInspector]
@@ -46,8 +48,8 @@ public class Player : MonoBehaviour {
     public float SensitivityX = 2.2f;
     [Range(0.1f, 10.0f)]
     public float SensitivityY = 2.2f;
-    [Header("Mouse Controls")]
-    public bool MouseLookEnabled = false;
+    //[Header("Mouse Controls")]
+    //public bool MouseLookEnabled = false;
     [Range(0.1f, 10.0f)]
     public float MouseSensitivity = 4;
     float rotationX = 0F;
@@ -116,12 +118,12 @@ public class Player : MonoBehaviour {
                     dashTimer += Time.deltaTime;
                 }
                 //Dashes if timer within threshhold.
-                if (Input.GetButton("Dash") && !dashDown)
+                if (Input.GetButton("Dash") && !dashDown && hunger>DashHungerDrain)
                 {
                     dashDown = true;
                     if (dashTimer < DashThreshold && dashCooldownTimer <= 0)
                     {
-                        if (hunger > 0)
+                        if (MaxHunger>0)
                             hunger -= DashHungerDrain;
                         boost = DashSpeed;
                         dashCooldownTimer = DashCooldown;
@@ -138,10 +140,10 @@ public class Player : MonoBehaviour {
                 Wiggle.Speed = Mathf.Max(5,_rigidbody.velocity.magnitude + accAdded * 0.01f);
 
                 //Turning
-                if (!MouseLookEnabled)
+                if (!World.i.MouseLook)
                 {
                     rotationX += Input.GetAxis("Horizontal") * SensitivityX;
-                    if (FlightControls)
+                    if (World.i.FlightControls)
                         rotationY += -1 * Input.GetAxis("Vertical") * SensitivityY;
                     else
                         rotationY += Input.GetAxis("Vertical") * SensitivityY;
@@ -149,7 +151,10 @@ public class Player : MonoBehaviour {
                 else
                 {
                     rotationX += Input.GetAxis("Mouse X") * MouseSensitivity;
-                    rotationY += Input.GetAxis("Mouse Y") * MouseSensitivity;
+                    if (World.i.FlightControls)
+                        rotationY += -1 * Input.GetAxis("Mouse Y") * MouseSensitivity;
+                    else
+                        rotationY +=Input.GetAxis("Mouse Y") * MouseSensitivity;
                 }
 
                 rotationX = ClampAngle(rotationX, -360, 360);
@@ -176,10 +181,6 @@ public class Player : MonoBehaviour {
             SceneManager.LoadScene(2);
         if (Input.GetKey(KeyCode.Alpha4))
             SceneManager.LoadScene(3);
-        if (Input.GetKeyDown(KeyCode.P))
-            FlightControls = !FlightControls;
-        if (Input.GetKeyDown(KeyCode.M))
-            MouseLookEnabled = !MouseLookEnabled;
         if (Input.GetKeyDown(KeyCode.K))
             Kill(DeathCause.EATEN);
         if (Input.GetKey(KeyCode.R))
@@ -187,9 +188,9 @@ public class Player : MonoBehaviour {
             Scene scene = SceneManager.GetActiveScene();
             SceneManager.LoadScene(scene.name);
         }
-        if (MaxHunger > 0)
+        if (MaxHunger > 0 && hunger <= HungerStartSlim)
         {
-            transform.localScale = new Vector3(Mathf.Lerp(MaxHungryXScale, 1, hunger / MaxHunger), Mathf.Lerp(MaxHungryYScale, 1, hunger / MaxHunger), Mathf.Lerp(MaxHungryZScale, 1, hunger / MaxHunger));
+            transform.localScale = new Vector3(Mathf.Lerp(MaxHungryXScale, 1, hunger / HungerStartSlim), Mathf.Lerp(MaxHungryYScale, 1, hunger / HungerStartSlim), Mathf.Lerp(MaxHungryZScale, 1, hunger / HungerStartSlim));
         }
     }
 
