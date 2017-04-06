@@ -88,4 +88,9 @@ public class World : MonoBehaviour {
         GUI.color = guiColour;
         GUI.Label(new Rect(0.02f * Screen.width, 0.02f * Screen.height, 0.25f * Screen.width, 0.05f * Screen.height), textToShow);
     }
+    private void OnApplicationQuit()
+    {
+        //PlayerPrefs.SetInt("Flight Controls", ToInt(FlightControls));
+        //PlayerPrefs.SetInt("MouseLook", ToInt(MouseLook));
+    }
 }
