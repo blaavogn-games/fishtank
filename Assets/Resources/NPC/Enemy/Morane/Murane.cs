@@ -36,6 +36,15 @@ public class Murane : MonoBehaviour
                 target = playerFollowers.GetTarget().position;
                 if (segmentTraveled >= 1.0f)
                 {
+                    var ray = new Ray(transform.position, transform.forward);
+                    RaycastHit hit;
+                    if (attackTraveled >= AttackDistance ||
+                        (Physics.Raycast(ray.origin, ray.direction, out hit, 1.5f, 1) && hit.transform.tag != "Player"))
+                    {
+                        State = MuraneState.RETRACT;
+                        return;
+                    }
+
                     segmentTraveled = 0.0f;
                     var g = (GameObject)Instantiate(MoraneSegment, InitialPosition, initialRotation);
                     var segment = g.GetComponent<MuraneSegment>();
@@ -52,13 +61,11 @@ public class Murane : MonoBehaviour
                     }
                     TailSegment = segment;
                 }
-                if (attackTraveled >= AttackDistance)
-                    State = MuraneState.RETRACT;
                 break;
             case MuraneState.RETRACT:
                 target = (HeadSegment == null) ? InitialPosition : HeadSegment.transform.position;
                 moveDir = -1;
-                if (Vector3.Distance(transform.position, InitialPosition) < 1.0f)
+                if (Vector3.Distance(transform.position, InitialPosition) < 0.5f)
                 {
                     InitialPosition = transform.position;
                     initialRotation = transform.rotation;
