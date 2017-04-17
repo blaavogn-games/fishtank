@@ -2,11 +2,11 @@
 using System.Collections;
 
 public class FollowFish : MonoBehaviour {
-    private enum State { FOLLOWING, FOLLOWIDLE, IDLE }
+    private enum State { FOLLOWING, FOLLOWIDLE, IDLE, FLEE }
     private State state = State.IDLE;
     private PlayerFollowers player;
     private int followId;
-    public float MinSpeed = 10, MaxSpeed = 30, IdleSpeed = 3;
+    public float MinSpeed = 10, MaxSpeed = 30, IdleSpeed = 3, FleeSpeed = 10;
     private float[] speedBuffer = new float[15];
     private int curSpeed = 0, playerSpeed;
     public Wiggle wiggle;
@@ -22,30 +22,46 @@ public class FollowFish : MonoBehaviour {
     }
 
     void FixedUpdate () {
-        switch(state) {
+        switch (state) {
             case State.FOLLOWING:
                 speedBuffer[(playerSpeed++) % speedBuffer.Length] = player.GetComponent<Rigidbody>().velocity.magnitude;
                 float speed = Mathf.Max(MinSpeed, speedBuffer[(curSpeed++) % speedBuffer.Length]);
                 speed = Mathf.Min(speed, MaxSpeed);
                 Vector3 target = ChaseTarget(player.transform, followId);
-                if(Move(target, speed)) {
+                if (Move(target, speed))
+                {
                     state = State.FOLLOWIDLE;
                     idleTarget = RandomTarget(player.transform.position);
                 }
                 break;
             case State.FOLLOWIDLE:
-                if(Move(idleTarget, IdleSpeed))
+                if (Move(idleTarget, IdleSpeed))
                     idleTarget = RandomTarget(player.transform.position);
-                if(Vector3.Distance(transform.position, player.transform.position) > 3)
+                if (Vector3.Distance(transform.position, player.transform.position) > 3)
                     state = State.FOLLOWING;
                 break;
             case State.IDLE:
-                if(Move(idleTarget, IdleSpeed))
+                if (Move(idleTarget, IdleSpeed))
                     idleTarget = RandomTarget(transform.position);
-                if(WillFollowPlayer && Vector3.Distance(transform.position, player.transform.position) < 5)
+                if (WillFollowPlayer)
                 {
-                    followId = player.AddFollower(gameObject);
-                    state = State.FOLLOWING;
+                    if (Vector3.Distance(transform.position, player.transform.position) < 5)
+                    {
+                        followId = player.AddFollower(gameObject);
+                        state = State.FOLLOWING;
+                    }
+                }
+                else if (Vector3.Distance(transform.position, player.transform.position) < 10)
+                {
+                    state = State.FLEE;
+                }
+                break;
+            case State.FLEE:
+                Move(transform.position + (transform.position - player.transform.position), FleeSpeed);
+                if (Vector3.Distance(transform.position, player.transform.position) > 10)
+                {
+                    idleTarget = initialPosition;
+                    state = State.IDLE;
                 }
                 break;
         }
@@ -85,7 +101,11 @@ public class FollowFish : MonoBehaviour {
 
     private Vector3 RandomTarget(Vector3 center)
     {
-        return center + new Vector3(Random.Range(-2.0f, 2.0f), Random.Range(-2.0f, 2.0f), Random.Range(-2.0f, 2.0f));
+        Vector3 newPos;
+        do
+            newPos = center + new Vector3(Random.Range(-2.0f, 2.0f), Random.Range(-2.0f, 2.0f), Random.Range(-2.0f, 2.0f));
+        while (Vector3.Distance(newPos, transform.position) < 1.0f);
+        return newPos;
     }
 
     private bool Move(Vector3 target, float speed)

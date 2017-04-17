@@ -28,6 +28,8 @@ namespace UnityStandardAssets.Cameras
                 FindAndTargetPlayer();
             }
             if (m_Target == null) return;
+            transform.position = m_Target.position - m_Target.forward * 10;
+            transform.rotation = m_Target.rotation;
             targetRigidbody = m_Target.GetComponent<Rigidbody>();
         }
 
