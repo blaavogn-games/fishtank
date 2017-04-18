@@ -12,7 +12,7 @@ public class Moray : MonoBehaviour
 
     public float Speed = 10.0f;
     private float AttackDistance = 20.0f;
-    private float SightDistance = 20.0f, SightAngle = 70;
+    private float SightDistance = 20.0f, SightAngle = 100;
     private float attackTraveled = 0.0f;
     private float segmentTraveled = 0.0f;
     private float segmentSize;
@@ -89,7 +89,6 @@ public class Moray : MonoBehaviour
         var movement = newPosition - transform.position;
         attackTraveled += movement.magnitude; //Only used by attackState
         segmentTraveled += movement.magnitude; //Only used by attackState
-
         transform.rotation = Quaternion.LookRotation(Vector3.RotateTowards(transform.forward, moveDir * movement, 0.1f, 0));
         transform.position += moveDir * transform.forward * movement.magnitude;
     }
