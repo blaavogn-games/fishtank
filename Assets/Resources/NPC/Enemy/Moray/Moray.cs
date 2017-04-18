@@ -46,7 +46,7 @@ public class Moray : MonoBehaviour
                     }
 
                     segmentTraveled = 0.0f;
-                    var g = (GameObject)Instantiate(MoraneSegment, InitialPosition, initialRotation);
+                    var g = (GameObject)Instantiate(MoraneSegment, InitialPosition - transform.forward, initialRotation);
                     var segment = g.GetComponent<MoraySegment>();
                     segment.Moray = this;
                     if (TailSegment != null)
@@ -74,10 +74,10 @@ public class Moray : MonoBehaviour
                 break;
             case MorayState.IDLE:
                 target = playerFollowers.GetTarget().position;
+                Debug.Log(Vector3.Angle(transform.forward, target - transform.position));
                 if (Vector3.Distance(transform.position, target) < SightDistance && 
-                    Vector3.Angle(transform.position, target) < SightAngle * Mathf.Deg2Rad)
+                    Vector3.Angle(transform.forward, target - transform.position) < SightAngle)
                 {
-                    Debug.Log(Vector3.Angle(transform.position, target) * Mathf.Rad2Deg);
                     State = MorayState.ATTACK;
                     attackTraveled = 0.0f;
                     segmentTraveled = 0.0f;

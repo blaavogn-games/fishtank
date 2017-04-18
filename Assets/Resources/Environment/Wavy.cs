@@ -12,7 +12,7 @@ public class Wavy : MonoBehaviour {
 
     void Update () {
         transform.rotation = Quaternion.Euler(Mathf.Sin((Time.time + xOffset) * 1.2f) * 6 + initialRotation.x, 
-                                              Mathf.Sin((Time.time + yOffset) * 1.2f) * 5 + initialRotation.y, 
-                                              0);
+                                              Mathf.Sin((Time.time + yOffset) * 1.2f) * 5 + initialRotation.y,
+                                              initialRotation.z);
     }
 }
