@@ -1,23 +1,14 @@
 fileFormatVersion: 2
-<<<<<<< HEAD
 guid: ff39cd43a16559b4198621e0f39b5e50
-timeCreated: 1492505583
-=======
-guid: bb7aa3ddf7e7dd64b82f9cf22b9f1960
-timeCreated: 1492511868
->>>>>>> master
-licenseType: Free
 ModelImporter:
   serializedVersion: 19
   fileIDToRecycleName:
     100000: //RootNode
     400000: //RootNode
-<<<<<<< HEAD
-=======
     2300000: //RootNode
     3300000: //RootNode
     4300000: Cylinder.001
->>>>>>> master
+    9500000: //RootNode
   materials:
     importMaterials: 1
     materialName: 0
@@ -42,7 +33,7 @@ ModelImporter:
     isReadable: 1
   meshes:
     lODScreenPercentages: []
-    globalScale: 1
+    globalScale: 0
     meshCompression: 0
     addColliders: 0
     importBlendShapes: 1
@@ -76,7 +67,7 @@ ModelImporter:
     rootMotionBoneName: 
     hasTranslationDoF: 0
   lastHumanDescriptionAvatarSource: {instanceID: 0}
-  animationType: 0
+  animationType: 2
   humanoidOversampling: 1
   additionalBone: 0
   userData: 
