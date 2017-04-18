@@ -17,6 +17,8 @@ ModelImporter:
     100018: tail2
     100020: tail3
     100022: tail3_end
+    100024: head.001
+    100026: head.001_end
     400000: Body
     400002: head
     400004: head_end
@@ -29,6 +31,8 @@ ModelImporter:
     400018: tail2
     400020: tail3
     400022: tail3_end
+    400024: head.001
+    400026: head.001_end
     4300000: Body
     7400000: LanternFish|Swimming
     9500000: //RootNode
