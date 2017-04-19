@@ -181,6 +181,8 @@ public class Player : MonoBehaviour {
             SceneManager.LoadScene(2);
         if (Input.GetKey(KeyCode.Alpha4))
             SceneManager.LoadScene(3);
+        if (Input.GetKeyDown(KeyCode.J))
+            Camera.main.GetComponent<ScreenShake>().ShakeScreen(1, 0.5f);
         if (Input.GetKeyDown(KeyCode.K))
             Kill(DeathCause.EATEN);
         if (Input.GetKey(KeyCode.R))
