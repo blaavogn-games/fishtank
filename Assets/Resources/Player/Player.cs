@@ -9,7 +9,7 @@ public class Player : MonoBehaviour {
     private State state = State.SWIM;
     private Rigidbody _rigidbody;
     //private AudioLowPassFilter _audioLowPassFilter;
-    private bool dashDown = false;
+    //private bool dashDown = false;
     private PlayerSound playerSound;
     public Wiggle Wiggle;
 
@@ -28,7 +28,12 @@ public class Player : MonoBehaviour {
     public float MaxSwimVelocity = 15;
     public float Acceleration = 4000;
     public float DashSpeed = 30;
+    public float MinimumDashSpeed = 1000;
+    public float DashDivisorIncrease = 0.5f;
+    public float DashRecoveryTime = 2.0f;
     private float dashTimer = 0;
+    private float dashDiminish = 1;
+    private float dashDiminishTimer = 0;
     [Tooltip("In Seconds")]
     public float DashThreshold = 0.2f;
     private float dashCooldownTimer = 0;
@@ -118,22 +123,21 @@ public class Player : MonoBehaviour {
                     dashTimer += Time.deltaTime;
                 }
                 //Dashes if timer within threshhold.
-                if (Input.GetButton("Dash") && !dashDown && hunger>DashHungerDrain)
+                if (Input.GetButtonDown("Dash")/* && !dashDown && hunger>DashHungerDrain*/)
                 {
-                    dashDown = true;
                     if (dashTimer < DashThreshold && dashCooldownTimer <= 0)
                     {
-                        if (MaxHunger>0)
-                            hunger -= DashHungerDrain;
-                        boost = DashSpeed;
+                        //if (MaxHunger>0)
+                        //    hunger -= DashHungerDrain;
+                        boost = DashSpeed/dashDiminish;
+                        if (boost < MinimumDashSpeed)
+                            boost = 0;
                         dashCooldownTimer = DashCooldown;
                         swimCooldownTimer = DashCooldown * 2;
+                        dashDiminishTimer = DashRecoveryTime;
+                        dashDiminish += DashDivisorIncrease;
                     }
                     dashTimer = 0;
-                }
-                else if(!Input.GetButton("Dash"))
-                {
-                    dashDown = false;
                 }
                 float accAdded = boost + (constAcc * Acceleration * Time.deltaTime);
                 _rigidbody.AddForce(accAdded * transform.forward);
@@ -204,6 +208,16 @@ public class Player : MonoBehaviour {
         swimCooldownTimer -= Time.deltaTime;
         if (swimCooldownTimer < 0)
             swimCooldownTimer = 0;
+        if (dashDiminish > 1)
+        {
+            dashDiminishTimer -= Time.deltaTime;
+            if (dashDiminishTimer < 0)
+            {
+                dashDiminishTimer = 0;
+                dashDiminish -= DashDivisorIncrease;
+                dashDiminishTimer = DashRecoveryTime;
+            }
+        }
     }
 
     public static float ClampAngle(float angle, float min, float max)
