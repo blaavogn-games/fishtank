@@ -52,9 +52,9 @@ public class Player : MonoBehaviour {
     [HideInInspector]
     public float MaximumY = 60F;
     [Range(0.1f, 200.0f)]
-    public float SensitivityX = 2.2f;
+    public float SensitivityX = 120f;
     [Range(0.1f, 200.0f)]
-    public float SensitivityY = 2.2f;
+    public float SensitivityY = 120f;
     //[Header("Mouse Controls")]
     //public bool MouseLookEnabled = false;
     [Range(0.1f, 200.0f)]
