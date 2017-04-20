@@ -63,8 +63,6 @@ public class StatusScreen : MonoBehaviour {
 
             GUI.DrawTexture(rect, fadeTexture);
             GUI.DrawTexture(rect, fadeTexture);
-            GUI.DrawTexture(rect, fadeTexture);
-            GUI.DrawTexture(rect, fadeTexture);
             alpha += (Time.deltaTime/fadeSpeed);
             if (alpha > 1)
             {
