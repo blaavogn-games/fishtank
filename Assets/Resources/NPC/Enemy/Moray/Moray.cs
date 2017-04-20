@@ -74,7 +74,6 @@ public class Moray : MonoBehaviour
                 break;
             case MorayState.IDLE:
                 target = playerFollowers.GetTarget().position;
-                Debug.Log(Vector3.Angle(transform.forward, target - transform.position));
                 if (Vector3.Distance(transform.position, target) < SightDistance && 
                     Vector3.Angle(transform.forward, target - transform.position) < SightAngle)
                 {
