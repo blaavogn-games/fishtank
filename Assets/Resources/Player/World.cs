@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class World : MonoBehaviour {
     public static World i;
@@ -111,5 +112,9 @@ public class World : MonoBehaviour {
         //PlayerPrefs.SetInt("Level1Deaths", PlayerPrefs.GetInt("Level1Deaths", 0) + 1);
         showDeaths = deaths[level];
         return 0;
+    }
+    public void WinLevel()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex+1);
     }
 }

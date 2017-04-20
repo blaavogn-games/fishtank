@@ -90,7 +90,10 @@ public class CameraTint : MonoBehaviour
         {
             float curDist = Vector3.Distance(go.transform.position, position);
             if (curDist < distance)
-                distance = curDist;
+            {
+                if(go.GetComponent<Enemy>().state == Enemy.State.CHARGE || go.GetComponent<Enemy>().state == Enemy.State.INSIGHT)
+                    distance = curDist;
+            }
         }
         return distance;
     }
