@@ -26,11 +26,13 @@ public class Player : MonoBehaviour {
 
     [Header("Movement Controls")]
     public float MaxSwimVelocity = 15;
+    public float SwimBoost = 450;
     public float Acceleration = 4000;
     public float DashSpeed = 30;
     public float MinimumDashSpeed = 1000;
     public float DashDivisorIncrease = 0.5f;
     public float DashRecoveryTime = 2.0f;
+
     private float dashTimer = 0;
     private float dashDiminish = 1;
     private float dashDiminishTimer = 0;
@@ -120,7 +122,7 @@ public class Player : MonoBehaviour {
                         constAcc = 1;
                     if (_rigidbody.velocity.magnitude < 7)
                     {
-                        boost = 900;
+                        boost = SwimBoost;
                         GamePad.SetVibration(0, 1, 1);
                     }
                     dashTimer += Time.deltaTime;
