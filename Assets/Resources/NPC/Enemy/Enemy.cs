@@ -139,8 +139,6 @@ public class Enemy : MonoBehaviour
         if (Physics.SphereCast(ray.origin, PhysicalSizeRadius, ray.direction, out hit, SightRange, layerMask))
             if (hit.transform.tag == "Player" || hit.transform.tag == "Follower")
                 return true;
-            else
-                Debug.Log(hit.transform.tag);
         return false;
     }
 
