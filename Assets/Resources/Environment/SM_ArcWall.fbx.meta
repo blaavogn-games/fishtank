@@ -1,24 +1,17 @@
 fileFormatVersion: 2
-guid: 7f6eb4ca82167974080bfb57dcbd862e
-timeCreated: 1492687973
+guid: 39577ecf56b66394a84ad36420660218
+timeCreated: 1492694576
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
   fileIDToRecycleName:
-    100000: NurbsPath.003
-    100002: Plane
-    100004: //RootNode
-    400000: NurbsPath.003
-    400002: Plane
-    400004: //RootNode
-    2300000: NurbsPath.003
-    2300002: Plane
-    2300004: //RootNode
-    3300000: NurbsPath.003
-    3300002: Plane
-    3300004: //RootNode
-    4300000: Plane
-    4300002: NurbsPath.003
+    100000: //RootNode
+    400000: //RootNode
+    2300000: //RootNode
+    3300000: //RootNode
+    4300000: Cube.001
+    4300002: Cube.004
+    4300004: Cube.002
   materials:
     importMaterials: 1
     materialName: 0
