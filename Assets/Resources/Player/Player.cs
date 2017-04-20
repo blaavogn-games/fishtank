@@ -78,6 +78,10 @@ public class Player : MonoBehaviour {
         {
             transform.position = World.i.SpawnPoint;
         }
+        else
+        {
+            World.i.beginTime = Time.time;
+        }
         //targetRotation = transform.rotation;
         originalRotation = transform.rotation;
         this._rigidbody = GetComponent<Rigidbody>();
@@ -99,8 +103,7 @@ public class Player : MonoBehaviour {
                 if(deathCause == DeathCause.ALIVE) Debug.Log(""); //Just to supress warning
                 if(dieTime < Time.time) {
                     //To do: Make scene reload
-                    Scene scene = SceneManager.GetActiveScene();
-                    SceneManager.LoadScene(scene.name);
+                    World.i.RestartLevel(true);
                     //transform.position = spawnPoint;
                     //state = State.SWIM;
                 }
@@ -176,24 +179,9 @@ public class Player : MonoBehaviour {
         _rigidbody.velocity = transform.forward.normalized * _rigidbody.velocity.magnitude;
         playerSound.SetSpeed(_rigidbody.velocity.magnitude);
         CoolDown();
-
-        if (Input.GetKey(KeyCode.Alpha1))
-            SceneManager.LoadScene(0);
-        if (Input.GetKey(KeyCode.Alpha2))
-            SceneManager.LoadScene(1);
-        if (Input.GetKey(KeyCode.Alpha3))
-            SceneManager.LoadScene(2);
-        if (Input.GetKey(KeyCode.Alpha4))
-            SceneManager.LoadScene(3);
-        if (Input.GetKeyDown(KeyCode.J))
-            Camera.main.GetComponent<ScreenShake>().ShakeScreen(1, 0.5f);
+        
         if (Input.GetKeyDown(KeyCode.K))
             Kill(DeathCause.EATEN);
-        if (Input.GetKey(KeyCode.R))
-        {
-            Scene scene = SceneManager.GetActiveScene();
-            SceneManager.LoadScene(scene.name);
-        }
         if (MaxHunger > 0 && hunger <= HungerStartSlim)
         {
             transform.localScale = new Vector3(Mathf.Lerp(MaxHungryXScale, 1, hunger / HungerStartSlim), Mathf.Lerp(MaxHungryYScale, 1, hunger / HungerStartSlim), Mathf.Lerp(MaxHungryZScale, 1, hunger / HungerStartSlim));
@@ -232,7 +220,6 @@ public class Player : MonoBehaviour {
         this.deathCause = deathCause;
         state = State.DYING;
         dieTime = Time.time + .2f;
-        World.i.Death(SceneManager.GetActiveScene().buildIndex);
-
+        World.i.Death();
     }
 }
