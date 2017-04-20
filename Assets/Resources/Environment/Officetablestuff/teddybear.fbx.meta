@@ -1,0 +1,164 @@
+fileFormatVersion: 2
+guid: d6cb1e199288e8240b4f72b696b3ff3f
+timeCreated: 1492678554
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: office_stuff:polySurface1
+    100002: office_stuff:polySurface2
+    100004: office_stuff:polySurface3
+    100006: office_stuff:polySurface4
+    100008: office_stuff:polySurface5
+    100010: office_stuff:polySurface6
+    100012: office_stuff:polySurface7
+    100014: office_stuff:pSphere10
+    100016: office_stuff:pSphere11
+    100018: office_stuff:pSphere12
+    100020: office_stuff:pSphere13
+    100022: office_stuff:pSphere14
+    100024: office_stuff:pSphere15
+    100026: office_stuff:pSphere16
+    100028: office_stuff:pSphere17
+    100030: office_stuff:pSphere18
+    100032: office_stuff:pSphere19
+    100034: office_stuff:pSphere20
+    100036: office_stuff:pSphere3
+    100038: office_stuff:pSphere4
+    100040: office_stuff:pSphere6
+    100042: office_stuff:pSphere7
+    100044: office_stuff:transform10
+    100046: office_stuff:transform11
+    100048: office_stuff:transform12
+    100050: office_stuff:transform13
+    100052: office_stuff:transform14
+    100054: office_stuff:transform15
+    100056: office_stuff:transform16
+    100058: office_stuff:transform17
+    100060: office_stuff:transform18
+    100062: office_stuff:transform19
+    100064: office_stuff:transform20
+    100066: office_stuff:transform21
+    100068: office_stuff:transform22
+    100070: office_stuff:transform23
+    100072: office_stuff:transform24
+    100074: office_stuff:transform25
+    100076: office_stuff:transform5
+    100078: office_stuff:transform6
+    100080: office_stuff:transform7
+    100082: office_stuff:transform8
+    100084: office_stuff:transform9
+    100086: //RootNode
+    400000: office_stuff:polySurface1
+    400002: office_stuff:polySurface2
+    400004: office_stuff:polySurface3
+    400006: office_stuff:polySurface4
+    400008: office_stuff:polySurface5
+    400010: office_stuff:polySurface6
+    400012: office_stuff:polySurface7
+    400014: office_stuff:pSphere10
+    400016: office_stuff:pSphere11
+    400018: office_stuff:pSphere12
+    400020: office_stuff:pSphere13
+    400022: office_stuff:pSphere14
+    400024: office_stuff:pSphere15
+    400026: office_stuff:pSphere16
+    400028: office_stuff:pSphere17
+    400030: office_stuff:pSphere18
+    400032: office_stuff:pSphere19
+    400034: office_stuff:pSphere20
+    400036: office_stuff:pSphere3
+    400038: office_stuff:pSphere4
+    400040: office_stuff:pSphere6
+    400042: office_stuff:pSphere7
+    400044: office_stuff:transform10
+    400046: office_stuff:transform11
+    400048: office_stuff:transform12
+    400050: office_stuff:transform13
+    400052: office_stuff:transform14
+    400054: office_stuff:transform15
+    400056: office_stuff:transform16
+    400058: office_stuff:transform17
+    400060: office_stuff:transform18
+    400062: office_stuff:transform19
+    400064: office_stuff:transform20
+    400066: office_stuff:transform21
+    400068: office_stuff:transform22
+    400070: office_stuff:transform23
+    400072: office_stuff:transform24
+    400074: office_stuff:transform25
+    400076: office_stuff:transform5
+    400078: office_stuff:transform6
+    400080: office_stuff:transform7
+    400082: office_stuff:transform8
+    400084: office_stuff:transform9
+    400086: //RootNode
+    2300000: office_stuff:pSphere20
+    3300000: office_stuff:pSphere20
+    4300000: office_stuff:pSphere20
+    7400000: Take 001
+    9500000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
