@@ -16,6 +16,6 @@ public class Wiggle : MonoBehaviour {
         time += Time.deltaTime * Speed;
         if (anim != null)
             anim.speed = Speed * 0.2f;
-        transform.localRotation = Quaternion.Euler(baseRotation.x, Mathf.Sin(time) * 10 + baseRotation.y, 0);
+        //transform.localRotation = Quaternion.Euler(baseRotation.x, Mathf.Sin(time) * 10 + baseRotation.y, 0);
     }
 }

@@ -13,6 +13,7 @@ public class Enemy : MonoBehaviour
     private float timer = 0;
     private Vector3 initialPosition;
 
+    public Vector3 ModelOffset;
     public State state;
     private PlayerFollowers playerFollowers;
     private List<Vector3> patrolPath = new List<Vector3>(); //Found from game hierachy
@@ -64,6 +65,7 @@ public class Enemy : MonoBehaviour
         TimeSpan ts = stopWatch.Elapsed;
         Debug.Log(String.Format("Path found in {0}ms", ts.Milliseconds), gameObject);
         SetPathPoint();
+        
     }
 
     void SetPathPoint()
@@ -85,9 +87,9 @@ public class Enemy : MonoBehaviour
                 break;
             case State.INSIGHT:
                 targetTransform = playerFollowers.GetTarget();
-                target = targetTransform.position;
+                target = targetTransform.position + ModelOffset;
                 velocity = Mathf.Lerp(velocity, chaseVelocity, 0.1f);
-                if(!CheckSight(target) || Vector3.Distance(transform.position, initialPosition) > maxChaseDistance) {
+                if(!CheckSight(target - ModelOffset) || Vector3.Distance(transform.position, initialPosition) > maxChaseDistance) {
                     state = State.PATROL;
                     target = patrolPath[curPatTarget % patrolPath.Count];
                 }
@@ -98,7 +100,7 @@ public class Enemy : MonoBehaviour
                 break;
             case State.CHARGE:
                 targetTransform = playerFollowers.GetTarget();
-                target = targetTransform.position;
+                target = targetTransform.position + ModelOffset;
                 velocity = Mathf.Lerp(velocity, chargeVelocity, 0.1f);
                 //Transition to eat through collision
                 break;
@@ -112,8 +114,15 @@ public class Enemy : MonoBehaviour
         }
 
         timer -= Time.deltaTime;
-        //if(animator != null)
-        //    animator.SetBool("IsSwimming", velocity > 0.02f);
+        if (animator != null && targetTransform != null)
+        {
+            float dist = Vector3.Distance(transform.position, targetTransform.position);
+            if (dist < 22 && dist > 8)
+                animator.SetInteger("Mouth", -1);
+            else
+                animator.SetInteger("Mouth", 1);
+        }
+            
 
         Vector3 newPosition = Vector3.MoveTowards(transform.position, target, velocity * Time.deltaTime);
         Vector3 movement = newPosition - transform.position;
