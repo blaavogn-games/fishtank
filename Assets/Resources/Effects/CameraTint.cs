@@ -8,6 +8,7 @@ public class CameraTint : MonoBehaviour
     public float WarningDistance = 40;
     public float BlinkSpeedFar = 1.0f;
     public float BlinkSpeedNear = 0.01f;
+    public float shakeFactor = 0.1f;
 
     private float blinkSpeed = 0;
     
@@ -25,10 +26,12 @@ public class CameraTint : MonoBehaviour
     Texture2D fadeTexture;
     Rect rect;
     float currentDistance = Mathf.Infinity;
+    ScreenShake shake;
 
     // Use this for initialization
     void Start()
     {
+        shake = Camera.main.GetComponent<ScreenShake>();
         fadeTexture = new Texture2D(1, 1);
         rect = new Rect(0, 0, Screen.width, Screen.height);
     }
@@ -41,11 +44,14 @@ public class CameraTint : MonoBehaviour
         {
             blinkSpeed = Mathf.Lerp(BlinkSpeedNear, BlinkSpeedFar, currentDistance / WarningDistance);
             alpha = Mathf.Lerp(0, MaxAlpha, blinkTimer / blinkSpeed);
+            shake.ShakeScreen(1, alpha * shakeFactor);
         }
         else
         {
+            shake.ShakeScreen(0, 0);
             blinkSpeed = BlinkSpeedFar;
             alpha = 0;
+
         }
 
         if (blinkTimer <= 0 || blinkTimer >= blinkSpeed)
