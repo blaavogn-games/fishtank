@@ -168,6 +168,7 @@ public class World : MonoBehaviour {
         var p=Instantiate(statusScreen);
         int totalPills=pills+GameObject.FindGameObjectsWithTag("PointObject").Length;
         p.GetComponent<StatusScreen>().WinScreen(deaths, pills, totalPills, timeTaken);
+        GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().Freeze();
         //GotoLevel(SceneManager.GetActiveScene().buildIndex + 1);
     }
     public void GotoLevel(int level)
@@ -179,7 +180,6 @@ public class World : MonoBehaviour {
         if (!useCheckpoint)
         {
             ResetStats();
-            beginTime = Time.time;
         }
         else
         {
@@ -187,6 +187,14 @@ public class World : MonoBehaviour {
             showPills = pills;
         }
         GotoLevel(SceneManager.GetActiveScene().buildIndex);
+    }
+    public void NextLevel()
+    {
+        ResetStats();
+        if (SceneManager.GetActiveScene().buildIndex >= AmountOfLevels)
+            GotoLevel(0);
+        else
+            GotoLevel(SceneManager.GetActiveScene().buildIndex + 1);
     }
     public void CheckPoint(GameObject gameO)
     {

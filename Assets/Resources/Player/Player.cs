@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 using XInputDotNetPure;
 
 public class Player : MonoBehaviour {
-    enum State { SWIM, DYING };
+    enum State { SWIM, DYING, FROZEN };
     public enum DeathCause { ALIVE, EATEN, SUCKED };
     private State state = State.SWIM;
     private Rigidbody _rigidbody;
@@ -219,5 +219,10 @@ public class Player : MonoBehaviour {
         state = State.DYING;
         dieTime = Time.time + .2f;
         World.i.Death();
+    }
+
+    public void Freeze()
+    {
+        state = State.FROZEN;
     }
 }
