@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    public enum State { PATROL, INSIGHT, OUTOFSIGHT, CHARGE, EAT, FROZEN };
+    //                  Not chasing                      Chasing:
+    public enum State { PATROL, EAT, FROZEN, OUTOFSIGHT, INSIGHT, CHARGE};
     private int curPatTarget = -1;
     private Vector3 target;
     private Transform targetTransform;
@@ -12,7 +13,7 @@ public class Enemy : MonoBehaviour
     private float timer = 0;
     private Vector3 initialPosition;
 
-    private State state;
+    public State state;
     private PlayerFollowers playerFollowers;
     private List<Vector3> patrolPath = new List<Vector3>(); //Found from game hierachy
     private Animator animator;
