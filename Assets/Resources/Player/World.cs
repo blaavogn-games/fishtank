@@ -5,18 +5,24 @@ public class World : MonoBehaviour {
     public static World i;
     [HideInInspector]
     public Vector3 SpawnPoint = Vector3.zero;
+    [Header("Tracking")]
+    public int AmountOfLevels = 3;
     [Header("Controls")]
     public bool FlightControls;
     public bool MouseLook;
     string textToShow;
     Color guiColour = Color.white;
-    int[] deaths = new int[3];
-    int[] pills = new int[3];
-    float[] timeTaken = new float[3];
+    int[] deaths;
+    int[] pills;
+    float[] timeTaken;
+    public int showDeaths = 0;
 
 
     private void Awake()
     {
+        deaths = new int[AmountOfLevels];
+        pills = new int[AmountOfLevels];
+        timeTaken = new float[AmountOfLevels];
         if (i == null)
         {
             i = this;
@@ -99,6 +105,11 @@ public class World : MonoBehaviour {
     }
     public int Death(int level)
     {
+        if (level > 0)
+            level--;
+        deaths[level] += 1;
+        //PlayerPrefs.SetInt("Level1Deaths", PlayerPrefs.GetInt("Level1Deaths", 0) + 1);
+        showDeaths = deaths[level];
         return 0;
     }
 }

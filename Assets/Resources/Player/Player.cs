@@ -213,9 +213,7 @@ public class Player : MonoBehaviour {
             dashDiminishTimer -= Time.deltaTime;
             if (dashDiminishTimer < 0)
             {
-                dashDiminishTimer = 0;
-                dashDiminish -= DashDivisorIncrease;
-                dashDiminishTimer = DashRecoveryTime;
+                dashDiminish = 1;
             }
         }
     }
@@ -235,5 +233,6 @@ public class Player : MonoBehaviour {
         state = State.DYING;
         dieTime = Time.time + .2f;
         World.i.Death(SceneManager.GetActiveScene().buildIndex);
+
     }
 }
