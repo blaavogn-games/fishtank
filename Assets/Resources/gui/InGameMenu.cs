@@ -26,7 +26,7 @@ public class InGameMenu : MonoBehaviour
         Resume.onClick.AddListener(() =>
             {
                 Debug.Log("Resume");
-                StartGame(resumeLevel);
+                StartGame(resumeLevel, false);
             });
         EventTrigger trigger = Resume.GetComponent<EventTrigger>();
         EventTrigger.Entry entry = new EventTrigger.Entry();
@@ -42,7 +42,7 @@ public class InGameMenu : MonoBehaviour
             {
                 Debug.Log("New Game");
                 //ToDo clear SaveGame
-                StartGame(1);
+                StartGame(1, true);
             });
         trigger = NewGame.GetComponent<EventTrigger>();
         entry = new EventTrigger.Entry();
@@ -54,7 +54,7 @@ public class InGameMenu : MonoBehaviour
         trigger.triggers.Add(entry);
 
         SelectTank.onClick.AddListener(() => ToggleTankSelect(true));
-        TankHighlight.onClick.AddListener(() => StartGame(tankSelected));
+        TankHighlight.onClick.AddListener(() => StartGame(tankSelected, true));
 
         trigger = TankHighlight.GetComponent<EventTrigger>();
         entry = new EventTrigger.Entry();
@@ -109,11 +109,12 @@ public class InGameMenu : MonoBehaviour
         tankTarget = new Vector3(tankSelected * -1200, 0, 0);
     }
 
-    void StartGame(int i)
+    void StartGame(int i, bool newGame)
     {
         Debug.Log("Start game " + i);
-        SceneManager.LoadScene(i);
-
+        if (newGame)
+            World.i.ResetStats();
+        World.i.GotoLevel(i);
     }
 
 

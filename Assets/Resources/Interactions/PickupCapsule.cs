@@ -9,6 +9,11 @@ public class PickupCapsule : MonoBehaviour {
     public int rotateY = 20;
 
     public ParticleSystem PickupParticleSystem;
+    private void Start()
+    {
+        if (World.i.savedPills.Contains(name))
+            Destroy(gameObject);
+    }
 
     void Update () {
         transform.Rotate(rotateX * Time.deltaTime, rotateY * Time.deltaTime, 0);
@@ -19,11 +24,19 @@ public class PickupCapsule : MonoBehaviour {
         var script = collision.gameObject.GetComponent<Player>();
         if (script != null)
         {
-            DestroyObject(this.gameObject);
+            if (World.i.savedPills.Contains(name))
+                return;
+            Trigger trig = GetComponentInChildren<Trigger>();
+            World.i.Pill(name);
+            DestroyObject(gameObject);
             if(script.MaxHunger>0)
                 script.hunger = script.MaxHunger;
             var p = Instantiate(PickupParticleSystem.gameObject);
             p.transform.position = transform.position;
+            if (trig != null)
+            {
+                trig.TriggerByParent(collision);
+            }
         }
     }
 }
