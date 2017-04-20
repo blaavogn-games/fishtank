@@ -57,8 +57,8 @@ public class Player : MonoBehaviour {
     public float SensitivityY = 2.2f;
     //[Header("Mouse Controls")]
     //public bool MouseLookEnabled = false;
-    [Range(0.1f, 10.0f)]
-    public float MouseSensitivity = 4;
+    [Range(0.1f, 200.0f)]
+    public float MouseSensitivity = 120;
     float rotationX = 0F;
     float rotationY = 0F;
     Quaternion originalRotation;
