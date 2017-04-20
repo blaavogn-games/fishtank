@@ -25,7 +25,23 @@ public class Trigger : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Player");
         playerScript = player.GetComponent<Player>();
 	}
-
+    public void TriggerByParent(Collision other)
+    {
+        if (other.transform.root.gameObject == player && !entered && playerScript != null)
+        {
+            switch (Type)
+            {
+                case TriggerType.Checkpoint:
+                    CheckPointEnter();
+                    break;
+                case TriggerType.SetHunger:
+                    SetHungerEnter();
+                    break;
+            }
+            if (Once)
+                entered = true;
+        }
+    }
     private void OnTriggerEnter(Collider other)
     {
         if (other.transform.root.gameObject == player && !entered && playerScript!=null)
@@ -45,11 +61,7 @@ public class Trigger : MonoBehaviour
     }
     private void CheckPointEnter()
     {
-        if (World.i.SpawnPoint != transform.position)
-        {
-            World.i.SpawnPoint = transform.position;
-            Debug.Log("Spawn set to: " + transform.position.ToString());
-        }
+        World.i.CheckPoint(gameObject);
     }
     private void SetHungerEnter()
     {

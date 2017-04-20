@@ -26,11 +26,13 @@ public class Player : MonoBehaviour {
 
     [Header("Movement Controls")]
     public float MaxSwimVelocity = 15;
+    public float SwimBoost = 450;
     public float Acceleration = 4000;
     public float DashSpeed = 30;
     public float MinimumDashSpeed = 1000;
     public float DashDivisorIncrease = 0.5f;
     public float DashRecoveryTime = 2.0f;
+
     private float dashTimer = 0;
     private float dashDiminish = 1;
     private float dashDiminishTimer = 0;
@@ -55,8 +57,8 @@ public class Player : MonoBehaviour {
     public float SensitivityY = 2.2f;
     //[Header("Mouse Controls")]
     //public bool MouseLookEnabled = false;
-    [Range(0.1f, 10.0f)]
-    public float MouseSensitivity = 4;
+    [Range(0.1f, 200.0f)]
+    public float MouseSensitivity = 120;
     float rotationX = 0F;
     float rotationY = 0F;
     Quaternion originalRotation;
@@ -77,6 +79,10 @@ public class Player : MonoBehaviour {
         if (World.i.SpawnPoint != Vector3.zero)
         {
             transform.position = World.i.SpawnPoint;
+        }
+        else
+        {
+            World.i.beginTime = Time.time;
         }
         //targetRotation = transform.rotation;
         originalRotation = transform.rotation;
@@ -99,8 +105,7 @@ public class Player : MonoBehaviour {
                 if(deathCause == DeathCause.ALIVE) Debug.Log(""); //Just to supress warning
                 if(dieTime < Time.time) {
                     //To do: Make scene reload
-                    Scene scene = SceneManager.GetActiveScene();
-                    SceneManager.LoadScene(scene.name);
+                    World.i.RestartLevel(true);
                     //transform.position = spawnPoint;
                     //state = State.SWIM;
                 }
@@ -117,7 +122,7 @@ public class Player : MonoBehaviour {
                         constAcc = 1;
                     if (_rigidbody.velocity.magnitude < 7)
                     {
-                        boost = 900;
+                        boost = SwimBoost;
                         GamePad.SetVibration(0, 1, 1);
                     }
                     dashTimer += Time.deltaTime;
@@ -176,24 +181,9 @@ public class Player : MonoBehaviour {
         _rigidbody.velocity = transform.forward.normalized * _rigidbody.velocity.magnitude;
         playerSound.SetSpeed(_rigidbody.velocity.magnitude);
         CoolDown();
-
-        if (Input.GetKey(KeyCode.Alpha1))
-            SceneManager.LoadScene(0);
-        if (Input.GetKey(KeyCode.Alpha2))
-            SceneManager.LoadScene(1);
-        if (Input.GetKey(KeyCode.Alpha3))
-            SceneManager.LoadScene(2);
-        if (Input.GetKey(KeyCode.Alpha4))
-            SceneManager.LoadScene(3);
-        if (Input.GetKeyDown(KeyCode.J))
-            Camera.main.GetComponent<ScreenShake>().ShakeScreen(1, 0.5f);
+        
         if (Input.GetKeyDown(KeyCode.K))
             Kill(DeathCause.EATEN);
-        if (Input.GetKey(KeyCode.R))
-        {
-            Scene scene = SceneManager.GetActiveScene();
-            SceneManager.LoadScene(scene.name);
-        }
         if (MaxHunger > 0 && hunger <= HungerStartSlim)
         {
             transform.localScale = new Vector3(Mathf.Lerp(MaxHungryXScale, 1, hunger / HungerStartSlim), Mathf.Lerp(MaxHungryYScale, 1, hunger / HungerStartSlim), Mathf.Lerp(MaxHungryZScale, 1, hunger / HungerStartSlim));
@@ -232,7 +222,6 @@ public class Player : MonoBehaviour {
         this.deathCause = deathCause;
         state = State.DYING;
         dieTime = Time.time + .2f;
-        World.i.Death(SceneManager.GetActiveScene().buildIndex);
-
+        World.i.Death();
     }
 }
