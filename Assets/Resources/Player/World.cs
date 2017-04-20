@@ -10,6 +10,10 @@ public class World : MonoBehaviour {
     public bool MouseLook;
     string textToShow;
     Color guiColour = Color.white;
+    int[] deaths = new int[3];
+    int[] pills = new int[3];
+    float[] timeTaken = new float[3];
+
 
     private void Awake()
     {
@@ -92,5 +96,9 @@ public class World : MonoBehaviour {
     {
         //PlayerPrefs.SetInt("Flight Controls", ToInt(FlightControls));
         //PlayerPrefs.SetInt("MouseLook", ToInt(MouseLook));
+    }
+    public int Death(int level)
+    {
+        return 0;
     }
 }
