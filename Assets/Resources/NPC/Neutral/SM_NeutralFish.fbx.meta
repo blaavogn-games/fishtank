@@ -62,7 +62,127 @@ ModelImporter:
     animationScaleError: 0.5
     animationWrapMode: 0
     extraExposedTransformPaths: []
-    clipAnimations: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: Player|Idle
+      takeName: Player|Idle
+      firstFrame: 0
+      lastFrame: 60
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Mesh
+        weight: 1
+      - path: Player
+        weight: 1
+      - path: Player/Root
+        weight: 1
+      - path: Player/Root/Body
+        weight: 1
+      - path: Player/Root/Body/Fin.L
+        weight: 1
+      - path: Player/Root/Body/Fin.L/Fin.L_end
+        weight: 1
+      - path: Player/Root/Body/Fin.R
+        weight: 1
+      - path: Player/Root/Body/Fin.R/Fin.R_end
+        weight: 1
+      - path: Player/Root/Body/Head
+        weight: 1
+      - path: Player/Root/Body/Head/Head_end
+        weight: 1
+      - path: Player/Tail
+        weight: 1
+      - path: Player/Tail/Fin.B
+        weight: 1
+      - path: Player/Tail/Fin.B/Fin.B_end
+        weight: 1
+      - path: Player/Tail/Fin.T
+        weight: 1
+      - path: Player/Tail/Fin.T/Fin.T_end
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Player|Swimming
+      takeName: Player|Swimming
+      firstFrame: 0
+      lastFrame: 61
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Mesh
+        weight: 1
+      - path: Player
+        weight: 1
+      - path: Player/Root
+        weight: 1
+      - path: Player/Root/Body
+        weight: 1
+      - path: Player/Root/Body/Fin.L
+        weight: 1
+      - path: Player/Root/Body/Fin.L/Fin.L_end
+        weight: 1
+      - path: Player/Root/Body/Fin.R
+        weight: 1
+      - path: Player/Root/Body/Fin.R/Fin.R_end
+        weight: 1
+      - path: Player/Root/Body/Head
+        weight: 1
+      - path: Player/Root/Body/Head/Head_end
+        weight: 1
+      - path: Player/Tail
+        weight: 1
+      - path: Player/Tail/Fin.B
+        weight: 1
+      - path: Player/Tail/Fin.B/Fin.B_end
+        weight: 1
+      - path: Player/Tail/Fin.T
+        weight: 1
+      - path: Player/Tail/Fin.T/Fin.T_end
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     isReadable: 1
   meshes:
     lODScreenPercentages: []

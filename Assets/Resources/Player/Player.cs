@@ -49,9 +49,9 @@ public class Player : MonoBehaviour {
     public float MinimumY = -60F;
     [HideInInspector]
     public float MaximumY = 60F;
-    [Range(0.1f, 10.0f)]
+    [Range(0.1f, 200.0f)]
     public float SensitivityX = 2.2f;
-    [Range(0.1f, 10.0f)]
+    [Range(0.1f, 200.0f)]
     public float SensitivityY = 2.2f;
     //[Header("Mouse Controls")]
     //public bool MouseLookEnabled = false;
@@ -146,19 +146,19 @@ public class Player : MonoBehaviour {
                 //Turning
                 if (!World.i.MouseLook)
                 {
-                    rotationX += Input.GetAxis("Horizontal") * SensitivityX;
+                    rotationX += Input.GetAxis("Horizontal") * SensitivityX * Time.deltaTime;
                     if (World.i.FlightControls)
-                        rotationY += -1 * Input.GetAxis("Vertical") * SensitivityY;
+                        rotationY += -1 * Input.GetAxis("Vertical") * SensitivityY * Time.deltaTime;
                     else
-                        rotationY += Input.GetAxis("Vertical") * SensitivityY;
+                        rotationY += Input.GetAxis("Vertical") * SensitivityY * Time.deltaTime;
                 }
                 else
                 {
-                    rotationX += Input.GetAxis("Mouse X") * MouseSensitivity;
+                    rotationX += Input.GetAxis("Mouse X") * MouseSensitivity * Time.deltaTime;
                     if (World.i.FlightControls)
-                        rotationY += -1 * Input.GetAxis("Mouse Y") * MouseSensitivity;
+                        rotationY += -1 * Input.GetAxis("Mouse Y") * MouseSensitivity * Time.deltaTime;
                     else
-                        rotationY +=Input.GetAxis("Mouse Y") * MouseSensitivity;
+                        rotationY +=Input.GetAxis("Mouse Y") * MouseSensitivity * Time.deltaTime;
                 }
 
                 rotationX = ClampAngle(rotationX, -360, 360);
