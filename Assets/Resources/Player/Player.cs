@@ -235,5 +235,6 @@ public class Player : MonoBehaviour {
         state = State.DYING;
         dieTime = Time.time + .2f;
         World.i.Death(SceneManager.GetActiveScene().buildIndex);
+
     }
 }

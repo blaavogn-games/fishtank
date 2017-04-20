@@ -108,7 +108,7 @@ public class World : MonoBehaviour {
         if (level > 0)
             level--;
         deaths[level] += 1;
-        PlayerPrefs.SetInt("Level1Deaths", PlayerPrefs.GetInt("Level1Deaths", 0) + 1);
+        //PlayerPrefs.SetInt("Level1Deaths", PlayerPrefs.GetInt("Level1Deaths", 0) + 1);
         showDeaths = deaths[level];
         return 0;
     }
