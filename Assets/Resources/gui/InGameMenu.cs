@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.EventSystems;
 using System;
+using UnityEngine.SceneManagement;
 
 public class InGameMenu : MonoBehaviour
 {
@@ -21,7 +22,7 @@ public class InGameMenu : MonoBehaviour
 
         tankSelected = 0;
         tankTarget = new Vector3(tankSelected * -1200, 0, 0);
-        resumeLevel = PlayerPrefs.GetInt("ResumeLevel", 0); //ToDo take level from memero
+        resumeLevel = PlayerPrefs.GetInt("ResumeLevel", 1); //ToDo take level from memero
         Resume.onClick.AddListener(() =>
             {
                 Debug.Log("Resume");
@@ -32,7 +33,7 @@ public class InGameMenu : MonoBehaviour
         entry.eventID = EventTriggerType.Select;
         entry.callback.AddListener(
             (data) => {
-                MoveTanksAbsolute(resumeLevel);
+                MoveTanksAbsolute(resumeLevel-1);
             });
         trigger.triggers.Add(entry);
 
@@ -41,7 +42,7 @@ public class InGameMenu : MonoBehaviour
             {
                 Debug.Log("New Game");
                 //ToDo clear SaveGame
-                StartGame(0);
+                StartGame(1);
             });
         trigger = NewGame.GetComponent<EventTrigger>();
         entry = new EventTrigger.Entry();
@@ -111,6 +112,8 @@ public class InGameMenu : MonoBehaviour
     void StartGame(int i)
     {
         Debug.Log("Start game " + i);
+        SceneManager.LoadScene(i);
+
     }
 
 
