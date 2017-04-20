@@ -5,6 +5,7 @@ using System.Collections.Generic;
 
 public class World : MonoBehaviour {
     public static World i;
+    public GameObject statusScreen;
     [HideInInspector]
     public Vector3 SpawnPoint = Vector3.zero;
     private GameObject spawnObject;
@@ -15,9 +16,9 @@ public class World : MonoBehaviour {
     public bool MouseLook;
     string textToShow;
     Color guiColour = Color.white;
-    int deaths;
-    int pills;
-    float timeTaken;
+    int deaths = 0;
+    int pills = 0;
+    float timeTaken = 0;
     [HideInInspector]
     public float beginTime = 0;
     public int showDeaths = 0;
@@ -25,10 +26,12 @@ public class World : MonoBehaviour {
     public float showTime = 0;
     [HideInInspector]
     private List<string> pillsTaken;
+    [HideInInspector]
     public List<string> savedPills;
 
     private void Awake()
     {
+        beginTime = Time.time;
         pillsTaken = new List<string>();
         savedPills = new List<string>();
         if (i == null)
@@ -82,6 +85,8 @@ public class World : MonoBehaviour {
         }
         if (Input.GetKey(KeyCode.R))
             RestartLevel(false);
+        if (Input.GetKeyDown(KeyCode.V))
+            WinLevel();
         showTime = Time.time-beginTime;
     }
 
@@ -159,8 +164,11 @@ public class World : MonoBehaviour {
         int level = SceneManager.GetActiveScene().buildIndex;
         if (level > 0)
             level--;
-        timeTaken = beginTime - Time.time;
-        GotoLevel(SceneManager.GetActiveScene().buildIndex + 1);
+        timeTaken = Time.time- beginTime;
+        var p=Instantiate(statusScreen);
+        int totalPills=pills+GameObject.FindGameObjectsWithTag("PointObject").Length;
+        p.GetComponent<StatusScreen>().WinScreen(deaths, pills, totalPills, timeTaken);
+        //GotoLevel(SceneManager.GetActiveScene().buildIndex + 1);
     }
     public void GotoLevel(int level)
     {
@@ -171,6 +179,7 @@ public class World : MonoBehaviour {
         if (!useCheckpoint)
         {
             ResetStats();
+            beginTime = Time.time;
         }
         else
         {
@@ -205,5 +214,6 @@ public class World : MonoBehaviour {
         SpawnPoint = Vector3.zero;
         pillsTaken.Clear();
         savedPills.Clear();
+        beginTime = Time.time;
     }
 }

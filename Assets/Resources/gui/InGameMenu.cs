@@ -54,7 +54,7 @@ public class InGameMenu : MonoBehaviour
         trigger.triggers.Add(entry);
 
         SelectTank.onClick.AddListener(() => ToggleTankSelect(true));
-        TankHighlight.onClick.AddListener(() => StartGame(tankSelected, true));
+        TankHighlight.onClick.AddListener(() => StartGame(tankSelected+1, true));
 
         trigger = TankHighlight.GetComponent<EventTrigger>();
         entry = new EventTrigger.Entry();

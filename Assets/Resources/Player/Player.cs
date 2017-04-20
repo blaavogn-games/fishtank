@@ -80,10 +80,6 @@ public class Player : MonoBehaviour {
         {
             transform.position = World.i.SpawnPoint;
         }
-        else
-        {
-            World.i.beginTime = Time.time;
-        }
         //targetRotation = transform.rotation;
         originalRotation = transform.rotation;
         this._rigidbody = GetComponent<Rigidbody>();
