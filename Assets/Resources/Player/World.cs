@@ -15,9 +15,9 @@ public class World : MonoBehaviour {
     public bool MouseLook;
     string textToShow;
     Color guiColour = Color.white;
-    int[] deaths;
-    int[] pills;
-    float[] timeTaken;
+    int deaths;
+    int pills;
+    float timeTaken;
     [HideInInspector]
     public float beginTime = 0;
     public int showDeaths = 0;
@@ -31,9 +31,6 @@ public class World : MonoBehaviour {
     {
         pillsTaken = new List<string>();
         savedPills = new List<string>();
-        deaths = new int[AmountOfLevels];
-        pills = new int[AmountOfLevels];
-        timeTaken = new float[AmountOfLevels];
         if (i == null)
         {
             i = this;
@@ -64,13 +61,25 @@ public class World : MonoBehaviour {
         if (Input.GetMouseButtonDown(1))
             SetMouseLook();
         if (Input.GetKey(KeyCode.Alpha0))
+        {
+            ResetStats();
             GotoLevel(0);
+        }
         if (Input.GetKey(KeyCode.Alpha1))
+        {
+            ResetStats();
             GotoLevel(1);
+        }
         if (Input.GetKey(KeyCode.Alpha2))
+        {
+            ResetStats();
             GotoLevel(2);
+        }
         if (Input.GetKey(KeyCode.Alpha3))
+        {
+            ResetStats();
             GotoLevel(3);
+        }
         if (Input.GetKey(KeyCode.R))
             RestartLevel(false);
         showTime = Time.time-beginTime;
@@ -130,10 +139,10 @@ public class World : MonoBehaviour {
         int level = SceneManager.GetActiveScene().buildIndex;
         if (level > 0)
             level--;
-        deaths[level] += 1;
+        deaths += 1;
         //PlayerPrefs.SetInt("Level1Deaths", PlayerPrefs.GetInt("Level1Deaths", 0) + 1);
-        showDeaths = deaths[level];
-        return deaths[level];
+        showDeaths = deaths;
+        return deaths;
     }
     public int Pill(string instanceName)
     {
@@ -141,16 +150,16 @@ public class World : MonoBehaviour {
         int level = SceneManager.GetActiveScene().buildIndex;
         if (level > 0)
             level--;
-        pills[level] += 1;
-        showPills = pills[level];
-        return pills[level];
+        pills += 1;
+        showPills = pills;
+        return pills;
     }
     public void WinLevel()
     {
         int level = SceneManager.GetActiveScene().buildIndex;
         if (level > 0)
             level--;
-        timeTaken[level] = beginTime - Time.time;
+        timeTaken = beginTime - Time.time;
         GotoLevel(SceneManager.GetActiveScene().buildIndex + 1);
     }
     public void GotoLevel(int level)
@@ -165,11 +174,8 @@ public class World : MonoBehaviour {
         }
         else
         {
-            int level = SceneManager.GetActiveScene().buildIndex;
-            if (level > 0)
-                level--;
-            pills[level] = savedPills.Count;
-            showPills = pills[level];
+            pills = savedPills.Count;
+            showPills = pills;
         }
         GotoLevel(SceneManager.GetActiveScene().buildIndex);
     }
@@ -190,12 +196,9 @@ public class World : MonoBehaviour {
     }
     public void ResetStats()
     {
-        for(int i = 0; i < AmountOfLevels; i++)
-        {
-            deaths[i] = 0;
-            pills[i] = 0;
-            timeTaken[i] = 0;
-        }
+        deaths = 0;
+        pills = 0;
+        timeTaken = 0;
         showPills = 0;
         showDeaths = 0;
         showTime = 0;
