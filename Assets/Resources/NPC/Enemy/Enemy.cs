@@ -121,7 +121,6 @@ public class Enemy : MonoBehaviour
             else
                 animator.SetInteger("Mouth", 1);
         }
-            
 
         Vector3 newPosition = Vector3.MoveTowards(transform.position, target, velocity * Time.deltaTime);
         Vector3 movement = newPosition - transform.position;
