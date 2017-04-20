@@ -88,11 +88,14 @@ public class CameraTint : MonoBehaviour
         Vector3 position = player.transform.position;
         foreach (GameObject go in gos)
         {
-            float curDist = Vector3.Distance(go.transform.position, position);
-            if (curDist < distance)
+            if (go.GetComponent<Enemy>() != null)
             {
-                if(go.GetComponent<Enemy>().state == Enemy.State.CHARGE || go.GetComponent<Enemy>().state == Enemy.State.INSIGHT)
-                    distance = curDist;
+                float curDist = Vector3.Distance(go.transform.position, position);
+                if (curDist < distance)
+                {
+                    if (go.GetComponent<Enemy>().state == Enemy.State.CHARGE || go.GetComponent<Enemy>().state == Enemy.State.INSIGHT)
+                        distance = curDist;
+                }
             }
         }
         return distance;
