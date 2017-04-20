@@ -21,7 +21,7 @@ public class InGameMenu : MonoBehaviour
 
         tankSelected = 0;
         tankTarget = new Vector3(tankSelected * -1200, 0, 0);
-        resumeLevel = 2; //ToDo take level from memero
+        resumeLevel = PlayerPrefs.GetInt("ResumeLevel", 0); //ToDo take level from memero
         Resume.onClick.AddListener(() =>
             {
                 Debug.Log("Resume");
