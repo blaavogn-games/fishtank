@@ -121,7 +121,6 @@ public class Enemy : MonoBehaviour
             else
                 animator.SetInteger("Mouth", 1);
         }
-            
 
         Vector3 newPosition = Vector3.MoveTowards(transform.position, target, velocity * Time.deltaTime);
         Vector3 movement = newPosition - transform.position;
@@ -139,8 +138,6 @@ public class Enemy : MonoBehaviour
         if (Physics.SphereCast(ray.origin, PhysicalSizeRadius, ray.direction, out hit, SightRange, layerMask))
             if (hit.transform.tag == "Player" || hit.transform.tag == "Follower")
                 return true;
-            else
-                Debug.Log(hit.transform.tag);
         return false;
     }
 
