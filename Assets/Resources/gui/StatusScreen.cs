@@ -70,25 +70,25 @@ public class StatusScreen : MonoBehaviour {
                 labelStyle.alignment = TextAnchor.UpperLeft;
                 alpha = 1;
                 GUI.color = TextColour;
-                GUI.Label(new Rect(0.02f * Screen.width, 0.02f * Screen.height, 0.25f * Screen.width, 0.05f * Screen.height), "Pills eaten: " + showPills + " / " + maxPills, labelStyle);
-                if (showPills < pills)
+                GUI.Label(new Rect(0.02f * Screen.width, 0.02f * Screen.height, 0.25f * Screen.width, 0.05f * Screen.height), "Pills eaten: " + pills + " / " + maxPills, labelStyle);
+                /*if (showPills < pills)
                  {
                      showPills += 1;
                  }
-                /* if (showPills >= pills)
+                 if (showPills >= pills)
                  {*/
-                if (showDeaths < deaths)
+               /* if (showDeaths < deaths)
                     {
                         deaths += 1;
-                    }
-                    GUI.Label(new Rect(0.02f * Screen.width, 0.07f * Screen.height, 0.25f * Screen.width, 0.1f * Screen.height), "Deaths: " + showDeaths, labelStyle);
+                    }*/
+                    GUI.Label(new Rect(0.02f * Screen.width, 0.07f * Screen.height, 0.25f * Screen.width, 0.1f * Screen.height), "Deaths: " + deaths, labelStyle);
                 /* if (showDeaths >= deaths)
                  {*/
-                if (showTimeTaken < timeTaken)
+               /* if (showTimeTaken < timeTaken)
                         {
                             showTimeTaken += timeTaken / 20;
-                        }
-                        GUI.Label(new Rect(0.02f * Screen.width, 0.12f * Screen.height, 0.25f * Screen.width, 0.15f * Screen.height), "Time Taken: " + showTimeTaken.ToString("F2") + " seconds", labelStyle);
+                        }*/
+                        GUI.Label(new Rect(0.02f * Screen.width, 0.12f * Screen.height, 0.25f * Screen.width, 0.15f * Screen.height), "Time Taken: " + timeTaken.ToString("F2") + " seconds", labelStyle);
                        /* if(showTimeTaken >= timeTaken)
                         {*/
                             canContinue = true;
