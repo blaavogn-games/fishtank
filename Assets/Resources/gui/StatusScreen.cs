@@ -72,31 +72,31 @@ public class StatusScreen : MonoBehaviour {
                 GUI.color = TextColour;
                 GUI.Label(new Rect(0.02f * Screen.width, 0.02f * Screen.height, 0.25f * Screen.width, 0.05f * Screen.height), "Pills eaten: " + showPills + " / " + maxPills, labelStyle);
                 if (showPills < pills)
-                {
-                    showPills += 1;
-                }
-                if (showPills >= pills)
-                {
-                    if (showDeaths < deaths)
+                 {
+                     showPills += 1;
+                 }
+                /* if (showPills >= pills)
+                 {*/
+                if (showDeaths < deaths)
                     {
                         deaths += 1;
                     }
                     GUI.Label(new Rect(0.02f * Screen.width, 0.07f * Screen.height, 0.25f * Screen.width, 0.1f * Screen.height), "Deaths: " + showDeaths, labelStyle);
-                    if (showDeaths >= deaths)
-                    {
-                        if (showTimeTaken < timeTaken)
+                /* if (showDeaths >= deaths)
+                 {*/
+                if (showTimeTaken < timeTaken)
                         {
                             showTimeTaken += timeTaken / 20;
                         }
                         GUI.Label(new Rect(0.02f * Screen.width, 0.12f * Screen.height, 0.25f * Screen.width, 0.15f * Screen.height), "Time Taken: " + showTimeTaken.ToString("F2") + " seconds", labelStyle);
-                        if(showTimeTaken >= timeTaken)
-                        {
+                       /* if(showTimeTaken >= timeTaken)
+                        {*/
                             canContinue = true;
                             labelStyle.alignment = TextAnchor.MiddleCenter;
                             GUI.Label(new Rect(Screen.width / 2 - 50, Screen.height / 2 - 25, 100, 50), "PRESS ANY KEY TO CONTINUE", labelStyle);
-                        }
-                    }
-                }
+                        //}
+                    //}
+                //}
 
             }
         }
