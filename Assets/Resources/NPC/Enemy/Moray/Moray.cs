@@ -12,8 +12,8 @@ public class Moray : MonoBehaviour
     private Quaternion initialRotation;
 
     public float Speed = 10.0f;
-    private float AttackDistance = 20.0f;
-    private float SightDistance = 20.0f, SightAngle = 100;
+    public float AttackDistance = 20.0f;
+    public float SightDistance = 20.0f, SightAngle = 100;
     private float attackTraveled = 0.0f;
     private float segmentTraveled = 0.0f;
     private float segmentSize;
