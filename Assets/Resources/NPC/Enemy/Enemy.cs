@@ -34,9 +34,9 @@ public class Enemy : MonoBehaviour
         animator = GetComponent<Animator>();
         Navigator nav = GameObject.FindGameObjectWithTag("Navigator").GetComponent<Navigator>();
 
-        System.Diagnostics.Stopwatch stopWatch = new System.Diagnostics.Stopwatch();
-        stopWatch.Reset();
-        stopWatch.Start();
+        //System.Diagnostics.Stopwatch stopWatch = new System.Diagnostics.Stopwatch();
+        //stopWatch.Reset();
+        //stopWatch.Start();
         Transform path = transform.parent.FindChild("Path");
         Vector3[] milestones = new Vector3[path.childCount + 1];
         milestones[0] = transform.position;
@@ -60,9 +60,8 @@ public class Enemy : MonoBehaviour
             }
         }
         state = State.PATROL;
-        stopWatch.Stop();
-        TimeSpan ts = stopWatch.Elapsed;
-        Debug.Log(String.Format("Path found in {0}ms", ts.Milliseconds), gameObject);
+        //stopWatch.Stop();
+        //TimeSpan ts = stopWatch.Elapsed;
         SetPathPoint();        
     }
 
