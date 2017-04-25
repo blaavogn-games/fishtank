@@ -4,7 +4,8 @@ public class Moray : MonoBehaviour
 {
     public GameObject MoraneSegment;
     public enum MorayState {ATTACK, RETRACT, IDLE};
-    public MorayState State = MorayState.ATTACK;
+    [HideInInspector]
+    public MorayState State = MorayState.IDLE;
     public Vector3 InitialPosition;
     private PlayerFollowers playerFollowers;
     private Vector3 target;
@@ -34,7 +35,8 @@ public class Moray : MonoBehaviour
             case MorayState.ATTACK:
                 moveDir = 1;
                 target = playerFollowers.GetTarget().position;
-                if (segmentTraveled >= 1.0f)
+
+                while(segmentTraveled >= 1.0f)
                 {
                     var ray = new Ray(transform.position, transform.forward);
                     RaycastHit hit;
@@ -45,7 +47,6 @@ public class Moray : MonoBehaviour
                         return;
                     }
 
-                    segmentTraveled = 0.0f;
                     var g = (GameObject)Instantiate(MoraneSegment, InitialPosition - transform.forward, initialRotation);
                     var segment = g.GetComponent<MoraySegment>();
                     segment.Moray = this;
@@ -59,13 +60,15 @@ public class Moray : MonoBehaviour
                         HeadSegment = segment;
                         segment.Head = transform;
                     }
+                    segmentTraveled -= 1.0f;
+                    segment.InnerUpdate(segmentTraveled / Speed);
                     TailSegment = segment;
                 }
                 break;
             case MorayState.RETRACT:
                 target = (HeadSegment == null) ? InitialPosition : HeadSegment.transform.position;
                 moveDir = -1;
-                if (Vector3.Distance(transform.position, InitialPosition) < 0.5f)
+                if (Vector3.Distance(transform.position, InitialPosition) < 0.75f)
                 {
                     InitialPosition = transform.position;
                     initialRotation = transform.rotation;
@@ -96,6 +99,8 @@ public class Moray : MonoBehaviour
     {
         if (State != MorayState.ATTACK)
             return;
+
+        Debug.Log(col.transform.tag);
         if (col.transform.tag == "Follower")
         {
             col.transform.parent.GetComponent<FollowFish>().Respawn();
