@@ -31,7 +31,7 @@ public class DragArea : MonoBehaviour {
             float invDist = Mathf.Max(0, (MaxDrag - Vector3.Distance(t.position, dragPoint.position))) + BaseDrag;
             invDist = Mathf.Min(invDist, MaxDrag) * mult * DragMultiplier;
             t.position = Vector3.MoveTowards(t.position, dragPoint.position, invDist * Time.deltaTime);
-            if (t.position == dragPoint.position && t.tag == "dragable") { 
+            if (Vector3.Distance(t.position, dragPoint.position) < 0.1f && t.tag == "dragable") {
                 t.transform.position = RandomPos();
                 t.GetComponent<Billboard>().Spawn();
             }
