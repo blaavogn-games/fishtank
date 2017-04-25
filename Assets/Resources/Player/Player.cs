@@ -82,18 +82,12 @@ public class Player : MonoBehaviour {
         }
         //targetRotation = transform.rotation;
         originalRotation = transform.rotation;
-        this._rigidbody = GetComponent<Rigidbody>();
+        _rigidbody = GetComponent<Rigidbody>();
         playerSound = GetComponent<PlayerSound>();
     }
 
     void Update ()
     {
-        /*if (!spawnLoaded && spawnPoint != Vector3.zero)
-        {
-            transform.position = spawnPoint;
-            spawnLoaded = true;
-        }*/
-
         switch (state)
         {
             case State.DYING:
@@ -107,7 +101,6 @@ public class Player : MonoBehaviour {
                 }
                 break;
             case State.SWIM:
-
                 float constAcc = 0.0f, boost = 0;
                 GamePad.SetVibration(0, 0, 0);
                 //Forward movement
