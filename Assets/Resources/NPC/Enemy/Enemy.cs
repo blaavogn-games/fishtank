@@ -63,8 +63,7 @@ public class Enemy : MonoBehaviour
         stopWatch.Stop();
         TimeSpan ts = stopWatch.Elapsed;
         Debug.Log(String.Format("Path found in {0}ms", ts.Milliseconds), gameObject);
-        SetPathPoint();
-        
+        SetPathPoint();        
     }
 
     void SetPathPoint()
