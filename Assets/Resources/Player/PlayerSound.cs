@@ -30,7 +30,6 @@ public class PlayerSound : MonoBehaviour {
         audioSources[4].clip = SwimSound;
         audioSources[4].Play();
         //filter = GetComponent<AudioLowPassFilter>();
-        
     }
 
     public void SetSpeed(float speed)

@@ -33,7 +33,6 @@ public class AudioClipGroup
 }
 
 public class SoundManager : MonoBehaviour {
-    
     private static Dictionary<SfxTypes, AudioClipGroup> map;
     //Has to be set through editor
     public AudioMixerGroup Music, SFX, LeadSFX, Ambient;
