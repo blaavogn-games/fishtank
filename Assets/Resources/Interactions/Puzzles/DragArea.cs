@@ -10,7 +10,6 @@ public class DragArea : MonoBehaviour {
     public GameObject particles;
     private Vector3 halfScale;
 
-
     void Start()
     {
         state = State.DRAG;
@@ -44,9 +43,9 @@ public class DragArea : MonoBehaviour {
         Vector3 pos = dragPoint.position;
         while(Vector3.Distance(pos, dragPoint.position) < 10) {
             pos = transform.position + new Vector3(Random.Range(-halfScale.x, halfScale.x),
-                                                                        Random.Range(-halfScale.y, halfScale.y),
-                                                                        Random.Range(-halfScale.z, halfScale.z));
-        }
+                                                                Random.Range(-halfScale.y, halfScale.y),
+                                                                Random.Range(-halfScale.z, halfScale.z));
+}
         return pos;
     }
 
