@@ -28,8 +28,8 @@ public class DragArea : MonoBehaviour {
         foreach(GameObject g in dragables) {
             Transform t = g.transform;
             float mult = (g.tag == "Enemy") ? EnemyMultiplier : 1;
-            float invDist = Mathf.Max(0, (MaxDrag - Vector3.Distance(t.position, dragPoint.position))) + BaseDrag;
-            invDist = Mathf.Min(invDist, MaxDrag) * mult * DragMultiplier;
+            float invDist = Mathf.Max(0, (MaxDrag - Vector3.Distance(t.position, dragPoint.position))) + BaseDrag + 200;
+            invDist = Mathf.Min(invDist+200, MaxDrag) * mult * DragMultiplier;
             t.position = Vector3.MoveTowards(t.position, dragPoint.position, invDist * Time.deltaTime);
             if (Vector3.Distance(t.position, dragPoint.position) < 0.1f && t.tag == "dragable") {
                 t.transform.position = RandomPos();
