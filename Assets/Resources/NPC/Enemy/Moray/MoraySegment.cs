@@ -8,6 +8,11 @@ public class MoraySegment : MonoBehaviour {
     
     void Update ()
     {
+        InnerUpdate(Time.deltaTime);
+    }
+
+    public void InnerUpdate(float t)
+    {
         var target = transform.position;
         var moveDir = 0;
         switch (Moray.State)
@@ -24,9 +29,9 @@ public class MoraySegment : MonoBehaviour {
                 break;
         }
 
-        var newPosition = Vector3.MoveTowards(transform.position, target, Moray.Speed * Time.deltaTime);
+        var newPosition = Vector3.MoveTowards(transform.position, target, Moray.Speed * t);
         var movement = newPosition - transform.position;
-        transform.rotation = Quaternion.LookRotation(Vector3.RotateTowards(transform.forward, movement * moveDir, 0.1f, 0));
-        transform.position += transform.forward * movement.magnitude * moveDir;
+        transform.rotation = Quaternion.LookRotation(Vector3.RotateTowards(transform.forward, movement*moveDir, 0.1f, 0));
+        transform.position += transform.forward* movement.magnitude * moveDir;
     }
 }
