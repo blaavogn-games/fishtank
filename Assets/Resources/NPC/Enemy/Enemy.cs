@@ -24,6 +24,7 @@ public class Enemy : MonoBehaviour
     public float chaseVelocity = 6, pathVelocity = 4, chargeVelocity = 30;
     public float maxChaseDistance = float.PositiveInfinity;
     public float PhysicalSizeRadius = 2, ChargeDistance = 6, EatTime = 2;
+    public Transform CameraTarget;
 
     void Start ()
     {

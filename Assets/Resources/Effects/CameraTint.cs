@@ -9,15 +9,22 @@ public class CameraTint : MonoBehaviour
     public float BlinkSpeedFar = 1.0f;
     public float BlinkSpeedNear = 0.01f;
     public float shakeFactor = 0.1f;
+    [Header("Inside Mouth View")]
+    [Range(0,180)]
+    public float MouthViewAngle = 60;
+    [Tooltip("If you want it to be less than warning distance, anything higher than that makes no difference")]
+    public float MouthViewDistance = 60;
 
     private float blinkSpeed = 0;
     
     private float blinkTimer = 0;
     private float fadeDirection = 1;
-
-    [Header("Current blink stats")]
-    public float currentAlpha;
-    public float currentBlinkSpeed;
+    public UnityStandardAssets.Cameras.AutoCam cam;
+    private GameObject cameraTarget;
+    private GameObject player;
+    private GameObject[] enemies;
+    private GameObject chasingEnemy;
+    private Transform camTarget;
 
     float alphaTimer = 0;
     
@@ -27,10 +34,13 @@ public class CameraTint : MonoBehaviour
     Rect rect;
     float currentDistance = Mathf.Infinity;
     ScreenShake shake;
+    bool camSet = false;
 
     // Use this for initialization
     void Start()
     {
+        player = GameObject.FindGameObjectWithTag("Player");
+        cameraTarget = player;
         shake = Camera.main.GetComponent<ScreenShake>();
         fadeTexture = new Texture2D(1, 1);
         rect = new Rect(0, 0, Screen.width, Screen.height);
@@ -39,15 +49,38 @@ public class CameraTint : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Debug.DrawRay(player.transform.position, player.transform.forward, Color.green);
         currentDistance = closestEnemyDistance();
-        if (currentDistance < WarningDistance)
+        if (currentDistance < WarningDistance && chasingEnemy != null)
         {
             blinkSpeed = Mathf.Lerp(BlinkSpeedNear, BlinkSpeedFar, currentDistance / WarningDistance);
             alpha = Mathf.Lerp(0, MaxAlpha, blinkTimer / blinkSpeed);
             shake.ShakeScreen(1, alpha * shakeFactor);
+            if (Vector3.Angle(player.transform.forward, chasingEnemy.transform.forward) < MouthViewAngle && currentDistance<MouthViewDistance && camTarget != null)
+            {
+                if (!camSet)
+                {
+                    camSet = true;
+                    cam.SetTarget(camTarget);
+                }
+            }
+            else
+            {
+                if (camSet)
+                {
+                    cam.SetTarget(player.transform);
+                    camSet = false;
+                }
+            }
         }
         else
         {
+            if (camSet)
+            {
+                cam.SetTarget(player.transform);
+                camSet = false;
+            }
+            chasingEnemy = null;
             shake.ShakeScreen(0, 0);
             blinkSpeed = BlinkSpeedFar;
             alpha = 0;
@@ -60,9 +93,6 @@ public class CameraTint : MonoBehaviour
             fadeDirection *= -1;
         }
         blinkTimer += (fadeDirection * Time.deltaTime);
-
-        currentAlpha = alpha;
-        currentBlinkSpeed = blinkSpeed;
     }
 
     private void OnGUI()
@@ -78,15 +108,13 @@ public class CameraTint : MonoBehaviour
     }
     private float closestEnemyDistance()
     {
-        GameObject[] gos;
-        gos = GameObject.FindGameObjectsWithTag("Enemy");
+        enemies = GameObject.FindGameObjectsWithTag("Enemy");
         float distance = Mathf.Infinity;
-        GameObject player = GameObject.FindGameObjectWithTag("Player");
         if (player == null)
             return distance;
 
         Vector3 position = player.transform.position;
-        foreach (GameObject go in gos)
+        foreach (GameObject go in enemies)
         {
             if (go.GetComponent<Enemy>() != null)
             {
@@ -94,7 +122,11 @@ public class CameraTint : MonoBehaviour
                 if (curDist < distance)
                 {
                     if (go.GetComponent<Enemy>().state == Enemy.State.CHARGE || go.GetComponent<Enemy>().state == Enemy.State.INSIGHT)
+                    {
                         distance = curDist;
+                        chasingEnemy = go;
+                        camTarget = chasingEnemy.GetComponent<Enemy>().CameraTarget;
+                    }
                 }
             }
         }
