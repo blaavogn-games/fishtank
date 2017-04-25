@@ -91,7 +91,9 @@ ModelImporter:
         weight: 1
       - path: LanternFish/head
         weight: 1
-      - path: LanternFish/head/head_end
+      - path: LanternFish/head/head.001
+        weight: 1
+      - path: LanternFish/head/head.001/head.001_end
         weight: 1
       - path: LanternFish/middle
         weight: 1
