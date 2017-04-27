@@ -15,7 +15,7 @@ public class PickupCapsule : MonoBehaviour {
 
     private void Start()
     {
-        if (World.i.savedPills.Contains(name))
+        if (World.i.SavedPills.Contains(name))
             Destroy(gameObject);
     }
 
@@ -35,7 +35,7 @@ public class PickupCapsule : MonoBehaviour {
                 return;
             }
        
-            if (World.i.savedPills.Contains(name))
+            if (World.i.SavedPills.Contains(name))
                 return;
             Trigger trig = GetComponentInChildren<Trigger>();
             World.i.Pill(name);
