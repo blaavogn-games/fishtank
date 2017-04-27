@@ -135,8 +135,19 @@ public class Enemy : MonoBehaviour
         RaycastHit hit;
         Debug.DrawRay(ray.origin, ray.direction * SightRange, Color.red, 0.1f);
         if (Physics.SphereCast(ray.origin, PhysicalSizeRadius, ray.direction, out hit, SightRange, layerMask))
-            if (hit.transform.tag == "Player" || hit.transform.tag == "Follower")
-                return true;
+        {
+            switch (hit.transform.tag)
+            {
+                case "Player":
+                    if (hit.transform.GetComponent<Player>().state != Player.State.DYING)
+                    {
+                        return true;
+                    }
+                    break;
+                case "Follower":
+                    return true;
+            }
+        }
         return false;
     }
 

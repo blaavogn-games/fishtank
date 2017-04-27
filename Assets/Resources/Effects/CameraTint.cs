@@ -49,7 +49,6 @@ public class CameraTint : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.DrawRay(player.transform.position, player.transform.forward, Color.green);
         currentDistance = closestEnemyDistance();
         if (currentDistance < WarningDistance && chasingEnemy != null)
         {
