@@ -11,9 +11,13 @@ public class PlayerSound : MonoBehaviour {
     public AudioClip SwimSound;
     private AudioSource[] audioSources;
     private AudioLowPassFilter filter;
-    
+
+    private SoundManager soundManager;
+
     void Start ()
     {
+        soundManager = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<SoundManager>();
+
         audioSources = GetComponents<AudioSource>();
         audioSources[0].clip = SwimAmbient;
         audioSources[0].Play();
@@ -26,7 +30,6 @@ public class PlayerSound : MonoBehaviour {
         audioSources[4].clip = SwimSound;
         audioSources[4].Play();
         //filter = GetComponent<AudioLowPassFilter>();
-        
     }
 
     public void SetSpeed(float speed)

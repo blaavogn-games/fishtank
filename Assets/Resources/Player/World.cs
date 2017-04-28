@@ -14,26 +14,28 @@ public class World : MonoBehaviour {
     [Header("Controls")]
     public bool FlightControls;
     public bool MouseLook;
-    string textToShow;
-    Color guiColour = Color.white;
-    int deaths = 0;
-    int pills = 0;
-    float timeTaken = 0;
+    private string textToShow;
+    private Color guiColour = Color.white;
+    private int totalDeaths = 0;
+    private int deaths = 0;
+    private int pills = 0;
+    private float timeTaken = 0;
+
     [HideInInspector]
-    public float beginTime = 0;
-    public int showDeaths = 0;
-    public int showPills = 0;
-    public float showTime = 0;
+    public float BeginTime = 0;
     [HideInInspector]
     private List<string> pillsTaken;
     [HideInInspector]
-    public List<string> savedPills;
+    public List<string> SavedPills;
+
+    public int showDeaths = 0;
+    public int showTotalDeaths = 0;
 
     private void Awake()
     {
-        beginTime = Time.time;
+        BeginTime = Time.time;
         pillsTaken = new List<string>();
-        savedPills = new List<string>();
+        SavedPills = new List<string>();
         if (i == null)
         {
             i = this;
@@ -46,7 +48,6 @@ public class World : MonoBehaviour {
     {
         FlightControls = ToBool(PlayerPrefs.GetInt("Flight Controls", 0));
         MouseLook = ToBool(PlayerPrefs.GetInt("MouseLook", 1));
-        
     }
 	// Use this for initialization
 	void Start () {
@@ -54,7 +55,10 @@ public class World : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void Update ()
+	{
+	    showDeaths = deaths;
+	    showTotalDeaths = totalDeaths;
         if (guiColour.a > 0)
         {
             guiColour.a -= 0.005f;
@@ -87,27 +91,21 @@ public class World : MonoBehaviour {
             RestartLevel(false);
         if (Input.GetKeyDown(KeyCode.V))
             WinLevel();
-        showTime = Time.time-beginTime;
     }
 
-    public void SetFlightControls() {
+    public void SetFlightControls()
+    {
         FlightControls = !FlightControls;
         PlayerPrefs.SetInt("Flight Controls", ToInt(FlightControls));
 
-        if (FlightControls)
-            ShowGuiText("Flight Controls enabled!");
-        else
-            ShowGuiText("Flight Controls disabled!");
+        ShowGuiText(FlightControls ? "Flight Controls enabled!" : "Flight Controls disabled!");
     }
     public void SetMouseLook()
     {
         MouseLook = !MouseLook;
         PlayerPrefs.SetInt("MouseLook", ToInt(MouseLook));
 
-        if (MouseLook)
-            ShowGuiText("Mouselook enabled!");
-        else
-            ShowGuiText("Mouselook disabled!");
+        ShowGuiText(MouseLook ? "Mouselook enabled!" : "Mouselook disabled!");
     }
 
 
@@ -141,87 +139,83 @@ public class World : MonoBehaviour {
     }
     public int Death()
     {
-        int level = SceneManager.GetActiveScene().buildIndex;
+        var level = SceneManager.GetActiveScene().buildIndex;
         if (level > 0)
             level--;
-        deaths += 1;
-        //PlayerPrefs.SetInt("Level1Deaths", PlayerPrefs.GetInt("Level1Deaths", 0) + 1);
-        showDeaths = deaths;
+        deaths++;
+        totalDeaths++;
         return deaths;
     }
     public int Pill(string instanceName)
     {
         pillsTaken.Add(instanceName);
-        int level = SceneManager.GetActiveScene().buildIndex;
+        var level = SceneManager.GetActiveScene().buildIndex;
         if (level > 0)
             level--;
         pills += 1;
-        showPills = pills;
         return pills;
     }
     public void WinLevel()
     {
-        int level = SceneManager.GetActiveScene().buildIndex;
+        var level = SceneManager.GetActiveScene().buildIndex;
         if (level > 0)
             level--;
-        timeTaken = Time.time- beginTime;
+        timeTaken = Time.time- BeginTime;
         var p=Instantiate(statusScreen);
-        int totalPills=pills+GameObject.FindGameObjectsWithTag("PointObject").Length;
-        p.GetComponent<StatusScreen>().WinScreen(deaths, pills, totalPills, timeTaken);
+        var totalPills=pills+GameObject.FindGameObjectsWithTag("PointObject").Length;
+        p.GetComponent<StatusScreen>().WinScreen(deaths, pills, totalPills, timeTaken, totalDeaths);
         GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().Freeze();
         //GotoLevel(SceneManager.GetActiveScene().buildIndex + 1);
     }
     public void GotoLevel(int level)
     {
         SceneManager.LoadScene(level);
+        Debug.Log("going to level: " + level);
     }
     public void RestartLevel(bool useCheckpoint)
     {
         if (!useCheckpoint)
-        {
             ResetStats();
-        }
         else
-        {
-            pills = savedPills.Count;
-            showPills = pills;
-        }
+            pills = SavedPills.Count;
         GotoLevel(SceneManager.GetActiveScene().buildIndex);
     }
     public void NextLevel()
     {
+        deaths = 0;
         ResetStats();
+        int levelToGoTo = SceneManager.GetActiveScene().buildIndex + 1;
         if (SceneManager.GetActiveScene().buildIndex >= AmountOfLevels)
-            GotoLevel(0);
-        else
-            GotoLevel(SceneManager.GetActiveScene().buildIndex + 1);
+            levelToGoTo = 0;
+        GotoLevel(levelToGoTo);
     }
     public void CheckPoint(GameObject gameO)
     {
-        if (SpawnPoint != gameO.transform.position && spawnObject != gameO)
+        if (SpawnPoint == gameO.transform.position || spawnObject == gameO) return;
+        spawnObject = gameO;
+        SpawnPoint = gameO.transform.position;
+        Debug.Log("Spawn set to: " + gameO.transform.position.ToString());
+        Debug.Log("Saved pills: " + pillsTaken.Count);
+        foreach (var t in pillsTaken)
         {
-            spawnObject = gameO;
-            SpawnPoint = gameO.transform.position;
-            Debug.Log("Spawn set to: " + gameO.transform.position.ToString());
-            Debug.Log("Saved pills: " + pillsTaken.Count);
-            for(int i = 0; i < pillsTaken.Count; i++)
-            {
-                if(!savedPills.Contains(pillsTaken[i]))
-                    savedPills.Add(pillsTaken[i]);
-            }
+            if (!SavedPills.Contains(t))
+                SavedPills.Add(t);
         }
+    }
+
+    public void NewGame()
+    {
+        ResetStats();
+        totalDeaths = 0;
+        deaths = 0;
     }
     public void ResetStats()
     {
-        deaths = 0;
         pills = 0;
         timeTaken = 0;
-        showPills = 0;
-        showDeaths = 0;
-        showTime = 0;
         SpawnPoint = Vector3.zero;
         pillsTaken.Clear();
-        savedPills.Clear();
-        beginTime = Time.time;
+        SavedPills.Clear();
+        BeginTime = Time.time;
     }
 }

@@ -113,7 +113,9 @@ public class InGameMenu : MonoBehaviour
     {
         Debug.Log("Start game " + i);
         if (newGame)
-            World.i.ResetStats();
+        {
+            World.i.NewGame();
+        }
         World.i.GotoLevel(i);
     }
 

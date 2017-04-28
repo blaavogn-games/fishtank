@@ -24,6 +24,7 @@ public class Enemy : MonoBehaviour
     public float chaseVelocity = 6, pathVelocity = 4, chargeVelocity = 30;
     public float maxChaseDistance = float.PositiveInfinity;
     public float PhysicalSizeRadius = 2, ChargeDistance = 6, EatTime = 2;
+    public Transform CameraTarget;
 
     void Start ()
     {
@@ -34,9 +35,9 @@ public class Enemy : MonoBehaviour
         animator = GetComponent<Animator>();
         Navigator nav = GameObject.FindGameObjectWithTag("Navigator").GetComponent<Navigator>();
 
-        System.Diagnostics.Stopwatch stopWatch = new System.Diagnostics.Stopwatch();
-        stopWatch.Reset();
-        stopWatch.Start();
+        //System.Diagnostics.Stopwatch stopWatch = new System.Diagnostics.Stopwatch();
+        //stopWatch.Reset();
+        //stopWatch.Start();
         Transform path = transform.parent.FindChild("Path");
         Vector3[] milestones = new Vector3[path.childCount + 1];
         milestones[0] = transform.position;
@@ -60,9 +61,8 @@ public class Enemy : MonoBehaviour
             }
         }
         state = State.PATROL;
-        stopWatch.Stop();
-        TimeSpan ts = stopWatch.Elapsed;
-        Debug.Log(String.Format("Path found in {0}ms", ts.Milliseconds), gameObject);
+        //stopWatch.Stop();
+        //TimeSpan ts = stopWatch.Elapsed;
         SetPathPoint();        
     }
 
@@ -135,8 +135,19 @@ public class Enemy : MonoBehaviour
         RaycastHit hit;
         Debug.DrawRay(ray.origin, ray.direction * SightRange, Color.red, 0.1f);
         if (Physics.SphereCast(ray.origin, PhysicalSizeRadius, ray.direction, out hit, SightRange, layerMask))
-            if (hit.transform.tag == "Player" || hit.transform.tag == "Follower")
-                return true;
+        {
+            switch (hit.transform.tag)
+            {
+                case "Player":
+                    if (hit.transform.GetComponent<Player>().state != Player.State.DYING)
+                    {
+                        return true;
+                    }
+                    break;
+                case "Follower":
+                    return true;
+            }
+        }
         return false;
     }
 

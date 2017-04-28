@@ -4,14 +4,18 @@ using UnityEngine.SceneManagement;
 using XInputDotNetPure;
 
 public class Player : MonoBehaviour {
-    enum State { SWIM, DYING, FROZEN };
+    public enum State { SWIM, DYING, FROZEN };
     public enum DeathCause { ALIVE, EATEN, SUCKED };
-    private State state = State.SWIM;
+
+    [HideInInspector]
+    public State state { get; private set; }
+
     private Rigidbody _rigidbody;
     //private AudioLowPassFilter _audioLowPassFilter;
     //private bool dashDown = false;
     private PlayerSound playerSound;
     public Wiggle Wiggle;
+    public DeathEffect DeathEffect;
 
     //[HideInInspector]
     public float hunger;
@@ -64,11 +68,12 @@ public class Player : MonoBehaviour {
     Quaternion originalRotation;
 
     public GameObject WorldObject;
-    private float dieTime = float.PositiveInfinity;
+    //private float dieTime = float.PositiveInfinity;
     private DeathCause deathCause = DeathCause.ALIVE;
 
     private void Awake()
     {
+        state = State.SWIM;
         if (!FindObjectOfType<World>())
         {
             Instantiate(WorldObject);
@@ -93,12 +98,12 @@ public class Player : MonoBehaviour {
             case State.DYING:
                 //deathCause can be used for death transition.
                 if(deathCause == DeathCause.ALIVE) Debug.Log(""); //Just to supress warning
-                if(dieTime < Time.time) {
+                //if(dieTime < Time.time) {
                     //To do: Make scene reload
-                    World.i.RestartLevel(true);
+                    //World.i.RestartLevel(true);
                     //transform.position = spawnPoint;
                     //state = State.SWIM;
-                }
+                //}
                 break;
             case State.SWIM:
                 float constAcc = 0.0f, boost = 0;
@@ -210,12 +215,21 @@ public class Player : MonoBehaviour {
     {
         this.deathCause = deathCause;
         state = State.DYING;
-        dieTime = Time.time + .2f;
+        //dieTime = Time.time + .2f;
         World.i.Death();
+        var p = Instantiate(DeathEffect.gameObject);
+        p.transform.position = transform.position;
+        //Destroy(gameObject);
+        Wiggle.gameObject.SetActive(false);
     }
 
     public void Freeze()
     {
+        if (state == State.FROZEN)
+        {
+            state = State.SWIM;
+            return;
+        }
         state = State.FROZEN;
     }
 }
