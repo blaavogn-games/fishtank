@@ -42,7 +42,7 @@ public class FollowFish : MonoBehaviour {
                 break;
             case State.IDLE:
                 if (Move(idleTarget, IdleSpeed))
-                    idleTarget = RandomTarget(transform.position);
+                    idleTarget = RandomTarget(initialPosition);
                 if (WillFollowPlayer)
                 {
                     if (Vector3.Distance(transform.position, player.transform.position) < 5)
@@ -87,6 +87,11 @@ public class FollowFish : MonoBehaviour {
                 right = 1.3f;
                 up = -0.2f;
                 break;
+            case 3:
+                forward = 0.2f;
+                right = 1.1f;
+                up = -0.4f;
+                break;
         }
 
         return t.position + t.forward * forward + t.right * right + t.up * up;
@@ -97,13 +102,14 @@ public class FollowFish : MonoBehaviour {
         state = State.IDLE;
         player.RemoveFollower(gameObject); //Perhaps followers should just be infered from whether they are IDLE or not
         transform.position = initialPosition;
+        idleTarget = RandomTarget(initialPosition);
     }
 
     private Vector3 RandomTarget(Vector3 center)
     {
         Vector3 newPos;
         do
-            newPos = center + new Vector3(Random.Range(-2.0f, 2.0f), Random.Range(-2.0f, 2.0f), Random.Range(-2.0f, 2.0f));
+            newPos = center + new Vector3(Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f));
         while (Vector3.Distance(newPos, transform.position) < 1.0f);
         return newPos;
     }
