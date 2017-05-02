@@ -9,11 +9,15 @@ public class CameraTint : MonoBehaviour
     public float BlinkSpeedFar = 1.0f;
     public float BlinkSpeedNear = 0.01f;
     public float shakeFactor = 0.1f;
-    [Header("Inside Mouth View")]
+    [Header("Chase Cam Controls")]
     [Range(0,180)]
-    public float MouthViewAngle = 60;
+    public float ChaseCamAngle = 60;
     [Tooltip("If you want it to be less than warning distance, anything higher than that makes no difference")]
-    public float MouthViewDistance = 60;
+    public float ChaseCamDistance = 60;
+
+    public float ChaseCamSnapSpeed = 0.8f;
+    public float InstantSnapRadius = 7;
+    private float originalSnapSpeed = 5;
 
     private float blinkSpeed = 0;
     
@@ -55,18 +59,22 @@ public class CameraTint : MonoBehaviour
             blinkSpeed = Mathf.Lerp(BlinkSpeedNear, BlinkSpeedFar, currentDistance / WarningDistance);
             alpha = Mathf.Lerp(0, MaxAlpha, blinkTimer / blinkSpeed);
             shake.ShakeScreen(1, alpha * shakeFactor);
-            if (Vector3.Angle(player.transform.forward, chasingEnemy.transform.forward) < MouthViewAngle && currentDistance<MouthViewDistance && camTarget != null)
+            if (Vector3.Angle(player.transform.forward, chasingEnemy.transform.forward) < ChaseCamAngle && currentDistance<ChaseCamDistance && camTarget != null)
             {
                 if (!camSet)
                 {
+                    cam.SetSpeed(ChaseCamSnapSpeed);
                     camSet = true;
                     cam.SetTarget(camTarget);
                 }
+                if(Vector3.Distance(cam.transform.position,chasingEnemy.transform.position)<InstantSnapRadius || Vector3.Distance(player.transform.position, chasingEnemy.transform.position)< Vector3.Distance(player.transform.position,cam.transform.position))
+                    cam.SetSpeed(originalSnapSpeed);
             }
             else
             {
                 if (camSet)
                 {
+                    cam.SetSpeed(originalSnapSpeed);
                     cam.SetTarget(player.transform);
                     camSet = false;
                 }
@@ -76,6 +84,7 @@ public class CameraTint : MonoBehaviour
         {
             if (camSet)
             {
+                cam.SetSpeed(originalSnapSpeed);
                 cam.SetTarget(player.transform);
                 camSet = false;
             }
