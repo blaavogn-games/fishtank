@@ -40,14 +40,14 @@ public class Moray : MonoBehaviour
                 targetPos = target.position;
                 while (segmentTraveled >= 1.0f)
                 {
-                    var ray = new Ray(transform.position, transform.forward);
-                    RaycastHit hit;
-                    if (attackTraveled >= AttackDistance ||
-                        (Physics.Raycast(ray.origin, ray.direction, out hit, 1.5f, 1) && hit.transform.tag != "Player"))
-                    {
-                        State = MorayState.RETRACT;
-                        return;
-                    }
+                    //var ray = new Ray(transform.position, transform.forward);
+                    //RaycastHit hit;
+                    //if (attackTraveled >= AttackDistance ||
+                    //    (Physics.Raycast(ray.origin, ray.direction, out hit, 1.5f, 1) && hit.transform.tag != "Player"))
+                    //{
+                    //    State = MorayState.RETRACT;
+                    //    return;
+                    //}
 
                     var g = (GameObject)Instantiate(MoraneSegment, InitialPosition - 2.5f * InitialForward, initialRotation);
                     var segment = g.GetComponent<MoraySegment>();
