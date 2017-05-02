@@ -75,9 +75,6 @@ public class Moray : MonoBehaviour
                     transform.position = InitialPosition;
                     transform.rotation = initialRotation;
                     State = MorayState.IDLE;
-                } else if (HeadSegment == null)
-                {
-                    Debug.Log("Moray: " + Vector3.Distance(transform.position, InitialPosition));
                 }
                 break;
             default:

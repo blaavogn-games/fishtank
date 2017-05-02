@@ -23,16 +23,14 @@ public class MoraySegment : MonoBehaviour {
             case Moray.MorayState.RETRACT:
                 moveDir = -1;
                 target = (Tail == null) ? Moray.InitialPosition : Tail.position;
-                if (Tail == null && Vector3.Distance(transform.position, target) < 0.5f)
+                if (Tail == null && Vector3.Distance(transform.position, target) < 0.6f)
                     Destroy(gameObject);
-                else if (Tail == null)
-                    Debug.Log(Vector3.Distance(transform.position, target));
                 break;
         }
 
-        transform.position = Vector3.MoveTowards(transform.position, target, Moray.Speed * t);
-        //var movement = newPosition - transform.position;
-        //transform.rotation = Quaternion.LookRotation(Vector3.RotateTowards(transform.forward, movement*moveDir, 0.4f, 0));
-        //transform.position += transform.forward* movement.magnitude * moveDir;
+        var newPosition = Vector3.MoveTowards(transform.position, target, Moray.Speed * t);
+        var movement = newPosition - transform.position;
+        transform.rotation = Quaternion.LookRotation(Vector3.RotateTowards(transform.forward, movement*moveDir, 100, 0));
+        transform.position += transform.forward* movement.magnitude * moveDir;
     }
 }
