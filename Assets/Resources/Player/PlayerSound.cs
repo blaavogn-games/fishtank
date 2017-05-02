@@ -34,7 +34,7 @@ public class PlayerSound : MonoBehaviour {
 
     public void SetSpeed(float speed)
     {
-        audioSources[4].volume = speed;
+        //audioSources[4].volume = speed;
         //filter.cutoffFrequency = 100+speed*25;
     }
 }
