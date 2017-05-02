@@ -8,7 +8,7 @@ public class Moray : MonoBehaviour
     public MorayState State = MorayState.IDLE;
     public Vector3 InitialPosition, InitialForward;
     private PlayerFollowers playerFollowers;
-    private Vector3 target;
+    private Transform target;
     private Quaternion initialRotation;
 
     public float Speed = 10.0f;
@@ -18,8 +18,7 @@ public class Moray : MonoBehaviour
     private float segmentTraveled = 0.0f;
     private float segmentSize;
     private MoraySegment HeadSegment, TailSegment;
-
-    public float lastDist = float.PositiveInfinity;
+    
     void Start ()
     {
         InitialPosition = transform.position;
@@ -32,13 +31,14 @@ public class Moray : MonoBehaviour
 	void Update ()
     {
         var moveDir = 0;
+        Vector3 targetPos;
         switch (State)
         {
             case MorayState.ATTACK:
                 moveDir = 1;
-                target = playerFollowers.GetTarget().position;
-
-                while(segmentTraveled >= 1.0f)
+                target = playerFollowers.GetTarget();
+                targetPos = target.position;
+                while (segmentTraveled >= 1.0f)
                 {
                     var ray = new Ray(transform.position, transform.forward);
                     RaycastHit hit;
@@ -68,31 +68,31 @@ public class Moray : MonoBehaviour
                 }
                 break;
             case MorayState.RETRACT:
-                target = (HeadSegment == null) ? InitialPosition : HeadSegment.transform.position;
+                targetPos = (HeadSegment == null) ? InitialPosition : HeadSegment.transform.position;
                 moveDir = -1;
-                float newDist = Vector3.Distance(transform.position, InitialPosition);
-                if (newDist > lastDist && HeadSegment == null)
+                if (HeadSegment == null && Vector3.Distance(transform.position, InitialPosition) < 1.0f)
                 {
                     transform.position = InitialPosition;
                     transform.rotation = initialRotation;
                     State = MorayState.IDLE;
-                    lastDist = float.PositiveInfinity;
                 }
-                lastDist = newDist;
                 break;
+            default:
             case MorayState.IDLE:
-                target = playerFollowers.GetTarget().position;
-                if (Vector3.Distance(transform.position, target) < SightDistance && 
-                    Vector3.Angle(transform.forward, target - transform.position) < SightAngle)
+                target = playerFollowers.GetTarget();
+                targetPos = target.position;
+                if (Vector3.Distance(transform.position, targetPos) < SightDistance && 
+                    Vector3.Angle(transform.forward, targetPos - transform.position) < SightAngle)
                 {
                     State = MorayState.ATTACK;
                     attackTraveled = 0.0f;
                     segmentTraveled = 0.8f;
                 }
+                targetPos = transform.position;
                 break;
         }
 
-        var newPosition = Vector3.MoveTowards(transform.position, target, Speed * Time.deltaTime);
+        var newPosition = Vector3.MoveTowards(transform.position, targetPos, Speed * Time.deltaTime);
         var movement = newPosition - transform.position;
         attackTraveled += movement.magnitude; //Only used by attackState
         segmentTraveled += movement.magnitude; //Only used by attackState
@@ -101,18 +101,14 @@ public class Moray : MonoBehaviour
     }
     
     public void OnTriggerEnter(Collider col)
-    {
-        if (State != MorayState.ATTACK)
-            return;
-
-        Debug.Log(col.transform.tag);
+    {        
         if (col.transform.tag == "Follower")
         {
             col.transform.parent.GetComponent<FollowFish>().Respawn();
             State = MorayState.RETRACT;
         }
         //If player is accedentaly eaten often this should include a transform test
-        else if (col.transform.tag == "Player")
+        else if (State == MorayState.ATTACK && col.transform.tag == "Player" && col.transform == target)
         {
             col.transform.GetComponent<Player>().Kill(Player.DeathCause.EATEN);
             State = MorayState.RETRACT;

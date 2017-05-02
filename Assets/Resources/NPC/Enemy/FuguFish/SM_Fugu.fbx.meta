@@ -1,6 +1,11 @@
 fileFormatVersion: 2
+<<<<<<< HEAD
 guid: 9316e1b4f07ead644a79c9e224350ea1
 timeCreated: 1493713091
+=======
+guid: 5af0643b202f4504eae2c5479dbb34c8
+timeCreated: 1493707865
+>>>>>>> master
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
@@ -49,6 +54,7 @@ ModelImporter:
     animationScaleError: 0.5
     animationWrapMode: 0
     extraExposedTransformPaths: []
+<<<<<<< HEAD
     clipAnimations:
     - serializedVersion: 16
       name: Armature|Swimming
@@ -98,6 +104,9 @@ ModelImporter:
       maskType: 0
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
+=======
+    clipAnimations: []
+>>>>>>> master
     isReadable: 1
   meshes:
     lODScreenPercentages: []
