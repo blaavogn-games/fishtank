@@ -9,11 +9,14 @@ public class CameraTint : MonoBehaviour
     public float BlinkSpeedFar = 1.0f;
     public float BlinkSpeedNear = 0.01f;
     public float shakeFactor = 0.1f;
-    [Header("Inside Mouth View")]
+    [Header("Chase Cam Controls")]
     [Range(0,180)]
     public float MouthViewAngle = 60;
     [Tooltip("If you want it to be less than warning distance, anything higher than that makes no difference")]
     public float MouthViewDistance = 60;
+
+    public float CameraSnapSpeed = 5;
+    private float originalCameraSnapSpeed = 5;
 
     private float blinkSpeed = 0;
     
@@ -61,6 +64,7 @@ public class CameraTint : MonoBehaviour
                 {
                     camSet = true;
                     cam.SetTarget(camTarget);
+                    cam.setSpeed(CameraSnapSpeed, CameraSnapSpeed);
                 }
             }
             else
@@ -68,6 +72,7 @@ public class CameraTint : MonoBehaviour
                 if (camSet)
                 {
                     cam.SetTarget(player.transform);
+                    cam.setSpeed(originalCameraSnapSpeed, originalCameraSnapSpeed);
                     camSet = false;
                 }
             }
@@ -76,6 +81,7 @@ public class CameraTint : MonoBehaviour
         {
             if (camSet)
             {
+                cam.setSpeed(originalCameraSnapSpeed, originalCameraSnapSpeed);
                 cam.SetTarget(player.transform);
                 camSet = false;
             }
