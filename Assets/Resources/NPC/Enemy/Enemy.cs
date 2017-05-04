@@ -35,9 +35,6 @@ public class Enemy : MonoBehaviour
         animator = GetComponent<Animator>();
         Navigator nav = GameObject.FindGameObjectWithTag("Navigator").GetComponent<Navigator>();
 
-        //System.Diagnostics.Stopwatch stopWatch = new System.Diagnostics.Stopwatch();
-        //stopWatch.Reset();
-        //stopWatch.Start();
         Transform path = transform.parent.FindChild("Path");
         Vector3[] milestones = new Vector3[path.childCount + 1];
         milestones[0] = transform.position;
@@ -61,8 +58,6 @@ public class Enemy : MonoBehaviour
             }
         }
         state = State.PATROL;
-        //stopWatch.Stop();
-        //TimeSpan ts = stopWatch.Elapsed;
         SetPathPoint();        
     }
 
@@ -123,7 +118,6 @@ public class Enemy : MonoBehaviour
 
         Vector3 newPosition = Vector3.MoveTowards(transform.position, target, velocity * Time.deltaTime);
         Vector3 movement = newPosition - transform.position;
-        //wiggle.wiggleSpeed = movement.magnitude * 50 + 10;
         transform.rotation = Quaternion.LookRotation(Vector3.RotateTowards(transform.forward, movement, 0.1f, 0));
         transform.position += transform.forward * movement.magnitude;
     }

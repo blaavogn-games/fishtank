@@ -194,8 +194,6 @@ public class World : MonoBehaviour {
         if (SpawnPoint == gameO.transform.position || spawnObject == gameO) return;
         spawnObject = gameO;
         SpawnPoint = gameO.transform.position;
-        Debug.Log("Spawn set to: " + gameO.transform.position.ToString());
-        Debug.Log("Saved pills: " + pillsTaken.Count);
         foreach (var t in pillsTaken)
         {
             if (!SavedPills.Contains(t))
