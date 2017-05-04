@@ -40,14 +40,11 @@ public class Moray : MonoBehaviour
                 targetPos = target.position;
                 while (segmentTraveled >= 1.0f)
                 {
-                    //var ray = new Ray(transform.position, transform.forward);
-                    //RaycastHit hit;
-                    //if (attackTraveled >= AttackDistance ||
-                    //    (Physics.Raycast(ray.origin, ray.direction, out hit, 1.5f, 1) && hit.transform.tag != "Player"))
-                    //{
-                    //    State = MorayState.RETRACT;
-                    //    return;
-                    //}
+                    if (attackTraveled >= AttackDistance)
+                    {
+                        State = MorayState.RETRACT;
+                        return;
+                    }
 
                     var g = (GameObject)Instantiate(MoraneSegment, InitialPosition - 2.5f * InitialForward, initialRotation);
                     var segment = g.GetComponent<MoraySegment>();
@@ -81,8 +78,7 @@ public class Moray : MonoBehaviour
             case MorayState.IDLE:
                 target = playerFollowers.GetTarget();
                 targetPos = target.position;
-                if (Vector3.Distance(transform.position, targetPos) < SightDistance && 
-                    Vector3.Angle(transform.forward, targetPos - transform.position) < SightAngle)
+                if (Vector3.Distance(transform.position, targetPos) < SightDistance)
                 {
                     State = MorayState.ATTACK;
                     attackTraveled = 0.0f;
@@ -101,14 +97,17 @@ public class Moray : MonoBehaviour
     }
     
     public void OnTriggerEnter(Collider col)
-    {        
+    {
+        if (State != MorayState.ATTACK)
+            return;
+
         if (col.transform.tag == "Follower")
         {
             col.transform.parent.GetComponent<FollowFish>().Respawn();
             State = MorayState.RETRACT;
         }
         //If player is accedentaly eaten often this should include a transform test
-        else if (State == MorayState.ATTACK && col.transform.tag == "Player" && col.transform == target)
+        else if (col.transform.tag == "Player" && col.transform == target)
         {
             col.transform.GetComponent<Player>().Kill(Player.DeathCause.EATEN);
             State = MorayState.RETRACT;

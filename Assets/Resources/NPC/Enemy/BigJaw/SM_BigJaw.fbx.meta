@@ -104,15 +104,15 @@ ModelImporter:
         weight: 1
       - path: BigJaw/Root/Body/Fin.R/Fin.R_end
         weight: 1
-      - path: BigJaw/Root/Body/Head
-        weight: 1
-      - path: BigJaw/Root/Body/Head/Jaw
-        weight: 1
-      - path: BigJaw/Root/Body/Head/Jaw/Jaw_end
-        weight: 1
       - path: BigJaw/Root/Body/Tail
         weight: 1
       - path: BigJaw/Root/Body/Tail/Tail_end
+        weight: 1
+      - path: BigJaw/Root/Head
+        weight: 1
+      - path: BigJaw/Root/Head/Jaw
+        weight: 1
+      - path: BigJaw/Root/Head/Jaw/Jaw_end
         weight: 1
       - path: Mesh
         weight: 1
@@ -216,15 +216,15 @@ ModelImporter:
         weight: 1
       - path: BigJaw/Root/Body/Fin.R/Fin.R_end
         weight: 1
-      - path: BigJaw/Root/Body/Head
-        weight: 1
-      - path: BigJaw/Root/Body/Head/Jaw
-        weight: 1
-      - path: BigJaw/Root/Body/Head/Jaw/Jaw_end
-        weight: 1
       - path: BigJaw/Root/Body/Tail
         weight: 1
       - path: BigJaw/Root/Body/Tail/Tail_end
+        weight: 1
+      - path: BigJaw/Root/Head
+        weight: 1
+      - path: BigJaw/Root/Head/Jaw
+        weight: 1
+      - path: BigJaw/Root/Head/Jaw/Jaw_end
         weight: 1
       - path: Mesh
         weight: 1
@@ -272,15 +272,15 @@ ModelImporter:
         weight: 1
       - path: BigJaw/Root/Body/Fin.R/Fin.R_end
         weight: 1
-      - path: BigJaw/Root/Body/Head
-        weight: 1
-      - path: BigJaw/Root/Body/Head/Jaw
-        weight: 1
-      - path: BigJaw/Root/Body/Head/Jaw/Jaw_end
-        weight: 1
       - path: BigJaw/Root/Body/Tail
         weight: 1
       - path: BigJaw/Root/Body/Tail/Tail_end
+        weight: 1
+      - path: BigJaw/Root/Head
+        weight: 1
+      - path: BigJaw/Root/Head/Jaw
+        weight: 1
+      - path: BigJaw/Root/Head/Jaw/Jaw_end
         weight: 1
       - path: Mesh
         weight: 1
@@ -328,15 +328,15 @@ ModelImporter:
         weight: 1
       - path: BigJaw/Root/Body/Fin.R/Fin.R_end
         weight: 1
-      - path: BigJaw/Root/Body/Head
-        weight: 1
-      - path: BigJaw/Root/Body/Head/Jaw
-        weight: 1
-      - path: BigJaw/Root/Body/Head/Jaw/Jaw_end
-        weight: 1
       - path: BigJaw/Root/Body/Tail
         weight: 1
       - path: BigJaw/Root/Body/Tail/Tail_end
+        weight: 1
+      - path: BigJaw/Root/Head
+        weight: 1
+      - path: BigJaw/Root/Head/Jaw
+        weight: 1
+      - path: BigJaw/Root/Head/Jaw/Jaw_end
         weight: 1
       - path: Mesh
         weight: 1
