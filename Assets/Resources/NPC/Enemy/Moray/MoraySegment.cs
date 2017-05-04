@@ -20,6 +20,7 @@ public class MoraySegment : MonoBehaviour {
                 moveDir = 1;
                 target = Head.position;
                 break;
+            case Moray.MorayState.EATEN:
             case Moray.MorayState.RETRACT:
                 moveDir = -1;
                 target = (Tail == null) ? Moray.InitialPosition : Tail.position;

@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 
 public class PlayerFollowers : MonoBehaviour {
+    public Player player;
     private GameObject[] followers = new GameObject[5];
     private int targetIndex = -1;
     //Invariant:
@@ -32,6 +33,8 @@ public class PlayerFollowers : MonoBehaviour {
 
     public Transform GetTarget()
     {
+        if (player.state == Player.State.DYING)
+            return null;
         return (targetIndex == -1) ? transform : followers[targetIndex].transform;
     }
 }

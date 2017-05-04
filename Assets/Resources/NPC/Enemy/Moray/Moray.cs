@@ -3,7 +3,7 @@
 public class Moray : MonoBehaviour
 {
     public GameObject MoraneSegment;
-    public enum MorayState {ATTACK, RETRACT, IDLE};
+    public enum MorayState {ATTACK, RETRACT, IDLE, EATEN};
     [HideInInspector]
     public MorayState State = MorayState.IDLE;
     public Vector3 InitialPosition, InitialForward;
@@ -37,12 +37,16 @@ public class Moray : MonoBehaviour
             case MorayState.ATTACK:
                 moveDir = 1;
                 target = playerFollowers.GetTarget();
+                if (target == null) { 
+                    State = MorayState.EATEN;
+                    goto case MorayState.EATEN;
+                }
                 targetPos = target.position;
                 while (segmentTraveled >= 1.0f)
                 {
                     if (attackTraveled >= AttackDistance)
                     {
-                        State = MorayState.RETRACT;
+                        State = MorayState.EATEN;
                         return;
                     }
 
@@ -74,9 +78,22 @@ public class Moray : MonoBehaviour
                     State = MorayState.IDLE;
                 }
                 break;
+            case MorayState.EATEN:
+                targetPos = (HeadSegment == null) ? InitialPosition : HeadSegment.transform.position;
+                moveDir = -1;
+                if (HeadSegment == null && Vector3.Distance(transform.position, InitialPosition) < 1.0f)
+                {
+                    transform.position = InitialPosition;
+                    transform.rotation = initialRotation;
+                }
+                break;
             default:
             case MorayState.IDLE:
                 target = playerFollowers.GetTarget();
+                if (target == null) { 
+                    State = MorayState.EATEN;
+                    goto case MorayState.EATEN;
+                }
                 targetPos = target.position;
                 if (Vector3.Distance(transform.position, targetPos) < SightDistance)
                 {
@@ -110,7 +127,7 @@ public class Moray : MonoBehaviour
         else if (col.transform.tag == "Player" && col.transform == target)
         {
             col.transform.GetComponent<Player>().Kill(Player.DeathCause.EATEN);
-            State = MorayState.RETRACT;
+            State = MorayState.EATEN;
         }
     }
 }

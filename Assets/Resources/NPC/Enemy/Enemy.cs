@@ -74,7 +74,8 @@ public class Enemy : MonoBehaviour
                 if((transform.position - target).magnitude < 0.01f)
                     SetPathPoint();
                 velocity = pathVelocity;
-                if(CheckSight(playerFollowers.GetTarget().position) &&
+                var t = playerFollowers.GetTarget();
+                if (t != null && CheckSight(t.position) &&
                    Vector3.Distance(playerFollowers.transform.position, initialPosition) < maxChaseDistance - 5)
                     state = State.INSIGHT;
                 break;
