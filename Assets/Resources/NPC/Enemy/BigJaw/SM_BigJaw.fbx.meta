@@ -122,8 +122,8 @@ ModelImporter:
     - serializedVersion: 16
       name: BigJaw|Swimming
       takeName: BigJaw|Swimming
-      firstFrame: 22
-      lastFrame: 82
+      firstFrame: 21
+      lastFrame: 63
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
