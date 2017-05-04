@@ -124,16 +124,18 @@ public class CameraTint : MonoBehaviour
         Vector3 position = player.transform.position;
         foreach (GameObject go in enemies)
         {
-            if (go.GetComponent<Enemy>() != null)
+            var enemy = go.GetComponent<Enemy>();
+            if (enemy != null)
             {
                 float curDist = Vector3.Distance(go.transform.position, position);
                 if (curDist < distance)
                 {
-                    if (go.GetComponent<Enemy>().state == Enemy.State.CHARGE || go.GetComponent<Enemy>().state == Enemy.State.INSIGHT)
+                    if (go.GetComponent<Enemy>().state == Enemy.State.CHARGE || 
+                        go.GetComponent<Enemy>().state == Enemy.State.INSIGHT)
                     {
                         distance = curDist;
                         chasingEnemy = go;
-                        camTarget = chasingEnemy.GetComponent<Enemy>().CameraTarget;
+                        camTarget = enemy.CameraTarget;
                     }
                 }
             }
