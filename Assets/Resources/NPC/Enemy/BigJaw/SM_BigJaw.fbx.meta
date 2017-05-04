@@ -39,6 +39,7 @@ ModelImporter:
     7400004: BigJaw|CloseMouth
     7400006: BigJaw|OpenMouthTrans
     7400008: BigJaw|CloseMouthTrans
+    7400010: BigJaw|Swimming0
     9500000: //RootNode
     13700000: Mesh
   materials:
@@ -63,10 +64,10 @@ ModelImporter:
     extraExposedTransformPaths: []
     clipAnimations:
     - serializedVersion: 16
-      name: BigJaw|OpenMouth
-      takeName: BigJaw|open_mouth
-      firstFrame: 40
-      lastFrame: 41
+      name: BigJaw|Swimming0
+      takeName: BigJaw|Swimming
+      firstFrame: 0
+      lastFrame: 1
       wrapMode: 0
       orientationOffsetY: 0
       level: 0

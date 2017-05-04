@@ -16,7 +16,7 @@ public class PlayerSound : MonoBehaviour {
 
     void Start ()
     {
-        soundManager = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<SoundManager>();
+        //soundManager = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<SoundManager>();
 
         audioSources = GetComponents<AudioSource>();
         audioSources[0].clip = SwimAmbient;

@@ -7,7 +7,7 @@ public class DragAreaPoint : MonoBehaviour {
         dragArea = transform.parent.GetComponent<DragArea>();
     }
 
-    public void OnTriggerEnter(Collider col)
+    void OnTriggerEnter(Collider col)
     {
         if(col.transform.tag == "Player")
         {
