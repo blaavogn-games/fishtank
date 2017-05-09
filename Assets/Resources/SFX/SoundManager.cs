@@ -43,7 +43,7 @@ public class SoundManager : MonoBehaviour {
         map.Add(SfxTypes.EAT, new AudioClipGroup(Resources.LoadAll<AudioClip>("SFX/eat"), SFX));
     }
 	
-    public AudioClipGroup GetRandClip(SfxTypes type)
+    public AudioClipGroup GetClipGroup(SfxTypes type)
     {
         return map[type];
     }

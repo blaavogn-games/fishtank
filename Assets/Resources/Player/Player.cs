@@ -128,6 +128,7 @@ public class Player : MonoBehaviour {
                     {
                         //if (MaxHunger>0)
                         //    hunger -= DashHungerDrain;
+                        playerSound.Dash();
                         boost = DashSpeed/dashDiminish;
                         if (boost < MinimumDashSpeed)
                             boost = 0;
@@ -173,7 +174,6 @@ public class Player : MonoBehaviour {
                 break;
         }
         _rigidbody.velocity = transform.forward.normalized * _rigidbody.velocity.magnitude;
-        playerSound.SetSpeed(_rigidbody.velocity.magnitude);
         CoolDown();
         
         if (Input.GetKeyDown(KeyCode.K))

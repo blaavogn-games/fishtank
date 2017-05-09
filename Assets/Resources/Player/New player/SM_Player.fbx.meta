@@ -85,7 +85,23 @@ ModelImporter:
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      events: []
+      events:
+      - time: 0.23127037
+        functionName: Swing_1
+        data: 
+        objectReferenceParameter: {fileID: 1000010255152428, guid: 4c9c9b0bcf80ad04db674b69a49628e3,
+          type: 2}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.752443
+        functionName: Swing_2
+        data: 
+        objectReferenceParameter: {fileID: 1000010255152428, guid: 4c9c9b0bcf80ad04db674b69a49628e3,
+          type: 2}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       transformMask:
       - path: 
         weight: 1
