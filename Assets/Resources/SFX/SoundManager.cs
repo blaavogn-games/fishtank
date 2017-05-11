@@ -5,7 +5,7 @@ using UnityEngine.Audio;
 
 public enum SfxTypes
 {
-    DASH, EAT
+    DASH, EAT, SWIM_SWING
 };
 
 public class AudioClipGroup
@@ -40,7 +40,8 @@ public class SoundManager : MonoBehaviour {
     void Start () {
         map = new Dictionary<SfxTypes, AudioClipGroup>();
         map.Add(SfxTypes.DASH, new AudioClipGroup(Resources.LoadAll<AudioClip>("SFX/dash"), SFX));
-        map.Add(SfxTypes.EAT, new AudioClipGroup(Resources.LoadAll<AudioClip>("SFX/eat"), SFX));
+        map.Add(SfxTypes.EAT, new AudioClipGroup(Resources.LoadAll<AudioClip>("SFX/eatPill"), SFX));
+        map.Add(SfxTypes.SWIM_SWING, new AudioClipGroup(Resources.LoadAll<AudioClip>("SFX/swim"), SFX));
     }
 	
     public AudioClipGroup GetClipGroup(SfxTypes type)
