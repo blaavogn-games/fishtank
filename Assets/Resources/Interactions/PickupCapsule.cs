@@ -25,24 +25,26 @@ public class PickupCapsule : MonoBehaviour {
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.transform.tag == "Player")
-        {
-            if (WinLevelCapsule)
-            {
-                World.i.WinLevel();
-                Destroy(gameObject);
-                return;
-            }
-       
-            if (World.i.SavedPills.Contains(name))
-                return;
+        if (collision.transform.tag != "Player") return;
 
-            collision.gameObject.GetComponent<PlayerSound>().Eat();       
-            World.i.EatPill(name);
-            Instantiate(PickupParticleSystem.gameObject, transform.position, Quaternion.identity);
-            Instantiate(PickupParticleSystem2.gameObject, transform.position, Quaternion.identity);
-            Instantiate(PickupParticleSystem3.gameObject, transform.position, Quaternion.identity);
-            DestroyObject(gameObject);
+        if (WinLevelCapsule)
+        {
+            World.i.WinLevel();
+            Destroy(gameObject);
+            return;
         }
+
+        if (World.i.SavedPills.Contains(name))
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        collision.gameObject.GetComponent<PlayerSound>().Eat();       
+        World.i.EatPill(name);
+        Instantiate(PickupParticleSystem.gameObject, transform.position, Quaternion.identity);
+        Instantiate(PickupParticleSystem2.gameObject, transform.position, Quaternion.identity);
+        Instantiate(PickupParticleSystem3.gameObject, transform.position, Quaternion.identity);
+        DestroyObject(gameObject);
     }
 }
