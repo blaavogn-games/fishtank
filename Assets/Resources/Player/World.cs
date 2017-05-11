@@ -146,7 +146,7 @@ public class World : MonoBehaviour {
         totalDeaths++;
         return deaths;
     }
-    public int Pill(string instanceName)
+    public int EatPill(string instanceName)
     {
         pillsTaken.Add(instanceName);
         var level = SceneManager.GetActiveScene().buildIndex;

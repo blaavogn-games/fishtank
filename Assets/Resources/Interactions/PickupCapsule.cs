@@ -25,8 +25,7 @@ public class PickupCapsule : MonoBehaviour {
 
     private void OnCollisionEnter(Collision collision)
     {
-        var script = collision.gameObject.GetComponent<Player>();
-        if (script != null)
+        if (collision.transform.tag == "Player")
         {
             if (WinLevelCapsule)
             {
@@ -37,21 +36,13 @@ public class PickupCapsule : MonoBehaviour {
        
             if (World.i.SavedPills.Contains(name))
                 return;
-            Trigger trig = GetComponentInChildren<Trigger>();
-            World.i.Pill(name);
+
+            collision.gameObject.GetComponent<PlayerSound>().Eat();       
+            World.i.EatPill(name);
+            Instantiate(PickupParticleSystem.gameObject, transform.position, Quaternion.identity);
+            Instantiate(PickupParticleSystem2.gameObject, transform.position, Quaternion.identity);
+            Instantiate(PickupParticleSystem3.gameObject, transform.position, Quaternion.identity);
             DestroyObject(gameObject);
-            if(script.MaxHunger>0)
-                script.hunger = script.MaxHunger;
-            var p = Instantiate(PickupParticleSystem.gameObject);
-            p.transform.position = transform.position;
-            var p2 = Instantiate(PickupParticleSystem2.gameObject);
-            p2.transform.position = transform.position;
-            var p3 = Instantiate(PickupParticleSystem3.gameObject);
-            p3.transform.position = transform.position;
-            if (trig != null)
-            {
-                trig.TriggerByParent(collision);
-            }
         }
     }
 }
