@@ -6,6 +6,7 @@ public class SeeSawPuzzle : MonoBehaviour {
     private State state = State.IDLE;
     public List<Rigidbody> bodies;
     public Transform newTarget;
+    public GameObject boulder;
     public UnityStandardAssets.Cameras.AutoCam cam;
     public CameraController camCon;
     float timer = 0;
@@ -15,7 +16,7 @@ public class SeeSawPuzzle : MonoBehaviour {
         if(state != State.IDLE || col.tag != "Player")
             return;
         cam.SetTarget(newTarget);
-        camCon.Player = newTarget.gameObject;
+        camCon.Player = boulder;
         state = State.BEFORE;
     }
 
