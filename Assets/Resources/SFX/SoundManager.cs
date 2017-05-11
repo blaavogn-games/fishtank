@@ -5,7 +5,7 @@ using UnityEngine.Audio;
 
 public enum SfxTypes
 {
-    DASH, EAT, SWIM_SWING
+    DASH, EAT, SWIM_SWING, DEATH, MORRAY_ATTACK, COL_GROUND, COL_GLASS
 };
 
 public class AudioClipGroup
@@ -42,10 +42,14 @@ public class SoundManager : MonoBehaviour {
         map.Add(SfxTypes.DASH, new AudioClipGroup(Resources.LoadAll<AudioClip>("SFX/dash"), SFX));
         map.Add(SfxTypes.EAT, new AudioClipGroup(Resources.LoadAll<AudioClip>("SFX/eatPill"), SFX));
         map.Add(SfxTypes.SWIM_SWING, new AudioClipGroup(Resources.LoadAll<AudioClip>("SFX/swim"), SFX));
+        map.Add(SfxTypes.DEATH, new AudioClipGroup(Resources.LoadAll<AudioClip>("SFX/death"), SFX)); 
+        map.Add(SfxTypes.MORRAY_ATTACK, new AudioClipGroup(Resources.LoadAll<AudioClip>("SFX/moray"), SFX)); 
+        map.Add(SfxTypes.COL_GLASS, new AudioClipGroup(Resources.LoadAll<AudioClip>("SFX/col_ground"), SFX)); 
+        map.Add(SfxTypes.COL_GROUND, new AudioClipGroup(Resources.LoadAll<AudioClip>("SFX/col_glass"), SFX)); 
     }
 	
-    public AudioClipGroup GetClipGroup(SfxTypes type)
+    public AudioClip GetClip(SfxTypes type)
     {
-        return map[type];
+        return map[type].GetRandClip();
     }
 }
