@@ -5,21 +5,27 @@ public class PlayerSound : MonoBehaviour {
     private SoundManager soundManager;
     private AudioSource[] audioSources;
 
+    const int AS_DASH = 0, AS_SWING = 1, AS_EAT = 2;
+
     void Start ()
     {
         soundManager = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<SoundManager>();
         audioSources = GetComponents<AudioSource>();
-        //filter = GetComponent<AudioLowPassFilter>();
     }
 
-    public void Dash()
+    public void Dash(float force)
     {
-        audioSources[0].PlayOneShot(soundManager.GetClipGroup(SfxTypes.DASH).GetRandClip());
+        audioSources[AS_DASH].volume = force / 3000;
+        audioSources[AS_DASH].PlayOneShot(soundManager.GetClipGroup(SfxTypes.DASH).GetRandClip());
     }
 
-    public void SetSpeed(float speed)
+    public void Swing()
     {
-        //audioSources[4].volume = speed;
-        //filter.cutoffFrequency = 100+speed*25;
+        audioSources[AS_SWING].PlayOneShot(soundManager.GetClipGroup(SfxTypes.SWIM_SWING).GetRandClip());
+    }
+
+    public void Eat()
+    {
+        audioSources[AS_EAT].PlayOneShot(soundManager.GetClipGroup(SfxTypes.EAT).GetRandClip());
     }
 }

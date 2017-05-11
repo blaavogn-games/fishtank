@@ -27,47 +27,25 @@ public class Trigger : MonoBehaviour
 	}
     public void TriggerByParent(Collision other)
     {
-        if (other.transform.root.gameObject == player && !entered && playerScript != null)
+        CollideHandler(other.transform);
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        CollideHandler(other.transform);
+    }
+
+    private void CollideHandler(Transform other)
+    {
+        if (other.root.gameObject == player && !entered && playerScript != null)
         {
             switch (Type)
             {
                 case TriggerType.Checkpoint:
-                    CheckPointEnter();
-                    break;
-                case TriggerType.SetHunger:
-                    SetHungerEnter();
+                    World.i.CheckPoint(gameObject);
                     break;
             }
             if (Once)
                 entered = true;
         }
-    }
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.transform.root.gameObject == player && !entered && playerScript!=null)
-        {
-            switch (Type)
-            {
-                case TriggerType.Checkpoint:
-                    CheckPointEnter();
-                    break;
-                case TriggerType.SetHunger:
-                    SetHungerEnter();
-                    break;
-            }
-            if(Once)
-                entered = true;
-        }
-    }
-    private void CheckPointEnter()
-    {
-        World.i.CheckPoint(gameObject);
-    }
-    private void SetHungerEnter()
-    {
-        if (relative)
-            playerScript.hunger += hunger;
-        else
-            playerScript.hunger = hunger;
     }
 }

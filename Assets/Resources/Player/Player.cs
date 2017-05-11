@@ -122,16 +122,14 @@ public class Player : MonoBehaviour {
                     dashTimer += Time.deltaTime;
                 }
                 //Dashes if timer within threshhold.
-                if (Input.GetButtonDown("Dash")/* && !dashDown && hunger>DashHungerDrain*/)
+                if (Input.GetButtonDown("Dash"))
                 {
                     if (dashTimer < DashThreshold && dashCooldownTimer <= 0)
                     {
-                        //if (MaxHunger>0)
-                        //    hunger -= DashHungerDrain;
-                        playerSound.Dash();
                         boost = DashSpeed/dashDiminish;
                         if (boost < MinimumDashSpeed)
                             boost = 0;
+                        playerSound.Dash(boost);
                         dashCooldownTimer = DashCooldown;
                         swimCooldownTimer = DashCooldown * 2;
                         dashDiminishTimer = DashRecoveryTime;
