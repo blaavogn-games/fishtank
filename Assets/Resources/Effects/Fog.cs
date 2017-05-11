@@ -3,11 +3,11 @@ using System.Collections;
 using UnityStandardAssets.ImageEffects;
 
 public class Fog : MonoBehaviour {
-    public enum State { NORMAL, FLASH_INC, FLASH_DEC};
+    public enum State { NORMAL, FLASH_INC, FLASH_DEC, DISSIPATE};
     public State state;
-    public float FogIncreasePerSecond = 0.008F;
     public float MaxFogLevel = 0.008f;
     public Color FogColor;
+    private float fogTimer = 0;
     
     void Start () {
         RenderSettings.fogDensity = 0.0F;
@@ -33,6 +33,10 @@ public class Fog : MonoBehaviour {
                     RenderSettings.fogDensity = MaxFogLevel;
                     state = State.NORMAL;
                 }
+                break;
+            case State.DISSIPATE:
+                RenderSettings.fogDensity = Mathf.Lerp(MaxFogLevel, 0, fogTimer);
+                fogTimer += Time.deltaTime / 20;
                 break;
         }
         if (Input.GetKeyDown(KeyCode.X))
