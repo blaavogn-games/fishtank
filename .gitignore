@@ -39,3 +39,5 @@ sysinfo.txt
 *.unitypackage
 Assets/Materials.meta
 Assets/Resources/Environment/Materials/Materials.meta
+*.mat
+*.meta

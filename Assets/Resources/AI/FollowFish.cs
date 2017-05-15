@@ -11,14 +11,17 @@ public class FollowFish : MonoBehaviour {
     private int curSpeed = 0, playerSpeed;
     public Wiggle wiggle;
     private Vector3 idleTarget, initialPosition;
-
+    private Vector3 lastPos;
+    
     public bool WillFollowPlayer = true;
+    public GameObject DeathEffect;
 
     void Start () {
         playerSpeed = speedBuffer.Length - 2;
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerFollowers>();
         idleTarget = RandomTarget(transform.position);
         initialPosition = transform.position;
+        lastPos = transform.position;
     }
 
     void FixedUpdate () {
@@ -65,6 +68,8 @@ public class FollowFish : MonoBehaviour {
                 }
                 break;
         }
+        wiggle.Speed = Vector3.Distance(lastPos, transform.position) * 50;
+        lastPos = transform.position;
     }
 
     private Vector3 ChaseTarget(Transform t, int id)
@@ -99,6 +104,8 @@ public class FollowFish : MonoBehaviour {
 
     public void Respawn()
     {
+        Instantiate(DeathEffect, transform.position, Quaternion.identity);
+        GetComponent<AudioSource>().PlayOneShot(GameObject.FindGameObjectWithTag("SoundManager").GetComponent<SoundManager>().GetClip(SfxTypes.DEATH));
         state = State.IDLE;
         player.RemoveFollower(gameObject); //Perhaps followers should just be infered from whether they are IDLE or not
         transform.position = initialPosition;

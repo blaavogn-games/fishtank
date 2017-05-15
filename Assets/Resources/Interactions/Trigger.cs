@@ -42,6 +42,7 @@ public class Trigger : MonoBehaviour
             {
                 case TriggerType.Checkpoint:
                     World.i.CheckPoint(gameObject);
+                    Debug.Log("Checkpoint at " + transform.position);
                     break;
             }
             if (Once)

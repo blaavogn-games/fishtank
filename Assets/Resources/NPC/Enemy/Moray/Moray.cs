@@ -10,6 +10,8 @@ public class Moray : MonoBehaviour
     private PlayerFollowers playerFollowers;
     private Transform target;
     private Quaternion initialRotation;
+    private SoundManager soundManager;
+    private AudioSource audioSource;
 
     public float Speed = 10.0f;
     public float AttackDistance = 20.0f;
@@ -26,6 +28,8 @@ public class Moray : MonoBehaviour
         InitialForward = transform.forward;
         playerFollowers = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerFollowers>();
         segmentSize = MoraneSegment.transform.localScale.z * 0.9f;
+        soundManager = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<SoundManager>();
+        audioSource = GetComponent<AudioSource>();
     }
 	
 	void Update ()
@@ -98,6 +102,7 @@ public class Moray : MonoBehaviour
                 if (Vector3.Distance(transform.position, targetPos) < SightDistance)
                 {
                     State = MorayState.ATTACK;
+                    audioSource.PlayOneShot(soundManager.GetClip(SfxTypes.MORRAY_ATTACK));
                     attackTraveled = 0.0f;
                     segmentTraveled = 0.8f;
                 }

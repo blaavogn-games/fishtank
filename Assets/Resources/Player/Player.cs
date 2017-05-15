@@ -208,10 +208,15 @@ public class Player : MonoBehaviour {
             angle -= 360;
         return angle;
     }
+    void OnCollisionEnter()
+    {
+        playerSound.GroundCol();
+    }
 
     public void Kill(DeathCause deathCause)
     {
         this.deathCause = deathCause;
+        playerSound.Death();
         state = State.DYING;
         //dieTime = Time.time + .2f;
         World.i.Death();
