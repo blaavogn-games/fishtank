@@ -8,7 +8,7 @@ public class PostLevelScript : MonoBehaviour
     public Light DirectionaLight;
     public float ZoomSpeed = 0.33f;
     public float SpinSpeed = 30;
-    public float ScoreDelay = 12;
+    public float ScoreDelay = 5;
     [Tooltip("Seconds from when it's done counting up your score to when the next level starts")]
     public float NextLevelDelay = 3;
     [Header("Don't Change")]

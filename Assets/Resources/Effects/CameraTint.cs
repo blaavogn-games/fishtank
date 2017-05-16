@@ -24,13 +24,13 @@ public class CameraTint : MonoBehaviour
     private float blinkTimer = 0;
     private float fadeDirection = 1;
     public UnityStandardAssets.Cameras.AutoCam cam;
-    private GameObject cameraTarget;
+   // private GameObject cameraTarget;
     private GameObject player;
     private GameObject[] enemies;
     private GameObject chasingEnemy;
     private Transform camTarget;
 
-    float alphaTimer = 0;
+    //float alphaTimer = 0;
     
     float alpha = 0;
     int drawDepth = -1000;
@@ -44,7 +44,7 @@ public class CameraTint : MonoBehaviour
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
-        cameraTarget = player;
+        //cameraTarget = player;
         shake = Camera.main.GetComponent<ScreenShake>();
         fadeTexture = new Texture2D(1, 1);
         rect = new Rect(0, 0, Screen.width, Screen.height);
