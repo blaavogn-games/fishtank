@@ -4,7 +4,7 @@ public class PlayerSound : MonoBehaviour {
     private SoundManager soundManager;
     private AudioSource[] audioSources;
 
-    const int AS_DASH = 0, AS_SWING = 1, AS_EAT = 2, AS_DEATH = 3, AS_COL = 4;
+    const int AS_DASH = 0, AS_SWING = 1, AS_EAT = 2, AS_DEATH = 3, AS_COL = 4, AS_COL_GLASS = 5;
 
     void Start ()
     {
@@ -40,6 +40,6 @@ public class PlayerSound : MonoBehaviour {
 
     public void CollideGlass()
     {
-        audioSources[AS_COL].PlayOneShot(soundManager.GetClip(SfxTypes.COL_GLASS));
+        audioSources[AS_COL_GLASS].PlayOneShot(soundManager.GetClip(SfxTypes.COL_GLASS));
     }
 }
