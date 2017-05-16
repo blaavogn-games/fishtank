@@ -9,6 +9,7 @@ public class DragArea : MonoBehaviour {
     public Transform dragPoint;
     public GameObject particles;
     private Vector3 halfScale;
+    public bool IgnoreFish = false;
 
     void Start()
     {
@@ -57,13 +58,19 @@ public class DragArea : MonoBehaviour {
 
     void OnTriggerEnter(Collider col)
     {
-        if(col.tag == "Enemy" || col.tag == "Player")
-            dragables.Add(col.gameObject);
+        if (col.tag == "Enemy" || col.tag == "Player")
+        {
+            if(!IgnoreFish)
+                dragables.Add(col.gameObject);
+        }
     }
 
     void OnTriggerExit(Collider col)
     {
-        if(col.tag == "Enemy" || col.tag == "Player")
-            dragables.Remove(col.gameObject);
+        if (col.tag == "Enemy" || col.tag == "Player")
+        {
+            if(!IgnoreFish)
+                dragables.Remove(col.gameObject);
+        }
     }
 }
