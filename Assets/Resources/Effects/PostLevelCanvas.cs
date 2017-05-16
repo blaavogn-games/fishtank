@@ -47,7 +47,6 @@ public class PostLevelCanvas : MonoBehaviour
 	    switch (state)
 	    {   
 	            case State.SAVEDTEXT:
-                Debug.Log(MakeTimeString(stats["timeTaken"]));
 	                textTimer += Time.deltaTime;
 	                AquariumSavedColor.a = Mathf.Lerp(0, 1, textTimer / AquariumSavedFadeTime);
 	                AquariumSavedText.color = AquariumSavedColor;
