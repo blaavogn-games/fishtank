@@ -33,8 +33,13 @@ public class PlayerSound : MonoBehaviour {
         audioSources[AS_DEATH].PlayOneShot(soundManager.GetClip(SfxTypes.DEATH));
     }
 
-    public void GroundCol()
+    public void CollideGround()
     {
         audioSources[AS_COL].PlayOneShot(soundManager.GetClip(SfxTypes.COL_GROUND));
+    }
+
+    public void CollideGlass()
+    {
+        audioSources[AS_COL].PlayOneShot(soundManager.GetClip(SfxTypes.COL_GLASS));
     }
 }
