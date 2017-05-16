@@ -81,6 +81,11 @@ public class Enemy : MonoBehaviour
                 break;
             case State.INSIGHT:
                 targetTransform = playerFollowers.GetTarget();
+                if (targetTransform == null) { // Dirty fix
+                    state = State.EAT;
+                    timer = 5;
+                    goto case State.EAT;
+                }
                 target = targetTransform.position + ModelOffset;
                 velocity = Mathf.Lerp(velocity, chaseVelocity, 0.1f);
                 if(!CheckSight(target - ModelOffset) || Vector3.Distance(transform.position, initialPosition) > maxChaseDistance) {
@@ -135,9 +140,7 @@ public class Enemy : MonoBehaviour
             {
                 case "Player":
                     if (hit.transform.GetComponent<Player>().state != Player.State.DYING)
-                    {
                         return true;
-                    }
                     break;
                 case "Follower":
                     return true;

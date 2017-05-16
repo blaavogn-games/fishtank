@@ -208,9 +208,12 @@ public class Player : MonoBehaviour {
             angle -= 360;
         return angle;
     }
-    void OnCollisionEnter()
+    void OnCollisionEnter(Collision col)
     {
-        playerSound.GroundCol();
+        if (col.gameObject.tag == "Glass")
+            playerSound.CollideGlass();
+        else
+            playerSound.CollideGround();
     }
 
     public void Kill(DeathCause deathCause)

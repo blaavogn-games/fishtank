@@ -44,8 +44,8 @@ public class SoundManager : MonoBehaviour {
         map.Add(SfxTypes.SWIM_SWING, new AudioClipGroup(Resources.LoadAll<AudioClip>("SFX/swim"), SFX));
         map.Add(SfxTypes.DEATH, new AudioClipGroup(Resources.LoadAll<AudioClip>("SFX/death"), SFX)); 
         map.Add(SfxTypes.MORRAY_ATTACK, new AudioClipGroup(Resources.LoadAll<AudioClip>("SFX/moray"), SFX)); 
-        map.Add(SfxTypes.COL_GLASS, new AudioClipGroup(Resources.LoadAll<AudioClip>("SFX/col_ground"), SFX)); 
-        map.Add(SfxTypes.COL_GROUND, new AudioClipGroup(Resources.LoadAll<AudioClip>("SFX/col_glass"), SFX)); 
+        map.Add(SfxTypes.COL_GLASS, new AudioClipGroup(Resources.LoadAll<AudioClip>("SFX/col_glass"), SFX)); 
+        map.Add(SfxTypes.COL_GROUND, new AudioClipGroup(Resources.LoadAll<AudioClip>("SFX/col_ground"), SFX)); 
     }
 	
     public AudioClip GetClip(SfxTypes type)
