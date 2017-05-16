@@ -9,9 +9,11 @@ public class FollowFish : MonoBehaviour {
     public float MinSpeed = 10, MaxSpeed = 30, IdleSpeed = 3, FleeSpeed = 10;
     private float[] speedBuffer = new float[15];
     private int curSpeed = 0, playerSpeed;
+    private float lastFleeTime = 0;
     public Wiggle wiggle;
     private Vector3 idleTarget, initialPosition;
     private Vector3 lastPos;
+    public ParticleSystem ParticleSystem;
     
     public bool WillFollowPlayer = true;
     public GameObject DeathEffect;
@@ -25,6 +27,7 @@ public class FollowFish : MonoBehaviour {
     }
 
     void FixedUpdate () {
+        Debug.Log(state);
         switch (state) {
             case State.FOLLOWING:
                 speedBuffer[(playerSpeed++) % speedBuffer.Length] = player.GetComponent<Rigidbody>().velocity.magnitude;
@@ -52,16 +55,19 @@ public class FollowFish : MonoBehaviour {
                     {
                         followId = player.AddFollower(gameObject);
                         state = State.FOLLOWING;
+                        if (ParticleSystem != null)
+                            ParticleSystem.Stop();
                     }
                 }
-                else if (Vector3.Distance(transform.position, player.transform.position) < 10)
+                else if (Vector3.Distance(transform.position, player.transform.position) < 8 && Time.time - lastFleeTime > 2)
                 {
                     state = State.FLEE;
                 }
                 break;
             case State.FLEE:
+                lastFleeTime = Time.time;
                 Move(transform.position + (transform.position - player.transform.position), FleeSpeed);
-                if (Vector3.Distance(transform.position, player.transform.position) > 10)
+                if (Vector3.Distance(transform.position, player.transform.position) > 14)
                 {
                     idleTarget = initialPosition;
                     state = State.IDLE;
@@ -78,22 +84,22 @@ public class FollowFish : MonoBehaviour {
         switch(id) //Could be more effecient
         {
             case 0:
-                forward = -0.5f;
+                forward = 1.5f;
                 right = -2f;
                 up = 0.1f;
                 break;
             case 1:
-                forward = -0.2f;
+                forward = 0.6f;
                 right = 0.3f;
                 up = 2.1f;
                 break;
             case 2:
-                forward = -0.7f;
+                forward = 0.7f;
                 right = 1.3f;
                 up = -0.2f;
                 break;
             case 3:
-                forward = 0.2f;
+                forward = 0.8f;
                 right = 1.1f;
                 up = -0.4f;
                 break;
@@ -107,6 +113,8 @@ public class FollowFish : MonoBehaviour {
         Instantiate(DeathEffect, transform.position, Quaternion.identity);
         GetComponent<AudioSource>().PlayOneShot(GameObject.FindGameObjectWithTag("SoundManager").GetComponent<SoundManager>().GetClip(SfxTypes.DEATH));
         state = State.IDLE;
+        if (ParticleSystem != null)
+            ParticleSystem.Play();
         player.RemoveFollower(gameObject); //Perhaps followers should just be infered from whether they are IDLE or not
         transform.position = initialPosition;
         idleTarget = RandomTarget(initialPosition);
@@ -116,7 +124,7 @@ public class FollowFish : MonoBehaviour {
     {
         Vector3 newPos;
         do
-            newPos = center + new Vector3(Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f));
+            newPos = center + new Vector3(Random.Range(-2.0f, 2.0f), Random.Range(-2.0f, 2.0f), Random.Range(-2.0f, 2.0f));
         while (Vector3.Distance(newPos, transform.position) < 1.0f);
         return newPos;
     }
@@ -128,6 +136,6 @@ public class FollowFish : MonoBehaviour {
         wiggle.Speed = movement.magnitude * 10;
         transform.rotation = Quaternion.LookRotation(Vector3.RotateTowards(transform.forward, movement, 0.1f, 0));
         transform.position += transform.forward * movement.magnitude;
-        return (Vector3.Distance(transform.position, target) < 0.01f);
+        return (Vector3.Distance(transform.position, target) < 0.5f);
     }
 }
