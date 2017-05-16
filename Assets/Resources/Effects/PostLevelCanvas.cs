@@ -125,13 +125,15 @@ public class PostLevelCanvas : MonoBehaviour
 	
 	}
 
-    string MakeTimeString(float time)
+    private string MakeTimeString(float time)
     {
-        float thisTime = time;
+        if (time < 1)
+            return "0s";
+        var thisTime = time;
         float seconds = 0;
         float minutes = 0;
         float hours = 0;
-        StringBuilder builder = new StringBuilder();
+        var builder = new StringBuilder();
         while (thisTime >= 60)
         {
             while (thisTime >= 3600)
@@ -148,7 +150,7 @@ public class PostLevelCanvas : MonoBehaviour
         if (minutes > 0)
             builder.Append("" + minutes + "m ");
         if (seconds > 0)
-            builder.Append("" + seconds + "s ");
+            builder.Append("" + seconds + "s");
         return builder.ToString();
     }
 

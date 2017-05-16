@@ -7,18 +7,20 @@ public class SeeSawPuzzle : MonoBehaviour {
     public List<Rigidbody> bodies;
     public Transform newTarget;
     public GameObject boulder;
-    public UnityStandardAssets.Cameras.AutoCam cam;
-    public CameraController camCon;
+    private UnityStandardAssets.Cameras.AutoCam cam;
+    private CameraController camCon;
     public Transform FilterTarget;
     public PostLevelScript PostLevel;
     float timer = 0;
 
     void OnTriggerEnter(Collider col)
     {
-        if(state != State.IDLE || col.tag != "Player")
+        cam = Camera.main.transform.parent.GetComponentInParent<UnityStandardAssets.Cameras.AutoCam>();
+        camCon = Camera.main.GetComponentInParent<CameraController>();
+        if (state != State.IDLE || col.tag != "Player")
             return;
         cam.SetTarget(newTarget);
-        camCon.Player = boulder;
+        camCon.Player = FilterTarget.gameObject;
         state = State.BEFORE;
     }
 
