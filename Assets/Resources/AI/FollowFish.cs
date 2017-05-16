@@ -27,7 +27,6 @@ public class FollowFish : MonoBehaviour {
     }
 
     void FixedUpdate () {
-        Debug.Log(state);
         switch (state) {
             case State.FOLLOWING:
                 speedBuffer[(playerSpeed++) % speedBuffer.Length] = player.GetComponent<Rigidbody>().velocity.magnitude;
