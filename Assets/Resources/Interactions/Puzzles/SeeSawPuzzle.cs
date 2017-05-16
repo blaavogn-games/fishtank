@@ -10,7 +10,7 @@ public class SeeSawPuzzle : MonoBehaviour {
     public UnityStandardAssets.Cameras.AutoCam cam;
     public CameraController camCon;
     public Transform FilterTarget;
-    public Transform PanOutTarget;
+    public PostLevelScript PostLevel;
     float timer = 0;
 
     void OnTriggerEnter(Collider col)
@@ -37,17 +37,16 @@ public class SeeSawPuzzle : MonoBehaviour {
                 break;
             case State.DOING:
                 timer += Time.deltaTime;
+                if (timer > 4.5f)
+                {
+                    camCon.Player = FilterTarget.gameObject;
+                }
                 if (timer > 6.2f)
                 {
-                    //GameObject g = GameObject.FindGameObjectWithTag("Player");
-                    //cam.SetTarget(FilterTarget);
-                    camCon.Player = FilterTarget.gameObject;
-                    //FilterDragArea.DragMultiplier += 10;
-                    state = State.FILTERDRAGGING;
+                    PostLevel.Activate();
+                    state = State.AFTER;
                     timer = 0;
                 }
-                break;
-            case State.FILTERDRAGGING:
                 break;
         }
     }

@@ -36,7 +36,7 @@ public class Fog : MonoBehaviour {
                 break;
             case State.DISSIPATE:
                 RenderSettings.fogDensity = Mathf.Lerp(MaxFogLevel, 0, fogTimer);
-                fogTimer += Time.deltaTime / 20;
+                fogTimer += Time.deltaTime / 10;
                 break;
         }
         if (Input.GetKeyDown(KeyCode.X))

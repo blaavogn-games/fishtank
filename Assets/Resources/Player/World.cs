@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using System.Collections;
 using UnityEngine.SceneManagement;
 using System.Collections.Generic;
@@ -89,8 +90,8 @@ public class World : MonoBehaviour {
         }
         if (Input.GetKey(KeyCode.R))
             RestartLevel(false);
-        if (Input.GetKeyDown(KeyCode.V))
-            WinLevel();
+        //if (Input.GetKeyDown(KeyCode.V))
+            //WinLevel();
     }
 
     public void SetFlightControls()
@@ -155,17 +156,28 @@ public class World : MonoBehaviour {
         pills += 1;
         return pills;
     }
-    public void WinLevel()
+    public Dictionary<string, float> WinLevel()
     {
-        var level = SceneManager.GetActiveScene().buildIndex;
+        var result = new Dictionary<string, float>();
+        GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().Freeze();
+        /*var level = SceneManager.GetActiveScene().buildIndex;
         if (level > 0)
             level--;
+        result.Add("level", level);*/
+
         timeTaken = Time.time- BeginTime;
-        var p=Instantiate(statusScreen);
+        result.Add("timeTaken", timeTaken);
+
+        //var p=Instantiate(statusScreen);
         var totalPills=pills+GameObject.FindGameObjectsWithTag("PointObject").Length;
-        p.GetComponent<StatusScreen>().WinScreen(deaths, pills, totalPills, timeTaken, totalDeaths);
-        GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().Freeze();
+        result.Add("totalPills", totalPills);
+
+        result.Add("pills", pills);
+        result.Add("deaths", deaths);
+        result.Add("totalDeaths", totalDeaths);
+        //p.GetComponent<StatusScreen>().WinScreen(deaths, pills, totalPills, timeTaken, totalDeaths);
         //GotoLevel(SceneManager.GetActiveScene().buildIndex + 1);
+        return result;
     }
     public void GotoLevel(int level)
     {

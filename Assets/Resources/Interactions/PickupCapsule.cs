@@ -27,12 +27,12 @@ public class PickupCapsule : MonoBehaviour {
     {
         if (collision.transform.tag != "Player") return;
 
-        if (WinLevelCapsule)
+        /*if (WinLevelCapsule)
         {
             World.i.WinLevel();
             Destroy(gameObject);
             return;
-        }
+        }*/
 
         if (World.i.SavedPills.Contains(name))
         {
