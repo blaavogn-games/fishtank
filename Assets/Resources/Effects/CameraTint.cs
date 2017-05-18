@@ -53,6 +53,8 @@ public class CameraTint : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (player.GetComponent<Player>().state == Player.State.FROZEN)
+            return;
         currentDistance = closestEnemyDistance();
         if (currentDistance < WarningDistance && chasingEnemy != null)
         {

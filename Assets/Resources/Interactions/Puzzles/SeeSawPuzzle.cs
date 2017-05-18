@@ -20,7 +20,7 @@ public class SeeSawPuzzle : MonoBehaviour {
         if (state != State.IDLE || col.tag != "Player")
             return;
         cam.SetTarget(newTarget);
-        camCon.Player = boulder;
+        camCon.Player = FilterTarget.gameObject;
         state = State.BEFORE;
     }
 
