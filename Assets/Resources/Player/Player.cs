@@ -18,9 +18,11 @@ public class Player : MonoBehaviour {
     public ParticleSystem dashReplenish;
     public AudioSource dashReplenishAudio;
     public DeathEffect DeathEffect;
+    public GameObject FriendlyFish;
 
+    public int[] ExtraLivesAtTheseDeaths;
     //[HideInInspector]
-    public float hunger;
+    /*public float hunger;
    // [HideInInspector]
     public float MaxHunger=0;
     public float DashHungerDrain = 10;
@@ -28,7 +30,7 @@ public class Player : MonoBehaviour {
     public float MaxHungryXScale = 0.5f;
     public float MaxHungryYScale = 1;
     public float MaxHungryZScale = 2;
-    public float HungerStartSlim = 30;
+    public float HungerStartSlim = 30;*/
 
     [Header("Movement Controls")]
     public float MaxSwimVelocity = 15;
@@ -86,6 +88,12 @@ public class Player : MonoBehaviour {
         if (World.i.SpawnPoint != Vector3.zero)
         {
             transform.position = World.i.SpawnPoint;
+        }
+        foreach (var t in ExtraLivesAtTheseDeaths)
+        {
+            if (World.i.showDeaths < t) continue;
+            var p = Instantiate(FriendlyFish);
+            p.transform.position = transform.position;
         }
         //targetRotation = transform.rotation;
         originalRotation = transform.rotation;
@@ -184,10 +192,10 @@ public class Player : MonoBehaviour {
         
         if (Input.GetKeyDown(KeyCode.K))
             Kill(DeathCause.EATEN);
-        if (MaxHunger > 0 && hunger <= HungerStartSlim)
+        /*if (MaxHunger > 0 && hunger <= HungerStartSlim)
         {
             transform.localScale = new Vector3(Mathf.Lerp(MaxHungryXScale, 1, hunger / HungerStartSlim), Mathf.Lerp(MaxHungryYScale, 1, hunger / HungerStartSlim), Mathf.Lerp(MaxHungryZScale, 1, hunger / HungerStartSlim));
-        }
+        }*/
     }
 
     private void CoolDown()

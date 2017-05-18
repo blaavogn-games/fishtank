@@ -3,7 +3,7 @@ using System.Collections;
 using UnityStandardAssets.ImageEffects;
 
 public class HungerEffect : MonoBehaviour {
-    Fisheye eye;
+    /*Fisheye eye;
     BlurOptimized blur;
     Player player;
     float hunger;
@@ -237,5 +237,5 @@ public class HungerEffect : MonoBehaviour {
 
             GUI.DrawTexture(rect, fadeTexture);
         }
-    }
+    }*/
 }
