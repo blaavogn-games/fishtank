@@ -15,6 +15,8 @@ public class Player : MonoBehaviour {
     //private bool dashDown = false;
     private PlayerSound playerSound;
     public Wiggle Wiggle;
+    public ParticleSystem dashReplenish;
+    public AudioSource dashReplenishAudio;
     public DeathEffect DeathEffect;
 
     //[HideInInspector]
@@ -127,13 +129,16 @@ public class Player : MonoBehaviour {
                     if (dashTimer < DashThreshold && dashCooldownTimer <= 0)
                     {
                         boost = DashSpeed/dashDiminish;
-                        if (boost < MinimumDashSpeed)
+                        if (boost >= MinimumDashSpeed)
+                        {
+                            playerSound.Dash(boost);
+                            dashCooldownTimer = DashCooldown;
+                            swimCooldownTimer = DashCooldown * 2;
+                            dashDiminishTimer = DashRecoveryTime;
+                            dashDiminish += DashDivisorIncrease;
+                        }
+                        else
                             boost = 0;
-                        playerSound.Dash(boost);
-                        dashCooldownTimer = DashCooldown;
-                        swimCooldownTimer = DashCooldown * 2;
-                        dashDiminishTimer = DashRecoveryTime;
-                        dashDiminish += DashDivisorIncrease;
                     }
                     dashTimer = 0;
                 }
@@ -169,13 +174,13 @@ public class Player : MonoBehaviour {
                 Quaternion yQuaternion = Quaternion.AngleAxis(rotationY, -Vector3.right);
                 transform.rotation = originalRotation * xQuaternion * yQuaternion;
 
+                CoolDown();
                 break;
             case State.SWIMAWAY:
                 _rigidbody.velocity = transform.forward.normalized * 7;
                 break;
         }
         _rigidbody.velocity = transform.forward.normalized * _rigidbody.velocity.magnitude;
-        CoolDown();
         
         if (Input.GetKeyDown(KeyCode.K))
             Kill(DeathCause.EATEN);
@@ -196,8 +201,11 @@ public class Player : MonoBehaviour {
         if (dashDiminish > 1)
         {
             dashDiminishTimer -= Time.deltaTime;
-            if (dashDiminishTimer < 0)
+            if (dashDiminishTimer <= 0)
             {
+                dashReplenish.Play();
+                dashReplenishAudio.Play();
+                dashDiminishTimer = 0;
                 dashDiminish = 1;
             }
         }
