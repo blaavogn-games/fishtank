@@ -157,7 +157,7 @@ public class PostLevelCanvas : MonoBehaviour
     {
         if (!active)
         {
-            GameObject.FindGameObjectWithTag("SoundManager").GetComponent<SoundManager>().PlayEndMusic();
+            GetComponent<AudioSource>().Play();
             state = State.SAVEDTEXT;
             stats = World.i.WinLevel();
             postLevelScript = script;
