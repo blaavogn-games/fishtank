@@ -16,6 +16,7 @@ public class PostLevelScript : MonoBehaviour
     public Transform PanOutTarget;
     public Transform PanOutLookAt;
     public GameObject postLevelCanvas;
+    public float LightIntensity = 0.6f;
 
     private UnityStandardAssets.Cameras.AutoCam cam;
     private CameraController camCon;
@@ -48,7 +49,7 @@ public class PostLevelScript : MonoBehaviour
 	                    FilterTarget.position = Vector3.MoveTowards(FilterTarget.position, PanOutLookAt.position, step);
 	                    foreach (Light l in DirectionaLights)
 	                    {
-	                        l.intensity = 1;
+	                        l.intensity = LightIntensity;
 	                    }
 	                }
 	                if (timer > ScoreDelay)
