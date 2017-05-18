@@ -12,13 +12,17 @@ public class FollowFish : MonoBehaviour {
     private float lastFleeTime = 0;
     public Wiggle wiggle;
     private Vector3 idleTarget, initialPosition;
-    private Vector3 lastPos;
+    private Vector3 lastPos, lastTarget;
     public ParticleSystem ParticleSystem;
     
     public bool WillFollowPlayer = true;
     public GameObject DeathEffect;
+    private AudioSource audioSource;
+    private SoundManager soundManager;
 
-    void Start () {
+    void Start() {
+        audioSource = GetComponent<AudioSource>();
+        soundManager = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<SoundManager>();
         playerSpeed = speedBuffer.Length - 2;
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerFollowers>();
         idleTarget = RandomTarget(transform.position);
@@ -26,18 +30,19 @@ public class FollowFish : MonoBehaviour {
         lastPos = transform.position;
     }
 
-    void FixedUpdate () {
+    void FixedUpdate() {
         switch (state) {
             case State.FOLLOWING:
                 speedBuffer[(playerSpeed++) % speedBuffer.Length] = player.GetComponent<Rigidbody>().velocity.magnitude;
-                float speed = Mathf.Max(MinSpeed, speedBuffer[(curSpeed++) % speedBuffer.Length]);
+                float speed = Mathf.Max(MinSpeed, speedBuffer[(curSpeed++) % speedBuffer.Length]) * 1.2f;
                 speed = Mathf.Min(speed, MaxSpeed);
                 Vector3 target = ChaseTarget(player.transform, followId);
-                if (Move(target, speed))
+                if (Move(target, speed) && Vector3.Distance(target, lastTarget) < 0.02f)
                 {
                     state = State.FOLLOWIDLE;
                     idleTarget = RandomTarget(player.transform.position);
                 }
+                lastTarget = target;
                 break;
             case State.FOLLOWIDLE:
                 if (Move(idleTarget, IdleSpeed))
@@ -52,10 +57,13 @@ public class FollowFish : MonoBehaviour {
                 {
                     if (Vector3.Distance(transform.position, player.transform.position) < 5)
                     {
+                        audioSource.PlayOneShot(soundManager.GetClip(SfxTypes.FF_PICKUP));
                         followId = player.AddFollower(gameObject);
                         state = State.FOLLOWING;
-                        if (ParticleSystem != null)
+                        if (ParticleSystem != null) {
+                            ParticleSystem.SetParticles(null, 0);
                             ParticleSystem.Stop();
+                        }
                     }
                 }
                 else if (Vector3.Distance(transform.position, player.transform.position) < 8 && Time.time - lastFleeTime > 2)
@@ -88,17 +96,17 @@ public class FollowFish : MonoBehaviour {
                 up = 0.1f;
                 break;
             case 1:
-                forward = 0.6f;
+                forward = 1.6f;
                 right = 0.3f;
                 up = 2.1f;
                 break;
             case 2:
-                forward = 0.7f;
+                forward = 1.7f;
                 right = 1.3f;
                 up = -0.2f;
                 break;
             case 3:
-                forward = 0.8f;
+                forward = 1.3f;
                 right = 1.1f;
                 up = -0.4f;
                 break;
@@ -110,7 +118,7 @@ public class FollowFish : MonoBehaviour {
     public void Respawn()
     {
         Instantiate(DeathEffect, transform.position, Quaternion.identity);
-        GetComponent<AudioSource>().PlayOneShot(GameObject.FindGameObjectWithTag("SoundManager").GetComponent<SoundManager>().GetClip(SfxTypes.DEATH));
+        audioSource.PlayOneShot(soundManager.GetClip(SfxTypes.DEATH));
         state = State.IDLE;
         if (ParticleSystem != null)
             ParticleSystem.Play();
