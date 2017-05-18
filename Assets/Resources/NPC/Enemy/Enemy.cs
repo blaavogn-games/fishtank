@@ -116,7 +116,7 @@ public class Enemy : MonoBehaviour
         if (animator != null && targetTransform != null)
         {
             float dist = Vector3.Distance(transform.position, targetTransform.position);
-            if ((state == State.INSIGHT || dist < 22) && dist > 3)
+            if ((state == State.INSIGHT || dist < 22) && dist > 5)
                 animator.SetInteger("Mouth", -1);
             else
                 animator.SetInteger("Mouth", 1);
