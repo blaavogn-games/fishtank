@@ -53,4 +53,9 @@ public class SoundManager : MonoBehaviour {
     {
         return map[type].GetRandClip();
     }
+
+    public void PlayEndMusic()
+    {
+        
+    }
 }
