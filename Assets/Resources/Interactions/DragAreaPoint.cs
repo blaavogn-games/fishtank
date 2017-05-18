@@ -3,8 +3,8 @@ using UnityEngine.SceneManagement;
 
 public class DragAreaPoint : MonoBehaviour {
     DragArea dragArea;
-    public Level2End level2End;
-    public GameObject winEnemy;
+    //public Level2End level2End;
+    //public GameObject winEnemy;
 
     void Start()
     {
@@ -18,10 +18,10 @@ public class DragAreaPoint : MonoBehaviour {
             col.transform.GetComponent<Player>().Kill(Player.DeathCause.SUCKED);
             return;
         }
-        if (col.gameObject == winEnemy && SceneManager.GetActiveScene() == SceneManager.GetSceneByName("2nd-Level"))
+        /*if (col.gameObject == winEnemy && SceneManager.GetActiveScene() == SceneManager.GetSceneByName("2nd-Level"))
         {
             level2End.Run();
-        }
+        }*/
         if(col.transform.tag == "Enemy")
         {
             dragArea.StopDrag();
