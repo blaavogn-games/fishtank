@@ -25,9 +25,11 @@ public class Enemy : MonoBehaviour
     public float maxChaseDistance = float.PositiveInfinity;
     public float PhysicalSizeRadius = 2, ChargeDistance = 6, EatTime = 2;
     public Transform CameraTarget;
-
+    private AudioSource audioSource;
+    
     void Start ()
     {
+        audioSource = GetComponents<AudioSource>()[1];
         initialPosition = transform.position;
         if(maxChaseDistance < 10)
             throw new Exception("maxChaseDistance has to be larger than 10");
@@ -71,15 +73,20 @@ public class Enemy : MonoBehaviour
         switch(state)
         {
             case State.PATROL:
-                if((transform.position - target).magnitude < 0.01f)
+                audioSource.Stop();
+                if ((transform.position - target).magnitude < 0.01f)
                     SetPathPoint();
                 velocity = pathVelocity;
                 var t = playerFollowers.GetTarget();
                 if (t != null && CheckSight(t.position) &&
-                   Vector3.Distance(playerFollowers.transform.position, initialPosition) < maxChaseDistance - 5)
+                   Vector3.Distance(playerFollowers.transform.position, initialPosition) < maxChaseDistance - 5) {
+                    audioSource.Play();
+                    audioSource.volume = 0;
                     state = State.INSIGHT;
+                }
                 break;
             case State.INSIGHT:
+                audioSource.volume = Mathf.Lerp(audioSource.volume, 1, 0.02f);
                 targetTransform = playerFollowers.GetTarget();
                 if (targetTransform == null) { // Dirty fix
                     state = State.EAT;
@@ -109,8 +116,8 @@ public class Enemy : MonoBehaviour
                     state = State.INSIGHT;
                 break;
             case State.FROZEN:
-                foreach (var audioSource in GetComponents<AudioSource>())
-                    audioSource.volume = Mathf.Lerp(audioSource.volume, 0, 0.02f);
+                foreach (var audS in GetComponents<AudioSource>())
+                    audS.volume = Mathf.Lerp(audS.volume, 0, 0.02f);
                 if (animator != null)
                     animator.speed = 0;
                 return;
@@ -120,7 +127,8 @@ public class Enemy : MonoBehaviour
         if (animator != null && targetTransform != null)
         {
             float dist = Vector3.Distance(transform.position, targetTransform.position);
-            if ((state == State.INSIGHT || dist < 22) && dist > 8)
+            Debug.Log(dist);
+            if ((state == State.INSIGHT || dist < 22) && dist > 12 && state != State.EAT)
                 animator.SetInteger("Mouth", -1);
             else
                 animator.SetInteger("Mouth", 1);
