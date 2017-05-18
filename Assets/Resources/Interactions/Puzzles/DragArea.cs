@@ -27,7 +27,8 @@ public class DragArea : MonoBehaviour {
     void FixedUpdate () {
         if(state == State.NODRAG)
             return;
-        foreach(GameObject g in dragables) {
+        foreach (GameObject g in dragables)
+        {
             Transform t = g.transform;
             float mult = (g.tag == "Enemy") ? EnemyMultiplier : 1;
             float invDist = Mathf.Max(0, (MaxDrag - Vector3.Distance(t.position, dragPoint.position))) + BaseDrag + 200;

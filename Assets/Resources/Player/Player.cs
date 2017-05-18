@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 using XInputDotNetPure;
 
 public class Player : MonoBehaviour {
-    public enum State { SWIM, DYING, FROZEN };
+    public enum State { SWIM, DYING, FROZEN, SWIMAWAY };
     public enum DeathCause { ALIVE, EATEN, SUCKED };
 
     [HideInInspector]
@@ -170,6 +170,9 @@ public class Player : MonoBehaviour {
                 transform.rotation = originalRotation * xQuaternion * yQuaternion;
 
                 break;
+            case State.SWIMAWAY:
+                _rigidbody.velocity = transform.forward.normalized * 7;
+                break;
         }
         _rigidbody.velocity = transform.forward.normalized * _rigidbody.velocity.magnitude;
         CoolDown();
@@ -239,5 +242,11 @@ public class Player : MonoBehaviour {
     public void UnFreeze()
     {
         state = State.FROZEN;
+    }
+
+    public void SwimAway()
+    {
+        state = State.SWIMAWAY;
+
     }
 }
