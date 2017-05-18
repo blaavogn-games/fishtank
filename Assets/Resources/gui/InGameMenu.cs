@@ -9,7 +9,9 @@ public class InGameMenu : MonoBehaviour
     public UnityEngine.UI.Button Resume;
     public UnityEngine.UI.Button NewGame;
     public UnityEngine.UI.Button SelectTank;
+    public UnityEngine.UI.Button Options;
     public UnityEngine.UI.Button TankHighlight;
+    public UnityEngine.UI.Image Controls;
     public GameObject Tanks;
     public int MaxLevel = 2;
     private Vector3 tankTarget;
@@ -52,6 +54,23 @@ public class InGameMenu : MonoBehaviour
                 MoveTanksAbsolute(0);
             });
         trigger.triggers.Add(entry);
+
+        trigger = Options.GetComponent<EventTrigger>();
+        entry = new EventTrigger.Entry();
+        entry.eventID = EventTriggerType.Select;
+        entry.callback.AddListener(
+            (data) => {
+                Controls.gameObject.SetActive(true);
+            });
+        trigger.triggers.Add(entry);
+        entry = new EventTrigger.Entry();
+        entry.eventID = EventTriggerType.Deselect;
+        entry.callback.AddListener(
+            (data) => {
+                Controls.gameObject.SetActive(false);
+            });
+        trigger.triggers.Add(entry);
+
 
         SelectTank.onClick.AddListener(() => ToggleTankSelect(true));
         TankHighlight.onClick.AddListener(() => StartGame(tankSelected+1, true));

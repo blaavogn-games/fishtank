@@ -109,6 +109,10 @@ public class Enemy : MonoBehaviour
                     state = State.INSIGHT;
                 break;
             case State.FROZEN:
+                foreach (var audioSource in GetComponents<AudioSource>())
+                    audioSource.volume = Mathf.Lerp(audioSource.volume, 0, 0.02f);
+                if (animator != null)
+                    animator.speed = 0;
                 return;
         }
 
@@ -116,7 +120,7 @@ public class Enemy : MonoBehaviour
         if (animator != null && targetTransform != null)
         {
             float dist = Vector3.Distance(transform.position, targetTransform.position);
-            if ((state == State.INSIGHT || dist < 22) && dist > 5)
+            if ((state == State.INSIGHT || dist < 22) && dist > 8)
                 animator.SetInteger("Mouth", -1);
             else
                 animator.SetInteger("Mouth", 1);

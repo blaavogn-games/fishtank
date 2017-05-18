@@ -5,7 +5,7 @@ using UnityEngine.Audio;
 
 public enum SfxTypes
 {
-    DASH, EAT, SWIM_SWING, DEATH, MORRAY_ATTACK, COL_GROUND, COL_GLASS
+    DASH, EAT, SWIM_SWING, DEATH, MORRAY_ATTACK, COL_GROUND, COL_GLASS, FF_PICKUP
 };
 
 public class AudioClipGroup
@@ -37,7 +37,7 @@ public class SoundManager : MonoBehaviour {
     //Has to be set through editor
     public AudioMixerGroup Music, SFX, LeadSFX, Ambient;
 
-    void Start () {
+    void Start() {
         map = new Dictionary<SfxTypes, AudioClipGroup>();
         map.Add(SfxTypes.DASH, new AudioClipGroup(Resources.LoadAll<AudioClip>("SFX/dash"), SFX));
         map.Add(SfxTypes.EAT, new AudioClipGroup(Resources.LoadAll<AudioClip>("SFX/eatPill"), SFX));
@@ -45,7 +45,8 @@ public class SoundManager : MonoBehaviour {
         map.Add(SfxTypes.DEATH, new AudioClipGroup(Resources.LoadAll<AudioClip>("SFX/death"), SFX)); 
         map.Add(SfxTypes.MORRAY_ATTACK, new AudioClipGroup(Resources.LoadAll<AudioClip>("SFX/moray"), SFX)); 
         map.Add(SfxTypes.COL_GLASS, new AudioClipGroup(Resources.LoadAll<AudioClip>("SFX/col_glass"), SFX)); 
-        map.Add(SfxTypes.COL_GROUND, new AudioClipGroup(Resources.LoadAll<AudioClip>("SFX/col_ground"), SFX)); 
+        map.Add(SfxTypes.COL_GROUND, new AudioClipGroup(Resources.LoadAll<AudioClip>("SFX/col_ground"), SFX));
+        map.Add(SfxTypes.FF_PICKUP, new AudioClipGroup(Resources.LoadAll<AudioClip>("SFX/pickup_FF"), SFX));
     }
 	
     public AudioClip GetClip(SfxTypes type)
