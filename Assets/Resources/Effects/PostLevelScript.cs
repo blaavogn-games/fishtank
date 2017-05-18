@@ -5,7 +5,7 @@ public class PostLevelScript : MonoBehaviour
 {
     private enum State {BEFORE, ZOOMOUT, SCORING, DONE };
     [Header("Post Level Effect Controls")]
-    public Light DirectionaLight;
+    public Light[] DirectionaLights;
     public float ZoomSpeed = 0.33f;
     public float SpinSpeed = 30;
     public float ScoreDelay = 5;
@@ -46,7 +46,10 @@ public class PostLevelScript : MonoBehaviour
 	                    cam.SetSpeed(ZoomSpeed);
 	                    float step = SpinSpeed * Time.deltaTime;
 	                    FilterTarget.position = Vector3.MoveTowards(FilterTarget.position, PanOutLookAt.position, step);
-	                    DirectionaLight.intensity = 1;
+	                    foreach (Light l in DirectionaLights)
+	                    {
+	                        l.intensity = 1;
+	                    }
 	                }
 	                if (timer > ScoreDelay)
 	                    canvas.Activate(this);

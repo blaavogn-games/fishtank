@@ -90,6 +90,8 @@ public class World : MonoBehaviour {
         }
         if (Input.GetKey(KeyCode.R))
             RestartLevel(false);
+        if(Input.GetKeyDown(KeyCode.Escape))
+            GotoLevel(0);
         //if (Input.GetKeyDown(KeyCode.V))
             //WinLevel();
     }

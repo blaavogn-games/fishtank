@@ -34,7 +34,7 @@ public class Level2End : MonoBehaviour
             {
                 float step = 30 * Time.deltaTime;
                 DragPoint.position = Vector3.MoveTowards(DragPoint.position, FilterPoint.position, step);
-                if (timer > 5)
+                if (timer > 7)
                 {
                     postLevel.Activate();
                     Destroy(gameObject);
@@ -46,13 +46,14 @@ public class Level2End : MonoBehaviour
 
     public void Run()
     {
-        GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().Freeze();
+        GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().SwimAway();
         EndEnemy.SetFrozen();
         EndEnemy.transform.rotation = transform.rotation;
         EndDragArea.IgnorePlayer();
         Destroy(stuckWeed);
         foreach (SpringJoint j in weed)
         {
+            j.GetComponent<Rigidbody>().isKinematic = false;
             Destroy(j);
         }
         camCon.Player = DragPoint.gameObject;
