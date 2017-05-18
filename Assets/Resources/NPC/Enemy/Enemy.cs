@@ -116,7 +116,7 @@ public class Enemy : MonoBehaviour
         if (animator != null && targetTransform != null)
         {
             float dist = Vector3.Distance(transform.position, targetTransform.position);
-            if (dist < 22 && dist > 8)
+            if ((state == State.INSIGHT || dist < 22) && dist > 5)
                 animator.SetInteger("Mouth", -1);
             else
                 animator.SetInteger("Mouth", 1);
@@ -130,6 +130,7 @@ public class Enemy : MonoBehaviour
 
     private bool CheckSight(Vector3 target)
     {
+        
         Vector3 direction = target - transform.position;
         Ray ray = new Ray(transform.position, direction);
         RaycastHit hit;

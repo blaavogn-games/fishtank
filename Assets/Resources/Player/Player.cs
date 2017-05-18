@@ -210,6 +210,8 @@ public class Player : MonoBehaviour {
     }
     void OnCollisionEnter(Collision col)
     {
+        if (col.gameObject.tag == "PointObject")
+            return;
         if (col.gameObject.tag == "Glass")
             playerSound.CollideGlass();
         else
