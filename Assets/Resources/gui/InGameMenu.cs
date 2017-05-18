@@ -70,8 +70,7 @@ public class InGameMenu : MonoBehaviour
                 Controls.gameObject.SetActive(false);
             });
         trigger.triggers.Add(entry);
-
-
+        
         SelectTank.onClick.AddListener(() => ToggleTankSelect(true));
         TankHighlight.onClick.AddListener(() => StartGame(tankSelected+1, true));
 
