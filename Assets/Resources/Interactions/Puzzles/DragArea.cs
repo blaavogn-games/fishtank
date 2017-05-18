@@ -9,7 +9,8 @@ public class DragArea : MonoBehaviour {
     public Transform dragPoint;
     public GameObject particles;
     private Vector3 halfScale;
-    public bool IgnoreFish = false;
+    public bool ignoreEnemies = false;
+    public bool ignorePlayer = false;
 
     void Start()
     {
@@ -58,19 +59,25 @@ public class DragArea : MonoBehaviour {
 
     void OnTriggerEnter(Collider col)
     {
-        if (col.tag == "Enemy" || col.tag == "Player")
-        {
-            if(!IgnoreFish)
-                dragables.Add(col.gameObject);
-        }
+        if(col.tag == "Enemy" && !ignoreEnemies)
+            dragables.Add(col.gameObject);
+        else if (col.tag == "Player" && !ignorePlayer)
+            dragables.Add(col.gameObject);
     }
 
     void OnTriggerExit(Collider col)
     {
-        if (col.tag == "Enemy" || col.tag == "Player")
-        {
-            if(!IgnoreFish)
-                dragables.Remove(col.gameObject);
-        }
+        if (col.tag == "Enemy" && !ignoreEnemies)
+            dragables.Remove(col.gameObject);
+        else if (col.tag == "Player" && !ignorePlayer)
+            dragables.Remove(col.gameObject);
+    }
+
+    public void IgnorePlayer()
+    {
+        ignorePlayer = true;
+        if (dragables.Contains(GameObject.FindGameObjectWithTag("Player")))
+            dragables.Remove(GameObject.FindGameObjectWithTag("Player"));
+
     }
 }

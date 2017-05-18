@@ -233,11 +233,11 @@ public class Player : MonoBehaviour {
 
     public void Freeze()
     {
-        if (state == State.FROZEN)
-        {
-            state = State.SWIM;
-            return;
-        }
+        state = State.FROZEN;
+    }
+
+    public void UnFreeze()
+    {
         state = State.FROZEN;
     }
 }
