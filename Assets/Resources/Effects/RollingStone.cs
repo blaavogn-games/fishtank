@@ -8,7 +8,8 @@ public class RollingStone : MonoBehaviour
     public HingeJoint[] joints;
 
     public DragArea FilterDragArea;
-
+    private bool playingDragSound = false;
+    public AudioSource filterCrack;
     private bool dragged = false;
 
     private float timer = 0;
@@ -22,6 +23,11 @@ public class RollingStone : MonoBehaviour
 	{
 	    if (!dragged) return;
 	    FilterDragArea.DragMultiplier = Mathf.Lerp(1, 15, timer);
+	    if (!playingDragSound)
+	    {
+	        filterCrack.Play();
+	        playingDragSound = true;
+	    }
 	    timer += Time.deltaTime/3;
 	    if (timer > 1)
 	        timer = 1;

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 
 public class DragArea : MonoBehaviour {
-    private enum State { DRAG, NODRAG};
+    public enum State { DRAG, NODRAG};
     private State state;
     public float MaxDrag = 10, BaseDrag = 3, DragMultiplier = 0.5f, EnemyMultiplier = 2;
     private List<GameObject> dragables;
@@ -79,6 +79,10 @@ public class DragArea : MonoBehaviour {
         ignorePlayer = true;
         if (dragables.Contains(GameObject.FindGameObjectWithTag("Player")))
             dragables.Remove(GameObject.FindGameObjectWithTag("Player"));
+    }
 
+    public State GetState()
+    {
+        return state;
     }
 }

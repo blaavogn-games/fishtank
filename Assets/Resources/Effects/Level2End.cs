@@ -14,7 +14,11 @@ public class Level2End : MonoBehaviour
     public DragArea EndDragArea;
     public Transform DragPoint;
     public Transform FilterPoint;
+    public DragArea FilterDragArea;
+    public GameObject Hole;
+    private ParticleSystem[] waterSpray;
     private bool running = false;
+    private bool disabledWaterHole = false;
     private float timer = 0;
 
 	// Use this for initialization
@@ -22,26 +26,39 @@ public class Level2End : MonoBehaviour
 	{
 	    cam = Camera.main.transform.parent.GetComponentInParent<AutoCam>();
         camCon = Camera.main.GetComponentInParent<CameraController>();
+	    waterSpray = Hole.GetComponentsInChildren<ParticleSystem>();
         Run();
     }
 	
 	// Update is called once per frame
 	void Update () {
-	    if (running)
+	    if (!running) return;
+	    if (!disabledWaterHole)
 	    {
-	        timer += Time.deltaTime;
-            if (timer > 2)
-            {
-                float step = 30 * Time.deltaTime;
-                DragPoint.position = Vector3.MoveTowards(DragPoint.position, FilterPoint.position, step);
-                if (timer > 7)
-                {
-                    postLevel.Activate();
-                    Destroy(gameObject);
-                }
-            }
-
+	        if (EndDragArea.GetState() == DragArea.State.NODRAG)
+	        {
+	            foreach (var f in waterSpray)
+	            {
+                    f.Stop();
+	            }
+	            Hole.GetComponentInChildren<AudioSource>().Stop();
+	            disabledWaterHole = true;
+	        }
         }
+
+	    timer += Time.deltaTime;
+
+	    if (!(timer > 2)) return;
+
+	    float step = 30 * Time.deltaTime;
+	    DragPoint.position = Vector3.MoveTowards(DragPoint.position, FilterPoint.position, step);
+	    lookFrom.position = Vector3.MoveTowards(lookFrom.position, FilterPoint.position, step/4);
+	    FilterDragArea.DragMultiplier = Mathf.Lerp(1, 36, (timer-2)/5);
+
+	    if (!(timer > 7)) return;
+
+	    postLevel.Activate();
+	    Destroy(gameObject);
 	}
 
     public void Run()
