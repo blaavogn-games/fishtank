@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 
 public class SeeSawPuzzle : MonoBehaviour {
-    private enum State { IDLE, BEFORE, DOING, FILTERDRAGGING, AFTER };
+    private enum State { IDLE, BEFORE, DOING, AFTER };
     private State state = State.IDLE;
     public List<Rigidbody> bodies;
     public Transform newTarget;
