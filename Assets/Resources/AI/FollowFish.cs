@@ -66,15 +66,15 @@ public class FollowFish : MonoBehaviour {
                         }
                     }
                 }
-                else if (Vector3.Distance(transform.position, player.transform.position) < 8 && Time.time - lastFleeTime > 2)
+                else if (Vector3.Distance(transform.position, player.transform.position) < 8)
                 {
+                    idleTarget = RandomTarget(transform.position, 10, 4);
                     state = State.FLEE;
                 }
                 break;
             case State.FLEE:
                 lastFleeTime = Time.time;
-                Move(transform.position + (transform.position - player.transform.position), FleeSpeed);
-                if (Vector3.Distance(transform.position, player.transform.position) > 14)
+                if (Move(idleTarget, FleeSpeed))
                 {
                     idleTarget = initialPosition;
                     state = State.IDLE;
@@ -127,12 +127,17 @@ public class FollowFish : MonoBehaviour {
         idleTarget = RandomTarget(initialPosition);
     }
 
-    private Vector3 RandomTarget(Vector3 center)
+    private Vector3 RandomTarget(Vector3 center, float max = 2, float min = 1)
     {
         Vector3 newPos;
+        Vector3 dir;
+        RaycastHit hit;
         do
-            newPos = center + new Vector3(Random.Range(-2.0f, 2.0f), Random.Range(-2.0f, 2.0f), Random.Range(-2.0f, 2.0f));
-        while (Vector3.Distance(newPos, transform.position) < 1.0f);
+        {
+            newPos = center + new Vector3(Random.Range(-max, max), Random.Range(-max, max), Random.Range(-max, max));
+            dir = newPos - transform.position;
+        } while (Vector3.Distance(newPos, transform.position) < min 
+                 || Physics.Raycast(transform.position, dir, out hit, dir.magnitude + 0.5f) && hit.transform.tag != "SafeArea");
         return newPos;
     }
 
