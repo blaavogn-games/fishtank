@@ -40,17 +40,16 @@ public class Moray : MonoBehaviour
         {
             case MorayState.ATTACK:
                 moveDir = 1;
-                target = playerFollowers.GetTarget();
-                if (target == null) { 
-                    State = MorayState.EATEN;
-                    goto case MorayState.EATEN;
+                if (target == null) {
+                    State = MorayState.RETRACT;
+                    goto case MorayState.RETRACT;
                 }
                 targetPos = target.position;
                 while (segmentTraveled >= 1.0f)
                 {
                     if (attackTraveled >= AttackDistance)
                     {
-                        State = MorayState.EATEN;
+                        State = MorayState.RETRACT;
                         return;
                     }
 
@@ -75,6 +74,10 @@ public class Moray : MonoBehaviour
             case MorayState.RETRACT:
                 targetPos = (HeadSegment == null) ? InitialPosition : HeadSegment.transform.position;
                 moveDir = -1;
+
+                Debug.Log(HeadSegment);
+                Debug.Log(Vector3.Distance(transform.position, InitialPosition));
+
                 if (HeadSegment == null && Vector3.Distance(transform.position, InitialPosition) < 1.0f)
                 {
                     transform.position = InitialPosition;
@@ -94,9 +97,8 @@ public class Moray : MonoBehaviour
             default:
             case MorayState.IDLE:
                 target = playerFollowers.GetTarget();
-                if (target == null) { 
-                    State = MorayState.EATEN;
-                    goto case MorayState.EATEN;
+                if (target == null) {
+                    return;
                 }
                 targetPos = target.position;
                 if (Vector3.Distance(transform.position, targetPos) < SightDistance)
