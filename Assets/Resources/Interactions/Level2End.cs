@@ -73,6 +73,7 @@ public class Level2End : MonoBehaviour
             j.GetComponent<Rigidbody>().isKinematic = false;
             Destroy(j);
         }
+        Destroy(weed[0].gameObject);
         camCon.Player = DragPoint.gameObject;
         cam.SetTarget(lookFrom);
         running = true;
