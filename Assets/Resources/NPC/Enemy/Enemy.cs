@@ -153,7 +153,7 @@ public class Enemy : MonoBehaviour
             switch (hit.transform.tag)
             {
                 case "Player":
-                    if (hit.transform.GetComponent<Player>().state != Player.State.DYING)
+                    if (hit.transform.GetComponent<Player>().state == Player.State.SWIM)
                         return true;
                     break;
                 case "Follower":
