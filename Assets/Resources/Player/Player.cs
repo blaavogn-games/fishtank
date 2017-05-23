@@ -249,6 +249,13 @@ public class Player : MonoBehaviour {
         //Destroy(gameObject);
         Wiggle.gameObject.SetActive(false);
     }
+    public void FakeDeath()
+    {
+        playerSound.Death();
+        state = State.DYING;
+        //Destroy(gameObject);
+        Wiggle.gameObject.SetActive(false);
+    }
 
     public void Freeze()
     {

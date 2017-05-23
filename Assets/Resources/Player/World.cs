@@ -114,15 +114,11 @@ public class World : MonoBehaviour {
 
     bool ToBool(int input)
     {
-        if (input <= 0)
-            return false;
-        return true;
+        return input < 0;
     }
     int ToInt(bool input)
     {
-        if (input)
-            return 1;
-        return 0;
+        return input ? 1 : 0;
     }
 
     void ShowGuiText(string text)
@@ -130,16 +126,19 @@ public class World : MonoBehaviour {
         textToShow = text;
         guiColour.a = 1;
     }
+
     private void OnGUI()
     {
         GUI.color = guiColour;
         GUI.Label(new Rect(0.02f * Screen.width, 0.02f * Screen.height, 0.25f * Screen.width, 0.05f * Screen.height), textToShow);
     }
+
     private void OnApplicationQuit()
     {
         //PlayerPrefs.SetInt("Flight Controls", ToInt(FlightControls));
         //PlayerPrefs.SetInt("MouseLook", ToInt(MouseLook));
     }
+
     public int Death()
     {
         var level = SceneManager.GetActiveScene().buildIndex;
@@ -181,11 +180,13 @@ public class World : MonoBehaviour {
         //GotoLevel(SceneManager.GetActiveScene().buildIndex + 1);
         return result;
     }
+
     public void GotoLevel(int level)
     {
         SceneManager.LoadScene(level);
         Debug.Log("going to level: " + level);
     }
+
     public void RestartLevel(bool useCheckpoint)
     {
         if (!useCheckpoint)
@@ -194,6 +195,7 @@ public class World : MonoBehaviour {
             pills = SavedPills.Count;
         GotoLevel(SceneManager.GetActiveScene().buildIndex);
     }
+
     public void NextLevel()
     {
         deaths = 0;
@@ -203,6 +205,7 @@ public class World : MonoBehaviour {
             levelToGoTo = 0;
         GotoLevel(levelToGoTo);
     }
+
     public void CheckPoint(GameObject gameO)
     {
         if (SpawnPoint == gameO.transform.position || spawnObject == gameO) return;
@@ -221,6 +224,7 @@ public class World : MonoBehaviour {
         totalDeaths = 0;
         deaths = 0;
     }
+
     public void ResetStats()
     {
         pills = 0;

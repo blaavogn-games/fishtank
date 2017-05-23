@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 fileFormatVersion: 2
 guid: 6cd0efe746b8bd14297f7f1561a7e510
 folderAsset: yes
@@ -7,3 +8,8 @@ DefaultImporter:
   userData: 
   assetBundleName: 
   assetBundleVariant: 
+=======
+﻿fileFormatVersion: 2
+guid: feec040b71a64b3d83405cddede31c15
+timeCreated: 1495539262
+>>>>>>> mybranch

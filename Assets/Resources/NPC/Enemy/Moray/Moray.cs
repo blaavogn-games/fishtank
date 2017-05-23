@@ -74,11 +74,7 @@ public class Moray : MonoBehaviour
             case MorayState.RETRACT:
                 targetPos = (HeadSegment == null) ? InitialPosition : HeadSegment.transform.position;
                 moveDir = -1;
-
-                Debug.Log(HeadSegment);
-                Debug.Log(Vector3.Distance(transform.position, InitialPosition));
-
-                if (HeadSegment == null && Vector3.Distance(transform.position, InitialPosition) < 1.0f)
+                if (HeadSegment == null && Vector3.Distance(transform.position, InitialPosition) < 1.5f)
                 {
                     transform.position = InitialPosition;
                     transform.rotation = initialRotation;
@@ -88,7 +84,7 @@ public class Moray : MonoBehaviour
             case MorayState.EATEN:
                 targetPos = (HeadSegment == null) ? InitialPosition : HeadSegment.transform.position;
                 moveDir = -1;
-                if (HeadSegment == null && Vector3.Distance(transform.position, InitialPosition) < 1.0f)
+                if (HeadSegment == null && Vector3.Distance(transform.position, InitialPosition) < 1.5f)
                 {
                     transform.position = InitialPosition;
                     transform.rotation = initialRotation;
@@ -116,7 +112,8 @@ public class Moray : MonoBehaviour
         var movement = newPosition - transform.position;
         attackTraveled += movement.magnitude; //Only used by attackState
         segmentTraveled += movement.magnitude; //Only used by attackState
-        transform.rotation = Quaternion.LookRotation(Vector3.RotateTowards(transform.forward, moveDir * movement, 0.4f, 0));
+        float rotateLimit = (State == MorayState.RETRACT || State == MorayState.EATEN) ? 10 : 0.4f;
+        transform.rotation = Quaternion.LookRotation(Vector3.RotateTowards(transform.forward, moveDir * movement, rotateLimit, 0));
         transform.position += moveDir * transform.forward * movement.magnitude;
     }
     

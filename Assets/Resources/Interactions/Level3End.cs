@@ -14,4 +14,9 @@ public class Level3End : MonoBehaviour
 	void Update () {
 	
 	}
+
+    public void Run(Transform enemyPosition)
+    {
+        
+    }
 }
