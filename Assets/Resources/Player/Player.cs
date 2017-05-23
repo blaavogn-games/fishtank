@@ -107,7 +107,7 @@ public class Player : MonoBehaviour {
         {
             case State.DYING:
                 //deathCause can be used for death transition.
-                if(deathCause == DeathCause.ALIVE) Debug.Log(""); //Just to supress warning
+                //if(deathCause == DeathCause.ALIVE) Debug.Log(""); //Just to supress warning
                 //if(dieTime < Time.time) {
                     //To do: Make scene reload
                     //World.i.RestartLevel(true);
@@ -253,6 +253,10 @@ public class Player : MonoBehaviour {
     {
         playerSound.Death();
         state = State.DYING;
+        var p = Instantiate(DeathEffect.gameObject);
+        p.GetComponent<DeathEffect>().enabled = false;
+        p.transform.position = transform.position;
+        GetComponent<Rigidbody>().isKinematic = true;
         //Destroy(gameObject);
         Wiggle.gameObject.SetActive(false);
     }
