@@ -199,6 +199,7 @@ public class World : MonoBehaviour {
     public void NextLevel()
     {
         deaths = 0;
+        showDeaths = 0;
         ResetStats();
         int levelToGoTo = SceneManager.GetActiveScene().buildIndex + 1;
         if (SceneManager.GetActiveScene().buildIndex >= AmountOfLevels)
