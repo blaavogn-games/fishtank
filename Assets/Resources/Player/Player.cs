@@ -101,7 +101,7 @@ public class Player : MonoBehaviour {
         playerSound = GetComponent<PlayerSound>();
     }
 
-    void Update ()
+    void FixedUpdate ()
     {
         switch (state)
         {

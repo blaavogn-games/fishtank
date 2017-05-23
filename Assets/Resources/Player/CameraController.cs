@@ -11,7 +11,7 @@ public class CameraController : MonoBehaviour {
         Player = GameObject.FindGameObjectWithTag("Player");
     }
 
-    void Update ()
+    void FixedUpdate ()
     {
         float xMove = Input.GetAxis("LookHor") * Invert;
         float yMove = Input.GetAxis("LookVer") * Invert;

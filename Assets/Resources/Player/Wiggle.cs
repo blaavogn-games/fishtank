@@ -11,7 +11,7 @@ public class Wiggle : MonoBehaviour {
         anim = GetComponent<Animator>();
     }
 
-    void Update ()
+    void FixedUpdate ()
     {
         time += Time.deltaTime * Speed;
         if (anim != null)
