@@ -253,6 +253,7 @@ public class Player : MonoBehaviour {
     {
         playerSound.Death();
         state = State.DYING;
+        GetComponent<SphereCollider>().enabled = false;
         var p = Instantiate(DeathEffect.gameObject);
         p.GetComponent<DeathEffect>().enabled = false;
         p.transform.position = transform.position;

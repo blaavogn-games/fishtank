@@ -97,7 +97,7 @@ public class Moray : MonoBehaviour
                     return;
                 }
                 targetPos = target.position;
-                if (Vector3.Distance(transform.position, targetPos) < SightDistance)
+                if (Vector3.Distance(transform.position, targetPos) < SightDistance && GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().state==Player.State.SWIM)
                 {
                     State = MorayState.ATTACK;
                     audioSource.PlayOneShot(soundManager.GetClip(SfxTypes.MORRAY_ATTACK));

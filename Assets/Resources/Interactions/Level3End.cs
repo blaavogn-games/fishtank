@@ -88,11 +88,12 @@ public class Level3End : MonoBehaviour
             state = State.ONMORAY;
             joint.connectedBody = other.transform.parent.GetComponent<Rigidbody>();
             other.GetComponent<Moray>().State = Moray.MorayState.EATEN;
-            CameraPlayer.transform.position = other.transform.parent.transform.position;
-            player.FakeDeath();
+            CameraPlayer.transform.position = other.transform.parent.position;
             camCon.Player = CameraPlayer;
             CameraTarget.transform.position = player.transform.position;
             cam.SetTarget(CameraTarget);
+            player.transform.position = other.transform.parent.position;
+            player.FakeDeath();
         }
     }
 }
