@@ -241,6 +241,7 @@ public class Player : MonoBehaviour {
     {
         this.deathCause = deathCause;
         playerSound.Death();
+        GetComponent<SphereCollider>().enabled = false;
         state = State.DYING;
         //dieTime = Time.time + .2f;
         World.i.Death();
