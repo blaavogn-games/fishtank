@@ -18,6 +18,7 @@ public class Level3Weed : MonoBehaviour
     private Player player;
     public Level3End Level3Script;
     public PostLevelScript PostLevel;
+    public GameObject DeathEffect;
 
 	// Use this for initialization
 	void Start ()
@@ -39,6 +40,13 @@ public class Level3Weed : MonoBehaviour
             state = State.ONPLAYER;
             joint.connectedBody = playerBody;
             body.isKinematic = false;
+        }
+        else if (state == State.ONPLAYER && other.GetComponent<Moray>() != null)
+        {
+            state=State.ONMORAY;
+            joint.connectedBody = other.GetComponent<Rigidbody>();
+            Level3Script.Run(other.transform);
+            player.FakeDeath();
         }
     }
 }
