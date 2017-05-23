@@ -79,7 +79,7 @@ public class Enemy : MonoBehaviour
                 velocity = pathVelocity;
                 var t = playerFollowers.GetTarget();
                 if (t != null && CheckSight(t.position) &&
-                   Vector3.Distance(playerFollowers.transform.position, initialPosition) < maxChaseDistance - 5) {
+                    Vector3.Distance(playerFollowers.transform.position, initialPosition) < maxChaseDistance - 5) {
                     audioSource.Play();
                     audioSource.volume = 0;
                     state = State.INSIGHT;
@@ -114,6 +114,8 @@ public class Enemy : MonoBehaviour
                 velocity = Mathf.Lerp(velocity, chaseVelocity, 0.1f);
                 if(timer < 0)
                     state = State.INSIGHT;
+                if ((transform.position - target).magnitude < 0.01f)
+                    SetPathPoint();
                 break;
             case State.FROZEN:
                 foreach (var audS in GetComponents<AudioSource>())
@@ -179,6 +181,7 @@ public class Enemy : MonoBehaviour
         else if(col.transform.tag == "Player" && (targetTransform == col.transform))
         {
             state = State.EAT;
+            timer = 10000;
             target = patrolPath[curPatTarget % patrolPath.Count];
             col.transform.GetComponent<Player>().Kill(Player.DeathCause.EATEN);
         }
