@@ -107,8 +107,18 @@ public class FollowFish : MonoBehaviour {
                 break;
             case 3:
                 forward = 1.3f;
-                right = 1.1f;
+                right = 0.5f;
                 up = -0.4f;
+                break;
+            case 4:
+                forward = 3.3f;
+                right = 0.5f;
+                up = 0.6f;
+                break;
+            case 5:
+                forward = -0.3f;
+                right = -0.76f;
+                up = 0.2f;
                 break;
         }
 

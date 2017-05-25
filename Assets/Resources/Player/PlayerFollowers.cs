@@ -3,9 +3,7 @@
 public class PlayerFollowers : MonoBehaviour {
     public Player player;
     private GameObject[] followers = new GameObject[5];
-    private int targetIndex = -1;
-    //Invariant:
-    // followers[targetIndex] != null or (targetIndex == -1) -> followers[i] == null
+    private int target = 0;
 
     public int AddFollower(GameObject g)
     {
@@ -13,7 +11,6 @@ public class PlayerFollowers : MonoBehaviour {
             if(followers[i] == null)
             {
                 followers[i] = g;
-                targetIndex = i;
                 return i;
             }
         }
@@ -22,19 +19,24 @@ public class PlayerFollowers : MonoBehaviour {
 
     public void RemoveFollower(GameObject g)
     {
-        targetIndex = -1;
         for(int i = 0; i < followers.Length; i++) {
             if (followers[i] == g)
                 followers[i] = null;
-            if(followers[i] != null)
-                targetIndex = i;
         }
+    }
+
+    public void Update()
+    {
+        target = 0;
     }
 
     public Transform GetTarget()
     {
         if (player.state == Player.State.DYING)
             return null;
-        return (targetIndex == -1) ? transform : followers[targetIndex].transform;
+        for (int i = 0; i < followers.Length; i++)
+            if (followers[(i + target)%followers.Length] != null) 
+                return followers[(i + target++) % followers.Length].transform;
+        return transform;
     }
 }
