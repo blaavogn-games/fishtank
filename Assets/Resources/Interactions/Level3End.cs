@@ -50,12 +50,12 @@ public class Level3End : MonoBehaviour
             FilterDragArea.DragMultiplier = Mathf.Lerp(1, 5, timer/5);
             float step = 5f * Time.deltaTime;
             CameraTarget.position = Vector3.MoveTowards(CameraTarget.position, OutOfCaveTarget.position, step);
-            if (timer > 2)
+            if (timer > 3)
             {
                 CameraPlayer.transform.position = Vector3.MoveTowards(CameraPlayer.transform.position,
                     FilterTarget.transform.position, step * 5);
             }
-            if (timer > 12)
+            if (Vector3.Distance(CameraTarget.position, OutOfCaveTarget.position)<1)
             {
                 PostLevel.Activate();
                 Destroy(gameObject);

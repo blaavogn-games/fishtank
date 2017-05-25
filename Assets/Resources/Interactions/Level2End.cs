@@ -6,6 +6,7 @@ public class Level2End : MonoBehaviour
 {
     public SpringJoint[] weed;
     public FixedJoint stuckWeed;
+    public HingeJoint finalWeed;
     public PostLevelScript postLevel;
     private AutoCam cam;
     private CameraController camCon;
@@ -70,9 +71,13 @@ public class Level2End : MonoBehaviour
         Destroy(stuckWeed);
         foreach (SpringJoint j in weed)
         {
+            j.GetComponent<CapsuleCollider>().isTrigger = false;
             j.GetComponent<Rigidbody>().isKinematic = false;
             Destroy(j);
         }
+        finalWeed.GetComponent<CapsuleCollider>().isTrigger = false;
+        Destroy(finalWeed);
+        Destroy(weed[0].gameObject);
         camCon.Player = DragPoint.gameObject;
         cam.SetTarget(lookFrom);
         running = true;
