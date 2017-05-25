@@ -189,9 +189,11 @@ public class Player : MonoBehaviour {
                 break;
         }
         _rigidbody.velocity = transform.forward.normalized * _rigidbody.velocity.magnitude;
-        
+
+#if UNITY_EDITOR
         if (Input.GetKeyDown(KeyCode.K))
             Kill(DeathCause.EATEN);
+#endif
         /*if (MaxHunger > 0 && hunger <= HungerStartSlim)
         {
             transform.localScale = new Vector3(Mathf.Lerp(MaxHungryXScale, 1, hunger / HungerStartSlim), Mathf.Lerp(MaxHungryYScale, 1, hunger / HungerStartSlim), Mathf.Lerp(MaxHungryZScale, 1, hunger / HungerStartSlim));

@@ -68,6 +68,7 @@ public class World : MonoBehaviour {
             SetFlightControls();
         if (Input.GetMouseButtonDown(1))
             SetMouseLook();
+        #if UNITY_EDITOR
         if (Input.GetKey(KeyCode.Alpha0))
         {
             ResetStats();
@@ -90,6 +91,7 @@ public class World : MonoBehaviour {
         }
         if (Input.GetKey(KeyCode.R))
             RestartLevel(false);
+#endif
         if(Input.GetKeyDown(KeyCode.Escape))
             GotoLevel(0);
         //if (Input.GetKeyDown(KeyCode.V))
